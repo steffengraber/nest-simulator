@@ -68,7 +68,7 @@ function(NEST_GENERATE_HELP)
         )
         install( CODE
             "execute_process(
-                COMMAND ${PYTHON} parse_help.py \"${CMAKE_INSTALL_FULL_DOCDIR}/help2\"
+                COMMAND ${PYTHON} parse_help.py \"${CMAKE_INSTALL_FULL_DOCDIR}/help\"
                 WORKING_DIRECTORY \"${PROJECT_SOURCE_DIR}/extras/userdoc/generator\"
               )"
             )
