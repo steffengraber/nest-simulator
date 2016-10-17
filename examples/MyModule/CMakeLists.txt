@@ -267,19 +267,6 @@ install( TARGETS ${MODULE_NAME}_lib DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 install( FILES ${MODULE_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
 install( DIRECTORY sli DESTINATION ${CMAKE_INSTALL_DATADIR} )
 
-# Install help.
-set( HELPDIRS "${PROJECT_SOURCE_DIR}:${PROJECT_SOURCE_DIR}/sli" )
-install( CODE
-    "execute_process(COMMAND ${CMAKE_COMMAND}
-          -DDOC_DIR='${CMAKE_INSTALL_FULL_DOCDIR}'
-          -DDATA_DIR='${CMAKE_INSTALL_FULL_DATADIR}'
-          -DHELPDIRS='${HELPDIRS}'
-          -DINSTALL_DIR='${CMAKE_INSTALL_PREFIX}'
-          -P ${CMAKE_INSTALL_FULL_DOCDIR}/generate_help.cmake
-        WORKING_DIRECTORY \"${PROJECT_BINARY_DIR}\"
-      )"
-    )
-
 message( "" )
 message( "-------------------------------------------------------" )
 message( "${MODULE_NAME} Configuration Summary" )
