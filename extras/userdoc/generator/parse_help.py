@@ -64,14 +64,14 @@ keywords = ["Name:", "Synopsis:", "Examples:", "Description:", "Parameters:",
 # Now begin to collect the data for the helpindex.html
 
 dcs = r'\/\*[\s?]*[\n?]*BeginDocumentation[\s?]*\:?[\s?]*[.?]*\n(.*?)\n*?\*\/'
-for file in allfiles:
-    if not file.endswith('.py'):
-        f = open(('%s' % (file,)), 'r')
+for fname in allfiles:
+    if not fname.endswith('.py'):
+        f = open(('%s' % (fname,)), 'r')
         filetext = f.read()
         f.close()
         items = re.findall(dcs, filetext, re.DOTALL)
         # List of all .sli files. Needed for the SeeAlso part.
-        # if file.endswith('.sli'):
+        # if fname.endswith('.sli'):
         index_dic = {}
         fullname = ""
         for item in items:
@@ -83,16 +83,16 @@ for file in allfiles:
                     docname = fullname.split()[0].rstrip("-")
                     fullname = fullname.lstrip(docname).strip()
                     fullname = fullname.lstrip("-").strip()
-                if file.endswith('.sli'):
+                if fname.endswith('.sli'):
                     sli_command_list.append(docname.strip())
                     index_dic = {'name': docname, 'ext': 'sli'}
                 else:
                     index_dic = {'name': docname, 'ext': 'cc'}
-                filename_dic = {'file': file}
+                filename_dic = {'file': fname}
                 if fullname:
                     fullname_dic = {'fullname': fullname}
                     index_dic.update(fullname_dic)
-                    filename_dic = {'file': file}
+                    filename_dic = {'file': fname}
                 else:
                     fullname_dic = {'fullname': ''}
                     index_dic.update(fullname_dic)
@@ -102,10 +102,10 @@ write_helpindex(index_dic_list)
 
 # Now begin to collect the data for the help files and start generating.
 dcs = r'\/\*[\s?]*[\n?]*BeginDocumentation[\s?]*\:?[\s?]*[.?]*\n(.*?)\n*?\*\/'
-for file in allfiles:
+for fname in allfiles:
     # .py is for future use
-    if not file.endswith('.py'):
-        f = open(('%s' % (file,)), 'r')
+    if not fname.endswith('.py'):
+        f = open(('%s' % (fname,)), 'r')
         filetext = f.read()
         f.close()
         # Multiline matiching to find codeblock
@@ -142,7 +142,7 @@ for file in allfiles:
                     if keyword_curr in documentation:
                         documentation[keyword_curr] += " " + token
 
-            all_data = coll_data(keywords, documentation, num, file,
+            all_data = coll_data(keywords, documentation, num, fname,
                                  sli_command_list)
 if len(sys.argv) > 1:
     shutil.rmtree(sys.argv[1], ignore_errors=True)

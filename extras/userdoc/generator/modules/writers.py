@@ -33,7 +33,7 @@ from helpers import cut_it
 from string import Template
 
 
-def write_help_html(doc_dic, file, sli_command_list, keywords):
+def write_help_html(doc_dic, fname, sli_command_list, keywords):
     """
     Write html.
 
@@ -135,7 +135,7 @@ def write_help_html(doc_dic, file, sli_command_list, keywords):
                                   title=name, footer=footertempl)
 
     if name:  # only, if there is a name
-        if file.endswith('.sli'):
+        if fname.endswith('.sli'):
             f_file_name = open(('../cmds/sli/%s.html' % name), 'w')
             f_file_name.write(cmdindexstring)
             f_file_name.close()
@@ -236,14 +236,14 @@ def write_helpindex(index_dic_list):
     f_helphlpindex.close()
 
 
-def coll_data(keywords, documentation, num, file, sli_command_list):
+def coll_data(keywords, documentation, num, fname, sli_command_list):
     """
     Collect data.
 
     Prepare the data for writing the help.
     """
     see = ""
-    relfile = file.strip()
+    relfile = fname.strip()
     doc_dic = {"Id": str(num), "File": relfile}
     for k in keywords:
         if k in documentation:
@@ -272,5 +272,5 @@ def coll_data(keywords, documentation, num, file, sli_command_list):
                     text = text + i.strip() + " \n" + ""
                 if text:
                     doc_dic.update({name: text})
-    write_help_html(doc_dic, file, sli_command_list, keywords)
+    write_help_html(doc_dic, fname, sli_command_list, keywords)
     # return(write_help_md(doc_dic))
