@@ -33,7 +33,9 @@ import shutil
 import textwrap
 
 from modules.writers import coll_data, write_helpindex
-from modules.helpers import check_ifdef
+from modules.helpers import check_ifdef, create_helpdirs
+
+create_helpdirs('../cmds')
 
 path = '../../../'
 path = os.path.abspath(path)

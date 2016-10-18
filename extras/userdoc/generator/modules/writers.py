@@ -32,19 +32,6 @@ import textwrap
 from helpers import cut_it
 from string import Template
 
-if os.path.isdir('../cmds'):
-    pass
-else:
-    os.mkdir('../cmds')
-if os.path.isdir('../cmds/sli'):
-    pass
-else:
-    os.mkdir('../cmds/sli')
-if os.path.isdir('../cmds/cc'):
-    pass
-else:
-    os.mkdir('../cmds/cc')
-
 
 def write_help_html(doc_dic, file, sli_command_list, keywords):
     """
