@@ -267,6 +267,15 @@ install( TARGETS ${MODULE_NAME}_lib DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 install( FILES ${MODULE_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
 install( DIRECTORY sli DESTINATION ${CMAKE_INSTALL_DATADIR} )
 
+# Install help.
+install( CODE
+    "execute_process(
+        COMMAND python -B parse_help.py ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DOCDIR}/help\"
+        WORKING_DIRECTORY \"${CMAKE_INSTALL_PREFIX}/${NEST_DATADIR}/help_generator\"
+        )"
+    )
+
+
 message( "" )
 message( "-------------------------------------------------------" )
 message( "${MODULE_NAME} Configuration Summary" )
