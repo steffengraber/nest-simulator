@@ -35,13 +35,19 @@ import textwrap
 from modules.writers import coll_data, write_helpindex
 from modules.helpers import check_ifdef, create_helpdirs
 
-helpdir = '../cmds'
+
+if len(sys.argv) != 4:
+    print "Usage: python parse_help.py <source_dir> <build_dir> <install_dir>"
+    print
+    sys.exit(1)
+
+source_dir, build_dir, install_dir = sys.argv[1:]
+
+helpdir = os.path.join(build_dir, "doc/help")
 create_helpdirs(helpdir)
 
-path = '../../../'
-path = os.path.abspath(path)
 allfiles = []
-for dirpath, dirnames, files in os.walk(path):
+for dirpath, dirnames, files in os.walk(source_dir):
     if not re.findall(r'[.?]*MyModule[.?]*', dirpath):
         for f in files:
             if f.endswith((".sli", ".cpp", ".cc", ".h", ".py")):
@@ -145,6 +151,6 @@ for fname in allfiles:
 
             all_data = coll_data(keywords, documentation, num, helpdir, fname,
                                  sli_command_list)
-if len(sys.argv) > 1:
-    shutil.rmtree(sys.argv[1], ignore_errors=True)
-    shutil.copytree(helpdir, sys.argv[1])
+
+shutil.rmtree(install_dir, ignore_errors=True)
+shutil.copytree(helpdir, install_dir)
