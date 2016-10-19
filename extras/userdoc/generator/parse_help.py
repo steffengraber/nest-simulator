@@ -72,7 +72,6 @@ for fname in allfiles:
         f.close()
         items = re.findall(dcs, filetext, re.DOTALL)
         # List of all .sli files. Needed for the SeeAlso part.
-        # if fname.endswith('.sli'):
         index_dic = {}
         fullname = ""
         for item in items:
@@ -110,7 +109,7 @@ for fname in allfiles:
         f = open(('%s' % (fname,)), 'r')
         filetext = f.read()
         f.close()
-        # Multiline matiching to find codeblock
+        # Multiline matching to find codeblock
         items = re.findall(dcs, filetext, re.DOTALL)
         for item in items:
             # Check the ifdef in code
