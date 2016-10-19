@@ -40,15 +40,15 @@ def write_help_html(doc_dic, helpdir, fname, sli_command_list, keywords):
     Write html for integration in NEST Help-System
     """
     # Loading Template for commands
-    ftemplate = open('template/cmd.tpl.html', 'r')
+    ftemplate = open('templates/cmd.tpl.html', 'r')
     templ = ftemplate.read()
     ftemplate.close()
     # Loading Template for CSS
-    cssf = open('template/nest.tpl.css', 'r')
+    cssf = open('templates/nest.tpl.css', 'r')
     csstempl = cssf.read()
     cssf.close()
     # Loading Template for footer
-    footerf = open('template/footer.tpl.html', 'r')
+    footerf = open('templates/footer.tpl.html', 'r')
     footertempl = footerf.read()
     footerf.close()
 
@@ -167,15 +167,15 @@ def write_helpindex(index_dic_list, helpdir):
     hlp_list = []
 
     # Loading Template for helpindex.html
-    ftemplate = open('template/helpindex.tpl.html', 'r')
+    ftemplate = open('templates/helpindex.tpl.html', 'r')
     templ = ftemplate.read()
     ftemplate.close()
     # Loading Template for CSS
-    cssf = open('template/nest.tpl.css', 'r')
+    cssf = open('templates/nest.tpl.css', 'r')
     csstempl = cssf.read()
     cssf.close()
     # Loading Template for footer
-    footerf = open('template/footer.tpl.html', 'r')
+    footerf = open('templates/footer.tpl.html', 'r')
     footertempl = footerf.read()
     footerf.close()
 
