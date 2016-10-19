@@ -136,22 +136,17 @@ def write_help_html(doc_dic, fname, sli_command_list, keywords):
 
     if name:  # only, if there is a name
         if fname.endswith('.sli'):
-            f_file_name = open(('../cmds/sli/%s.html' % name), 'w')
-            f_file_name.write(cmdindexstring)
-            f_file_name.close()
-
-            f_file_name_hlp = open(('../cmds/sli/%s.hlp' % name), 'w')
-            f_file_name_hlp.write('\n'.join(hlplist))
-            f_file_name_hlp.close()
+            path = os.path.join('../cmds/', 'sli')
         else:
-            f_file_name = open(('../cmds/cc/%s.html' % name), 'w')
-            f_file_name.write(cmdindexstring)
-            f_file_name.close()
+            path = os.path.join('../cmds/', 'cc')
 
-            f_file_name_hlp = open(('../cmds/cc/%s.hlp' % name), 'w')
-            f_file_name_hlp.write('\n'.join(hlplist))
-            f_file_name_hlp.close()
-        # return name
+        f_file_name = open((path + '/%s.html' % name), 'w')
+        f_file_name.write(cmdindexstring)
+        f_file_name.close()
+
+        f_file_name_hlp = open((path + '/%s.hlp' % name), 'w')
+        f_file_name_hlp.write('\n'.join(hlplist))
+        f_file_name_hlp.close()
 
 
 def write_helpindex(index_dic_list):
