@@ -35,7 +35,8 @@ import textwrap
 from modules.writers import coll_data, write_helpindex
 from modules.helpers import check_ifdef, create_helpdirs
 
-create_helpdirs('../cmds')
+helpdir = '../cmds'
+create_helpdirs(helpdir)
 
 path = '../../../'
 path = os.path.abspath(path)
@@ -98,7 +99,8 @@ for fname in allfiles:
                     index_dic.update(fullname_dic)
                 index_dic.update(filename_dic)
             index_dic_list.append(index_dic)
-write_helpindex(index_dic_list)
+
+write_helpindex(index_dic_list, helpdir)
 
 # Now begin to collect the data for the help files and start generating.
 dcs = r'\/\*[\s?]*[\n?]*BeginDocumentation[\s?]*\:?[\s?]*[.?]*\n(.*?)\n*?\*\/'
@@ -142,8 +144,8 @@ for fname in allfiles:
                     if keyword_curr in documentation:
                         documentation[keyword_curr] += " " + token
 
-            all_data = coll_data(keywords, documentation, num, fname,
+            all_data = coll_data(keywords, documentation, num, helpdir, fname,
                                  sli_command_list)
 if len(sys.argv) > 1:
     shutil.rmtree(sys.argv[1], ignore_errors=True)
-    shutil.copytree("../cmds", sys.argv[1])
+    shutil.copytree(helpdir, sys.argv[1])

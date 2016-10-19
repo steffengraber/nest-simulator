@@ -33,7 +33,7 @@ from helpers import cut_it
 from string import Template
 
 
-def write_help_html(doc_dic, fname, sli_command_list, keywords):
+def write_help_html(doc_dic, helpdir, fname, sli_command_list, keywords):
     """
     Write html.
 
@@ -136,9 +136,9 @@ def write_help_html(doc_dic, fname, sli_command_list, keywords):
 
     if name:  # only, if there is a name
         if fname.endswith('.sli'):
-            path = os.path.join('../cmds/', 'sli')
+            path = os.path.join(helpdir, 'sli')
         else:
-            path = os.path.join('../cmds/', 'cc')
+            path = os.path.join(helpdir, 'cc')
 
         f_file_name = open((path + '/%s.html' % name), 'w')
         f_file_name.write(cmdindexstring)
@@ -149,7 +149,7 @@ def write_help_html(doc_dic, fname, sli_command_list, keywords):
         f_file_name_hlp.close()
 
 
-def write_helpindex(index_dic_list):
+def write_helpindex(index_dic_list, helpdir):
     """
     Write helpindex.html.
 
@@ -221,17 +221,17 @@ def write_helpindex(index_dic_list):
     indexstring = s.substitute(indexbody=htmlstring, css=csstempl,
                                footer=footertempl)
 
-    f_helpindex = open('../cmds/helpindex.html', 'w')
+    f_helpindex = open(helpdir + '/helpindex.html', 'w')
     f_helpindex.write(indexstring)
     f_helpindex.close()
 
     # Todo: using string template for .hlp
-    f_helphlpindex = open('../cmds/helpindex.hlp', 'w')
+    f_helphlpindex = open(helpdir + '/helpindex.hlp', 'w')
     f_helphlpindex.write('\n'.join(hlp_list))
     f_helphlpindex.close()
 
 
-def coll_data(keywords, documentation, num, fname, sli_command_list):
+def coll_data(keywords, documentation, num, helpdir, fname, sli_command_list):
     """
     Collect data.
 
@@ -267,5 +267,4 @@ def coll_data(keywords, documentation, num, fname, sli_command_list):
                     text = text + i.strip() + " \n" + ""
                 if text:
                     doc_dic.update({name: text})
-    write_help_html(doc_dic, fname, sli_command_list, keywords)
-    # return(write_help_md(doc_dic))
+    write_help_html(doc_dic, helpdir, fname, sli_command_list, keywords)
