@@ -20,6 +20,8 @@
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
+import os
+import errno
 
 
 def cut_it(separator, text):
@@ -51,3 +53,29 @@ def check_ifdef(item, filetext, docstring):
                     if item == initem:
                         features = require_reg.search(str_ifdef)
                         return features.group()
+
+
+def makedirs(path):
+    """
+    Forgiving version of os.makedirs, emulating the behavior of the
+    shell command 'mkdir -p'. The function tries to create the
+    directory at the given path including all subdirectories and
+    returns silently if the directory already exists.
+    """
+
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
+
+def create_helpdirs(path):
+    """
+    Create the directories for the help files.
+    """
+
+    makedirs(os.path.join(path, 'sli'))
+    makedirs(os.path.join(path, 'cc'))

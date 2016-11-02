@@ -32,13 +32,22 @@ import sys
 import shutil
 import textwrap
 
-from modules.writers import coll_data, write_helpindex
-from modules.helpers import check_ifdef
+from writers import coll_data, write_helpindex
+from helpers import check_ifdef, create_helpdirs
 
-path = '../../../'
-path = os.path.abspath(path)
+
+if len(sys.argv) != 4:
+    print "Usage: python parse_help.py <source_dir> <build_dir> <install_dir>"
+    print
+    sys.exit(1)
+
+source_dir, build_dir, install_dir = sys.argv[1:]
+
+helpdir = os.path.join(build_dir, "doc/help")
+create_helpdirs(helpdir)
+
 allfiles = []
-for dirpath, dirnames, files in os.walk(path):
+for dirpath, dirnames, files in os.walk(source_dir):
     if not re.findall(r'[.?]*MyModule[.?]*', dirpath):
         for f in files:
             if f.endswith((".sli", ".cpp", ".cc", ".h", ".py")):
@@ -62,14 +71,13 @@ keywords = ["Name:", "Synopsis:", "Examples:", "Description:", "Parameters:",
 # Now begin to collect the data for the helpindex.html
 
 dcs = r'\/\*[\s?]*[\n?]*BeginDocumentation[\s?]*\:?[\s?]*[.?]*\n(.*?)\n*?\*\/'
-for file in allfiles:
-    if not file.endswith('.py'):
-        f = open(('%s' % (file,)), 'r')
+for fname in allfiles:
+    if not fname.endswith('.py'):
+        f = open(('%s' % (fname,)), 'r')
         filetext = f.read()
         f.close()
         items = re.findall(dcs, filetext, re.DOTALL)
         # List of all .sli files. Needed for the SeeAlso part.
-        # if file.endswith('.sli'):
         index_dic = {}
         fullname = ""
         for item in items:
@@ -81,32 +89,33 @@ for file in allfiles:
                     docname = fullname.split()[0].rstrip("-")
                     fullname = fullname.lstrip(docname).strip()
                     fullname = fullname.lstrip("-").strip()
-                if file.endswith('.sli'):
+                if fname.endswith('.sli'):
                     sli_command_list.append(docname.strip())
                     index_dic = {'name': docname, 'ext': 'sli'}
                 else:
                     index_dic = {'name': docname, 'ext': 'cc'}
-                filename_dic = {'file': file}
+                filename_dic = {'file': fname}
                 if fullname:
                     fullname_dic = {'fullname': fullname}
                     index_dic.update(fullname_dic)
-                    filename_dic = {'file': file}
+                    filename_dic = {'file': fname}
                 else:
                     fullname_dic = {'fullname': ''}
                     index_dic.update(fullname_dic)
                 index_dic.update(filename_dic)
             index_dic_list.append(index_dic)
-write_helpindex(index_dic_list)
+
+write_helpindex(index_dic_list, helpdir)
 
 # Now begin to collect the data for the help files and start generating.
 dcs = r'\/\*[\s?]*[\n?]*BeginDocumentation[\s?]*\:?[\s?]*[.?]*\n(.*?)\n*?\*\/'
-for file in allfiles:
+for fname in allfiles:
     # .py is for future use
-    if not file.endswith('.py'):
-        f = open(('%s' % (file,)), 'r')
+    if not fname.endswith('.py'):
+        f = open(('%s' % (fname,)), 'r')
         filetext = f.read()
         f.close()
-        # Multiline matiching to find codeblock
+        # Multiline matching to find codeblock
         items = re.findall(dcs, filetext, re.DOTALL)
         for item in items:
             # Check the ifdef in code
@@ -140,8 +149,8 @@ for file in allfiles:
                     if keyword_curr in documentation:
                         documentation[keyword_curr] += " " + token
 
-            all_data = coll_data(keywords, documentation, num, file,
+            all_data = coll_data(keywords, documentation, num, helpdir, fname,
                                  sli_command_list)
-if len(sys.argv) > 1:
-    shutil.rmtree(sys.argv[1], ignore_errors=True)
-    shutil.copytree("../cmds", sys.argv[1])
+
+shutil.rmtree(install_dir, ignore_errors=True)
+shutil.copytree(helpdir, install_dir)

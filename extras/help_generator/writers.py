@@ -32,36 +32,23 @@ import textwrap
 from helpers import cut_it
 from string import Template
 
-if os.path.isdir('../cmds'):
-    pass
-else:
-    os.mkdir('../cmds')
-if os.path.isdir('../cmds/sli'):
-    pass
-else:
-    os.mkdir('../cmds/sli')
-if os.path.isdir('../cmds/cc'):
-    pass
-else:
-    os.mkdir('../cmds/cc')
 
-
-def write_help_html(doc_dic, file, sli_command_list, keywords):
+def write_help_html(doc_dic, helpdir, fname, sli_command_list, keywords):
     """
     Write html.
 
     Write html for integration in NEST Help-System
     """
     # Loading Template for commands
-    ftemplate = open('template/cmd.tpl.html', 'r')
+    ftemplate = open('templates/cmd.tpl.html', 'r')
     templ = ftemplate.read()
     ftemplate.close()
     # Loading Template for CSS
-    cssf = open('template/nest.tpl.css', 'r')
+    cssf = open('templates/nest.tpl.css', 'r')
     csstempl = cssf.read()
     cssf.close()
     # Loading Template for footer
-    footerf = open('template/footer.tpl.html', 'r')
+    footerf = open('templates/footer.tpl.html', 'r')
     footertempl = footerf.read()
     footerf.close()
 
@@ -148,26 +135,21 @@ def write_help_html(doc_dic, file, sli_command_list, keywords):
                                   title=name, footer=footertempl)
 
     if name:  # only, if there is a name
-        if file.endswith('.sli'):
-            f_file_name = open(('../cmds/sli/%s.html' % name), 'w')
-            f_file_name.write(cmdindexstring)
-            f_file_name.close()
-
-            f_file_name_hlp = open(('../cmds/sli/%s.hlp' % name), 'w')
-            f_file_name_hlp.write('\n'.join(hlplist))
-            f_file_name_hlp.close()
+        if fname.endswith('.sli'):
+            path = os.path.join(helpdir, 'sli')
         else:
-            f_file_name = open(('../cmds/cc/%s.html' % name), 'w')
-            f_file_name.write(cmdindexstring)
-            f_file_name.close()
+            path = os.path.join(helpdir, 'cc')
 
-            f_file_name_hlp = open(('../cmds/cc/%s.hlp' % name), 'w')
-            f_file_name_hlp.write('\n'.join(hlplist))
-            f_file_name_hlp.close()
-        # return name
+        f_file_name = open((path + '/%s.html' % name), 'w')
+        f_file_name.write(cmdindexstring)
+        f_file_name.close()
+
+        f_file_name_hlp = open((path + '/%s.hlp' % name), 'w')
+        f_file_name_hlp.write('\n'.join(hlplist))
+        f_file_name_hlp.close()
 
 
-def write_helpindex(index_dic_list):
+def write_helpindex(index_dic_list, helpdir):
     """
     Write helpindex.html.
 
@@ -185,15 +167,15 @@ def write_helpindex(index_dic_list):
     hlp_list = []
 
     # Loading Template for helpindex.html
-    ftemplate = open('template/helpindex.tpl.html', 'r')
+    ftemplate = open('templates/helpindex.tpl.html', 'r')
     templ = ftemplate.read()
     ftemplate.close()
     # Loading Template for CSS
-    cssf = open('template/nest.tpl.css', 'r')
+    cssf = open('templates/nest.tpl.css', 'r')
     csstempl = cssf.read()
     cssf.close()
     # Loading Template for footer
-    footerf = open('template/footer.tpl.html', 'r')
+    footerf = open('templates/footer.tpl.html', 'r')
     footertempl = footerf.read()
     footerf.close()
 
@@ -239,24 +221,24 @@ def write_helpindex(index_dic_list):
     indexstring = s.substitute(indexbody=htmlstring, css=csstempl,
                                footer=footertempl)
 
-    f_helpindex = open('../cmds/helpindex.html', 'w')
+    f_helpindex = open(helpdir + '/helpindex.html', 'w')
     f_helpindex.write(indexstring)
     f_helpindex.close()
 
     # Todo: using string template for .hlp
-    f_helphlpindex = open('../cmds/helpindex.hlp', 'w')
+    f_helphlpindex = open(helpdir + '/helpindex.hlp', 'w')
     f_helphlpindex.write('\n'.join(hlp_list))
     f_helphlpindex.close()
 
 
-def coll_data(keywords, documentation, num, file, sli_command_list):
+def coll_data(keywords, documentation, num, helpdir, fname, sli_command_list):
     """
     Collect data.
 
     Prepare the data for writing the help.
     """
     see = ""
-    relfile = file.strip()
+    relfile = fname.strip()
     doc_dic = {"Id": str(num), "File": relfile}
     for k in keywords:
         if k in documentation:
@@ -285,5 +267,4 @@ def coll_data(keywords, documentation, num, file, sli_command_list):
                     text = text + i.strip() + " \n" + ""
                 if text:
                     doc_dic.update({name: text})
-    write_help_html(doc_dic, file, sli_command_list, keywords)
-    # return(write_help_md(doc_dic))
+    write_help_html(doc_dic, helpdir, fname, sli_command_list, keywords)
