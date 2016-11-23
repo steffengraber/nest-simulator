@@ -1,4 +1,4 @@
 # README for the NEST help generator
 
-The parser go through all .sli and .cc files to find documentation and 
-converts it into .html and .hlp files.
+The parser goes through all .sli and .cc files to find documentation
+and converts it into .html and .hlp files.
