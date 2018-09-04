@@ -1,5 +1,5 @@
 
-nest (2.14.0+1SNAPSHOT20180904104616-0ubuntu1ppa1~bionic) bionic; urgency=low
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1~bionic) bionic; urgency=low
 
   * NEST nightly build in  Bionic Beaver.
 
