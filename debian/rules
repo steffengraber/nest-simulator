@@ -10,7 +10,7 @@ CMAKE_FLAGS = -DCMAKE_INSTALL_PREFIX:PATH=$(DESTDIR)/usr -Dwith-python=3 -DCMAKE
 CMAKE_FLAGS += -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
 CMAKE_FLAGS += -Dwith-mpi:BOOL=On
 CMAKE_FLAGS += -Dwith-gsl:BOOL=On /usr/local/lib
-CMAKE_FLAGS += -Dwith-libneurosim:BOOL=Off
+CMAKE_FLAGS += -Dwith-libneurosim:BOOL=On /usr/local/lib
 CMAKE_FLAGS += -Dwith-music=On /usr/lib
 
 %:
@@ -28,6 +28,19 @@ override_dh_shlibdeps:
 override_dh_auto_configure:
 override_dh_auto_build:
 override_dh_auto_install:
+
+    # Install libneurosim (/usr/local/lib)
+
+    git clone https://github.com/INCF/libneurosim.git libneurosim
+    cd ./libneurosim/
+    sudo -H chmod +x autogen.sh
+    ./autogen.sh
+    sudo -H chmod +x configure
+    ./configure
+    make
+    sudo -H make install
+
+
     pip3 install network csa
 
 	sed -i 's/site-packages/dist-packages/g' ./cmake/ProcessOptions.cmake
