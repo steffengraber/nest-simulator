@@ -1,3 +1,10 @@
+nest (2.16.0+1SNAPSHOT-ubuntu1ppa1) unstable; urgency=low
+
+  * NEST nightly build in latest Ubuntu systems.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 05 Sep 2018 08:22:16 +0200
+
+
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * NEST nightly build in latest Ubuntu systems.
