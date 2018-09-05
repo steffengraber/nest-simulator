@@ -1,8 +1,14 @@
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
+  * NEST nightly build in latest Ubuntu systems.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 05 Sep 2018 07:48:16 +0200
+
 
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1~bionic) bionic; urgency=low
 
   * NEST nightly build in  Bionic Beaver.
 
- -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 04 Sep 2018 15:52:16 +0200
+ -- Steffen Graber <s.graber@fz-juelich.de>  Tue, 04 Sep 2018 15:52:16 +0200
  
 
