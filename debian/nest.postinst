@@ -8,12 +8,4 @@ export NEST_DATA_DIR='/usr/share/nest'
 export NEST_DOC_DIR='/usr/share/doc/nest'
 EOF
 
-# How to make the paths existent for the the user after installation
-#
-# . /etc/profile.d/nest-simulator.sh
-
-# echo "export NEST_INSTALL_DIR='/usr'" >> /etc/profile.d/nest-simulator.sh
-# echo "export NEST_DATA_DIR='/usr/share/nest'" >> /etc/profile.d/nest-simulator.sh
-# echo "export NEST_DOC_DIR='/usr/share/doc/nest'" >> /etc/profile.d/nest-simulator.sh
-
 exit 0
