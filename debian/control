@@ -2,12 +2,12 @@ Source: nest
 Section: science
 Priority: optional
 Maintainer: Steffen Graber <s.graber@fz-juelich.de>
-Build-Depends: cmake, debhelper (>= 9), autotools-dev, git,
+Build-Depends: cmake, debhelper (>= 9), autotools-dev,
     software-properties-common, build-essential, autoconf, python3,
     libltdl-dev, libreadline-dev, libncurses-dev, libgsl-dev, openmpi-bin,
     python3-dev, libopenmpi-dev, libibverbs-dev, libpcre3, libpcre3-dev, jq,
     libmusic1v5, music-bin, libmusic-dev, python3-numpy, python3-pandas,
-    python3-scipy,python3-matplotlib, python3-setuptools, python3-pip,
+    python3-scipy,python3-matplotlib, python3-setuptools,
     python3-pydot, cython3, libtool, language-pack-en
 Standards-Version: 4.1.1
 
