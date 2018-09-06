@@ -27,7 +27,6 @@ override_dh_installinfo:
 override_dh_shlibdeps:
 override_dh_auto_configure:
 override_dh_auto_build:
-override_dh_auto_install:
 	git clone https://github.com/INCF/libneurosim.git libneurosim
 	cd libneurosim
 	chmod +x autogen.sh
@@ -37,6 +36,8 @@ override_dh_auto_install:
 	make
 	make install
 	cd ..
+
+override_dh_auto_install:
 	pip3 install network csa
 
 	sed -i 's/site-packages/dist-packages/g' ./cmake/ProcessOptions.cmake

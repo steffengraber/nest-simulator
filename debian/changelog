@@ -1,3 +1,10 @@
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
+  * Try to install libneurosim.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2018 08:13:16 +0200
+
+
 nest (2.16.0+1SNAPSHOT-ubuntu1ppa1) unstable; urgency=low
 
   * NEST nightly build in latest Ubuntu systems.
