@@ -28,18 +28,15 @@ override_dh_shlibdeps:
 override_dh_auto_configure:
 override_dh_auto_build:
 override_dh_auto_install:
-
-    # Install libneurosim (/usr/local/lib)
-
     git clone https://github.com/INCF/libneurosim.git libneurosim
-    cd ./libneurosim/
-    sudo -H chmod +x autogen.sh
+    cd libneurosim/
+    chmod +x autogen.sh
     ./autogen.sh
-    sudo -H chmod +x configure
+    chmod +x configure
     ./configure
     make
-    sudo -H make install
-
+    make install
+    cd ..
 
     pip3 install network csa
 
