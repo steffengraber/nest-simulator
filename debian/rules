@@ -29,15 +29,10 @@ override_dh_auto_configure:
 override_dh_auto_build:
 override_dh_auto_install:
 	sed -i 's/site-packages/dist-packages/g' ./cmake/ProcessOptions.cmake
-
 	sed -i 's/NEST_INSTALL_PREFIX \"\/\"/\"\/usr\/"/g' ./sli/slistartup.cc
-
+	apt-get moo
 	cmake $(CMAKE_FLAGS) .
 	make
 	make install
-
 	rm -f $(DESTDIR)/usr/bin/nest_serial $(DESTDIR)/usr/bin/nest_indirect $(DESTDIR)/usr/bin/sli $(DESTDIR)/usr/bin/nest_vars.sh
 
-	# Now changing nest_vars.sh, source it.
-	# cat $(DESTDIR)/usr/bin/nest_vars.sh
-	# sed -i 's/\/build\/\(.*\)nest-2.14.0\/debian\/nest//g' $(DESTDIR)/usr/bin/nest_vars.sh
