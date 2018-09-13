@@ -1,8 +1,16 @@
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
-  * Try to install libneurosim.
+  * Tested apt-get with 'apt-get moo' in rules - worked. This prepared the
+    installation of csa and libneurosim.
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2018 08:13:16 +0200
+
+
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
+  * Try to install libneurosim.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 13 Sep 2018 07:17:16 +0200
 
 
 nest (2.16.0+1SNAPSHOT-ubuntu1ppa1) unstable; urgency=low
