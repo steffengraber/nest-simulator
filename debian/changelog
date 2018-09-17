@@ -1,5 +1,12 @@
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
+  * New copyright statements adopted to NEST requirements.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 17 Sep 2018 09:38:16 +0200
+
+
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
   * Tested apt-get with 'apt-get moo' in rules - worked. This prepared the
     installation of csa and libneurosim.
 
