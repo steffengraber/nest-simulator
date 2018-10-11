@@ -1,23 +1,14 @@
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
+
+  * Removed language-pack-en as depends.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:58:16 +0200
+
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * Better Upload
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 11:25:16 +020
-
-
-nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
-
-  * Removed language-pack-en as depends.
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:00:16 +0200
-
-
-nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
-
-  * New copyright statements adopted to NEST requirements.
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 17 Sep 2018 09:38:16 +0200
-
 
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
@@ -26,13 +17,11 @@ nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2018 08:13:16 +0200
 
-
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * Try to install libneurosim.
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 13 Sep 2018 07:17:16 +0200
-
 
 nest (2.16.0+1SNAPSHOT-ubuntu1ppa1) unstable; urgency=low
 
@@ -40,18 +29,14 @@ nest (2.16.0+1SNAPSHOT-ubuntu1ppa1) unstable; urgency=low
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 05 Sep 2018 08:22:16 +0200
 
-
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * NEST nightly build in latest Ubuntu systems.
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 05 Sep 2018 07:48:16 +0200
 
-
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1~bionic) bionic; urgency=low
 
   * NEST nightly build in  Bionic Beaver.
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Tue, 04 Sep 2018 15:52:16 +0200
- 
-
