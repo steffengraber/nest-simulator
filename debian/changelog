@@ -1,14 +1,8 @@
-nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
+nest (2.16.0-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
 
-  * Better uploading.
+  * delete depend language-pack-en
 
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:27:46 +0200
-
-nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
-
-  * Removed language-pack-en as depends.
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 09:55:46 +0200
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:53:18 +0200
 
 nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
 
