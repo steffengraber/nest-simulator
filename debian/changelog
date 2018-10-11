@@ -1,5 +1,11 @@
 nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
 
+  * Removed language-pack-en as depends.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 09:55:46 +0200
+
+nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
+
   * New version NEST 2.16.0 for ppa.
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2018 13:30:46 +0200
