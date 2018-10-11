@@ -8,7 +8,7 @@ Build-Depends: cmake, debhelper (>= 9), autotools-dev,
     python3-dev, libopenmpi-dev, libibverbs-dev, libpcre3, libpcre3-dev, jq,
     libmusic1v5, music-bin, libmusic-dev, python3-numpy, python3-pandas,
     python3-scipy,python3-matplotlib, python3-setuptools,
-    python3-pydot, cython3, libtool, language-pack-en
+    python3-pydot, cython3, libtool
 Standards-Version: 4.1.1
 
 Package: nest
@@ -18,7 +18,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, python3, libltdl-dev,
     python3-dev, libopenmpi-dev, libibverbs-dev, libpcre3, libpcre3-dev, jq,
     libmusic1v5, music-bin, libmusic-dev, python3-numpy, python3-pandas,
     python3-scipy,python3-matplotlib, python3-setuptools, python3-pydot,
-    cython3, language-pack-en
+    cython3
 Description: NEST is a simulator for networks of spiking neurons.
  NEST is a simulation system for large networks of biologically realistic
  point-neurons and neurons with a small number of electrical compartments.

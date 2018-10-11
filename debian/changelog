@@ -2,6 +2,13 @@ nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * New copyright statements adopted to NEST requirements.
 
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:00:16 +0200
+
+
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
+  * New copyright statements adopted to NEST requirements.
+
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 17 Sep 2018 09:38:16 +0200
 
 
