@@ -1,8 +1,9 @@
-nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
+nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1ubuntu2) UNRELEASED; urgency=medium
 
   * Removed language-pack-en as depends.
+  * Inserted sudo language-pack-en-base as Build-Depends
 
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:58:16 +0200
+ -- Steffen Graber <s.graber@fz-juelich.de>  Fri, 12 Oct 2018 13:13:07 +0200
 
 nest (2.16.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
