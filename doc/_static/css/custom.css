@@ -116,3 +116,13 @@ code.descclassname {
 .sphx-glr-thumbcontainer a.internal {
     padding: 180px 10px 0 !important;
 }
+
+/*
+** sphinx gallery footer
+**
+*/
+
+div.sphx-glr-footer {
+    text-align: left;
+    padding-top: 1em;
+}
