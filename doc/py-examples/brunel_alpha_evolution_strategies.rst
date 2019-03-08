@@ -6,8 +6,7 @@
 
 .. _sphx_glr_py-examples_brunel_alpha_evolution_strategies.py:
 
-Using evolution strategies to find parameters for a random
-balanced network with alpha synapses
+Using evolution strategies to find parameters for a random balanced network with alpha synapses
 ----------------------------------------------------------------
 
 This script uses an optimization algorithm to find the appropriate

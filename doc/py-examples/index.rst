@@ -1,11 +1,6 @@
 NEST Examples
 =============
 
-:orphan:
-
-
-
-
 .. raw:: html
 
     <div class="sphx-glr-thumbcontainer" tooltip="This script simulates a neuron driven by a constant external current and records its membrane p...">

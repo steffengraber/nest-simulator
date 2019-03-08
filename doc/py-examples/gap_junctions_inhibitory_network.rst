@@ -6,7 +6,7 @@
 
 .. _sphx_glr_py-examples_gap_junctions_inhibitory_network.py:
 
- Gap Junctions: Inhibitory network example
+Gap Junctions: Inhibitory network example
 ----------------------------------------------
 
 This script simulates an inhibitory network of 500 Hodgkin-Huxley neurons.
