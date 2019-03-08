@@ -85,14 +85,16 @@ for dirpath, dirnames, files in os.walk(os.path.dirname(__file__)):
 # -- General configuration ------------------------------------------------
 
 # import errors on libraries that depend on C modules
-# http://blog.rtwilson.com/how-to-make-your-sphinx-documentation-compile-with-readthedocs-when-youre-using-numpy-and-scipy/
+# http://blog.rtwilson.com/how-to-make-your-sphinx-documentation-compile
+# -with-\readthedocs-when-youre-using-numpy-and-scipy/
 # class Mock(MagicMock):
 #    @classmethod
 #   def __getattr__(cls, name):
 #            return MagicMock()
 
-#MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot', 'pandas']
-#sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+# MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot',
+# 'pandas']
+# sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
@@ -130,13 +132,10 @@ sphinx_gallery_conf = {
     'plot_gallery': 'False',
 }
 
-
-
 mathjax_path = \
     "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax" \
-                ".js?config=TeX" \
-              "-AMS-MML_HTMLorMML"
-
+    ".js?config=TeX" \
+    "-AMS-MML_HTMLorMML"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
