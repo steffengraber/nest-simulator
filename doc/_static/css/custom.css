@@ -95,3 +95,24 @@ code.descclassname {
 .highlight {
     background: rgba(255, 165, 0, 0.1);
 }
+
+/*
+** sphinx gallery styles
+**
+*/
+
+
+.sphx-glr-thumbcontainer {
+    min-height: 250px !important;
+    margin: 10px !important;
+}
+.sphx-glr-thumbcontainer .figure {
+    width: 180px !important;
+}
+.sphx-glr-thumbcontainer img {
+    max-height: 180px !important;
+    width: 180px !important;
+}
+.sphx-glr-thumbcontainer a.internal {
+    padding: 180px 10px 0 !important;
+}
