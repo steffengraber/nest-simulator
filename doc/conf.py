@@ -130,6 +130,7 @@ sphinx_gallery_conf = {
                       '|/sinusoidal_gamma|/rate_|/brunel_siegert|/cross'
                       '|/plot|/if_curve|/Campbell|/hpc)',
     'plot_gallery': 'False',
+    'download_all_examples': True
 }
 
 mathjax_path = \
