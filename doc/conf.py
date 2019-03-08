@@ -37,7 +37,7 @@ import pip
 # pip.main(['install', 'Sphinx==1.5.6'])
 # pip.main(['install', 'sphinx-gallery'])
 
-# import sphinx_gallery
+import sphinx_gallery
 import subprocess
 
 # import shlex
@@ -46,14 +46,16 @@ import subprocess
 from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 from subprocess import check_output, CalledProcessError
-from mock import Mock as MagicMock
+# from mock import Mock as MagicMock
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('./..'))
 sys.path.insert(0, os.path.abspath('./../topology'))
+sys.path.insert(0, os.path.abspath('./../pynest/'))
 sys.path.insert(0, os.path.abspath('./../pynest/nest'))
+sys.path.insert(0, os.path.abspath('./../pynest/nest/lib'))
 
 source_suffix = ['.rst', '.md']
 source_parsers = {
@@ -84,14 +86,13 @@ for dirpath, dirnames, files in os.walk(os.path.dirname(__file__)):
 
 # import errors on libraries that depend on C modules
 # http://blog.rtwilson.com/how-to-make-your-sphinx-documentation-compile-with-readthedocs-when-youre-using-numpy-and-scipy/
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-            return MagicMock()
+# class Mock(MagicMock):
+#    @classmethod
+#   def __getattr__(cls, name):
+#            return MagicMock()
 
-
-MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot', 'pandas']
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+#MOCK_MODULES = ['numpy', 'scipy', 'matplotlib', 'matplotlib.pyplot', 'pandas']
+#sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
@@ -100,17 +101,7 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-# extensions = [
-#    'sphinx.ext.autodoc',
-#    'sphinx.ext.napoleon',
-#    'sphinx.ext.autosummary',
-#    'sphinx.ext.doctest',
-#    'sphinx.ext.intersphinx',
-#    'sphinx.ext.todo',
-#    'sphinx.ext.coverage',
-#    'sphinx.ext.mathjax',
-#    'sphinx_gallery.gen_gallery',
-# ]
+
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -121,16 +112,23 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
+    'sphinx_gallery.gen_gallery',
 ]
 
-# sphinx_gallery_conf = {
-#    'doc_module': ('sphinx_gallery', 'numpy'),
-#    # path to your examples scripts
-#    'examples_dirs': '../pynest/examples',
-#    # path where to save gallery generated examples
-#    'gallery_dirs': 'auto_examples',
-#    'backreferences_dir': False
-# }
+sphinx_gallery_conf = {
+    'doc_module': ('sphinx_gallery', 'numpy'),
+    # path to your examples scripts
+    'examples_dirs': 'py-examples',
+    # path where to save gallery generated examples
+    'gallery_dirs': '_build/gallery-examples',
+    'backreferences_dir': False,
+    'line_numbers': True,
+    'filename_pattern': '(/.*)',
+    'ignore_pattern': '(/LeNovre|/music|/Potjans|/vinit|/csa|/gif_'
+                      '|/sinusoidal_gamma|/rate_|/brunel_siegert|/cross'
+                      '|/plot|/if_curve|/Campbell|/hpc)',
+    'plot_gallery': 'False',
+}
 
 
 
