@@ -115,7 +115,28 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx_gallery.gen_gallery',
+    'breathe',
 ]
+
+
+breathe_projects = {"EXTRACT_MODELS": "./xml/"}
+
+breathe_default_project = "EXTRACT_MODELS"
+# sphinx_gallery_conf = {
+#    'doc_module': ('sphinx_gallery', 'numpy'),
+#    # path to your examples scripts
+#    'examples_dirs': '../pynest/examples',
+#    # path where to save gallery generated examples
+#    'gallery_dirs': 'auto_examples',
+#    'backreferences_dir': False
+# }
+
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+if read_the_docs_build:
+
+    subprocess.call('doxygen', shell=True)
+
 
 sphinx_gallery_conf = {
     'doc_module': ('sphinx_gallery', 'numpy'),
