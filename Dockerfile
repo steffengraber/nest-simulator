@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     python3-scipy \
     python3-matplotlib \
     python3-ipython \
+    python3-nose2 \
     python3-nose \
     wget
 
