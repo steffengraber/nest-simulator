@@ -48,7 +48,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN wget https://github.com/nest/nest-simulator/archive/master.tar.gz && \
   mkdir nest-build && \
-  tar zxf nest-simulator-master.tar.gz && \
+  tar zxf master.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         -Dwith-python=3 \
