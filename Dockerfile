@@ -46,13 +46,13 @@ RUN apt-get update && apt-get install -y \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
+RUN wget https://github.com/nest/nest-simulator/archive/master.tar.gz && \
   mkdir nest-build && \
-  tar zxf v2.16.0.tar.gz && \
+  tar zxf nest-simulator-master.tar.gz && \
   cd  nest-build && \
   cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest/ \
         -Dwith-python=3 \
-        ../nest-simulator-2.16.0 && \
+        ../nest-simulator-master && \
   make && \
   make install && \
   make installcheck
