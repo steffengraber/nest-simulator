@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     python3-ipython \
     python3-nose2 \
     python3-nose \
+    python-nose \
     wget
 
 RUN wget https://github.com/nest/nest-simulator/archive/v2.16.0.tar.gz && \
