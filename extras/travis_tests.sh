@@ -69,7 +69,7 @@ cmake -DCMAKE_INSTALL_PREFIX="$NEST_RESULT" \
         -Dwith-warning=ON \
         -Dwith-boost=ON \
         -Dwith-python=3 \
-        .. && \
+        . && \
 make  -j${CPU_COUNT} && \
 make install && \
 make installcheck
