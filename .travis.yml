@@ -30,7 +30,7 @@ services:
 before_install:
 - docker pull steffengraber/travis-nest:latest
 - docker images
-- docker run -it --rm --user nest --name travis-test-nest -v $(pwd):/home/nest steffengraber/travis-nest:latest sh  /home/nest/extras/travis_tests.sh
+- docker run -it --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest sh  /home/nest/data/extras/travis_tests.sh
 - docker ps -a
 
 script:

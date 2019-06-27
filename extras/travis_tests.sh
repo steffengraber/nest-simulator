@@ -37,8 +37,8 @@ set -e
 #    backend : svg
 #EOF
 
-NEST_VPATH=build
-NEST_RESULT=result
+NEST_VPATH=$HOME/build
+NEST_RESULT=$HOME/result
 if [ "$(uname -s)" = 'Linux' ]; then
     NEST_RESULT=$(readlink -f $NEST_RESULT)
 else
@@ -70,6 +70,6 @@ cmake -DCMAKE_INSTALL_PREFIX="$NEST_RESULT" \
         -Dwith-boost=ON \
         -Dwith-python=3 \
         .. && \
-make && \
+make  -j${CPU_COUNT} && \
 make install && \
 make installcheck
