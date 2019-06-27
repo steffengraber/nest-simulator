@@ -51,6 +51,7 @@ mkdir -p "$NEST_VPATH/reports"
 
 
 cd "$NEST_VPATH"
+
 # cp ../examples/sli/nestrc.sli ~/.nestrc
 # Explicitly allow MPI oversubscription. This is required by Open MPI versions > 3.0.
 # Not having this in place leads to a "not enough slots available" error.
@@ -64,12 +65,12 @@ echo "+               C O N F I G U R E   N E S T   B U I L D                   
 echo "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +"
 
 
-cmake -DCMAKE_INSTALL_PREFIX="$NEST_RESULT" \
+cmake -DCMAKE_INSTALL_PREFIX="${NEST_RESULT}" \
         -Dwith-optimize=ON \
         -Dwith-warning=ON \
         -Dwith-boost=ON \
         -Dwith-python=3 \
-        . && \
+        /home/nest/data && \
 make  -j${CPU_COUNT} && \
 make install && \
 make installcheck
