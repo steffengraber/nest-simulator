@@ -32,7 +32,7 @@ before_install:
 - docker run -it --rm --user nest --name travis-test-nest \
   -v $(pwd):/home/nest/data \
   steffengraber/travis-nest:latest
-- bash data/travis_tests.sh
+- docker bash data/travis_tests.sh
 script:
 - docker images
 - docker ps -a
