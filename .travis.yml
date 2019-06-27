@@ -22,17 +22,20 @@
 # This is the Travis CI top-level script to setup and run the NEST
 # build and test environment.
 
-language: python
+language: python3
 
 services:
   - docker
 
 before_install:
-- docker build  -t nest/docker-nest:2.16.0 .
-
+- docker pull steffengraber/travis-nest:latest
+- docker run -it --rm --user nest --name travis-test-nest \
+  -v $(pwd):/home/nest/data \
+  steffengraber/travis-nest:latest
+- bash data/travis_tests.sh
 script:
 - docker images
-
+- docker ps -a
 
 
 
