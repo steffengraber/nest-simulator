@@ -32,10 +32,10 @@
 # Exit shell if any subcommand or pipline returns a non-zero status.
 set -e
 
-mkdir -p $HOME/.matplotlib
-cat > $HOME/.matplotlib/matplotlibrc <<EOF
-    backend : svg
-EOF
+#mkdir -p $HOME/.matplotlib
+#cat > $HOME/.matplotlib/matplotlibrc <<EOF
+#    backend : svg
+#EOF
 
 NEST_VPATH=build
 NEST_RESULT=result
