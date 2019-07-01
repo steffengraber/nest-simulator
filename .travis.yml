@@ -35,7 +35,7 @@ jobs:
   include:
     - stage: With MPI
       script:
-          - docker run -it --rm --env "xMPI=1" --env "xPYTHON=0" \
+          - docker run -it --rm --env "xMPI=1 xPYTHON=0" \
                 --user nest --name travis-test-nest -v $(pwd):/home/nest/data \
                 steffengraber/travis-nest:latest \
                 sh /home/nest/data/extras/travis_tests.sh
