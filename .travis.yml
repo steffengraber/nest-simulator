@@ -54,9 +54,10 @@ addons:
     packages:
       - docker-ce
 
-before_install:
+install:
   - docker pull steffengraber/travis-nest:latest
   - docker run -it --rm -d --user nest --name travis-test-nest-mpi -v $(pwd):/home/nest/data steffengraber/travis-nest:latest
+  - docker ps -a
 
 jobs:
   include:
