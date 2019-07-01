@@ -37,6 +37,13 @@ set -e
 #    backend : svg
 #EOF
 
+if [ "$xMPI" = "1" ] ; then
+    CONFIGURE_MPI="-Dwith-mpi=ON"
+    echo "MPI ON"
+else
+    CONFIGURE_MPI="-Dwith-mpi=OFF"
+    echo "MPI OFF or not set"
+fi
 NEST_VPATH=$HOME/build
 NEST_RESULT=$HOME/result
 if [ "$(uname -s)" = 'Linux' ]; then
@@ -70,6 +77,7 @@ cmake -DCMAKE_INSTALL_PREFIX="${NEST_RESULT}" \
         -Dwith-warning=ON \
         -Dwith-boost=ON \
         -Dwith-python=3 \
+        ${CONFIGURE_MPI} \
         /home/nest/data && \
 make  && \
 make install && \

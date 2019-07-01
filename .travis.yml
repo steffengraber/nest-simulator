@@ -27,15 +27,27 @@ language: python3
 services:
   - docker
 
+stages:
+   - Staticcheck
+   - MPI-Threading-Python
+
+jobs:
+  include:
+    - stage: MPI-Threading-Python
+      python: 3.6
+      env: xTHREADING=0 xMPI=1 xGSL=0 xLIBNEUROSIM=0 xLTDL=1 xREADLINE=1 xPYTHON=0 xMUSIC=0 xSTATIC_ANALYSIS=0 xRUN_TESTSUITE=1 CACHE_NAME=JOB   # only MPI
+      script:
+      - docker run -it --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest \
+            -e xMPI=1 \
+            sh /home/nest/data/extras/travis_tests.sh
+      - docker ps -a
+
 before_install:
 - docker pull steffengraber/travis-nest:latest
 - docker images
-- docker run -it --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest sh  /home/nest/data/extras/travis_tests.sh
-- docker ps -a
 
-script:
-- docker images
-- docker ps -a
+
+
 
 
 
