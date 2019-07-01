@@ -22,32 +22,49 @@
 # This is the Travis CI top-level script to setup and run the NEST
 # build and test environment.
 
-language: python3
+#language: python3
+#
+#services:
+#  - docker
+#
+#before_script:
+#- docker pull steffengraber/travis-nest:latest
+#- docker images
+#- docker run -it --rm -d --user nest --name travis-test-nest -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest
+#- docker ps -a
+#
+#stages:
+#   - With MPI
+#   - With Python
+#
+#jobs:
+#  include:
+#    - stage: With MPI
+#      script:
+#        - docker container exec -it --env "xMPI=1" --env "xPYTHON=0" --user nest travis-test-nest sh /home/nest/data/extras/travis_tests.sh
+#        - docker ps -a
+#    - stage: With Python
+#      script:
+#        - docker container exec -it --env "xMPI=0" --env "xPYTHON=1" --user nest travis-test-nest sh /home/nest/data/extras/travis_tests.sh
+#        - docker ps -a
 
-services:
-  - docker
-
-before_script:
-- docker pull steffengraber/travis-nest:latest
-- docker images
-- docker run -it --rm -d --user nest --name travis-test-nest -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest
-- docker ps -a
-
-stages:
-   - With MPI
-   - With Python
+dist: trusty
 
 jobs:
   include:
-    - stage: With MPI
+    - stage: start docker image
+      script:
+      - docker pull steffengraber/travis-nest:latest
+      - docker images
+      - docker run -it --rm -d --user nest --name travis-test-nest -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest
+      - docker ps -a
+    - stage: test
       script:
         - docker container exec -it --env "xMPI=1" --env "xPYTHON=0" --user nest travis-test-nest sh /home/nest/data/extras/travis_tests.sh
-          - docker ps -a
-    - stage: With Python
-      script:
+        - docker ps -a
+    - script:
         - docker container exec -it --env "xMPI=0" --env "xPYTHON=1" --user nest travis-test-nest sh /home/nest/data/extras/travis_tests.sh
         - docker ps -a
-
 
 
 

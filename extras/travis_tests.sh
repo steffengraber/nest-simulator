@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# travis_build.sh
+# travis_tests.sh
 #
 # This file is part of NEST.
 #
@@ -37,7 +37,7 @@ set -e
 #    backend : svg
 #EOF
 
-if [ "$xMPI" = "1" ] ; then
+if [[ "$xMPI" = "1" ]] ; then
     CONFIGURE_MPI="-Dwith-mpi=ON"
     echo "MPI ON"
 else
@@ -45,7 +45,7 @@ else
     echo "MPI OFF or not set"
 fi
 
-if [ "$xPYTHON" = "1" ] ; then
+if [[ "$xPYTHON" = "1" ]] ; then
     CONFIGURE_PYTHON="-Dwith-python=3"
     echo "PYTHON ON"
 else
@@ -55,7 +55,8 @@ fi
 
 NEST_VPATH=$HOME/build
 NEST_RESULT=$HOME/result
-if [ "$(uname -s)" = 'Linux' ]; then
+
+if [[ "$(uname -s)" = 'Linux' ]] ; then
     NEST_RESULT=$(readlink -f $NEST_RESULT)
 else
     NEST_RESULT=$(greadlink -f $NEST_RESULT)
