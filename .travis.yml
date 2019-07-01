@@ -27,6 +27,10 @@ language: python3
 services:
   - docker
 
+before_script:
+- docker pull steffengraber/travis-nest:latest
+- docker images
+
 stages:
    - With MPI
    - With Python
@@ -41,10 +45,6 @@ jobs:
       script:
           - docker run -it --env "xMPI=0" --env "xPYTHON=1" --rm --user nest --name travis-test-nest -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest sh /home/nest/data/extras/travis_tests.sh
           - docker ps -a
-
-before_install:
-- docker pull steffengraber/travis-nest:latest
-- docker images
 
 
 
