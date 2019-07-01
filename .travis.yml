@@ -51,8 +51,10 @@
 
 jobs:
   include:
+    - stage: pull
     - script: docker pull steffengraber/travis-nest:latest
-    - script: docker run -it --rm -d --user nest --name travis-test-nest-mpi -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest
+    - script: docker run -it --rm -d --user nest --name travis-test-nest-mpi -v $(pwd):/home/nest/data
+      steffengraber/travis-nest:latest
 
     - stage: test
       script:
@@ -60,6 +62,7 @@ jobs:
       - docker container exec -it --env "xMPI=0" --env "xPYTHON=1" --user nest travis-test-nest-py sh /home/nest/data/extras/travis_tests.sh
 
     - stage: end
+      script:
         - docker ps -a
 
 #language: python
