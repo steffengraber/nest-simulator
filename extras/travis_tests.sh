@@ -44,6 +44,15 @@ else
     CONFIGURE_MPI="-Dwith-mpi=OFF"
     echo "MPI OFF or not set"
 fi
+
+if [ "$xPYTHON" = "1" ] ; then
+    CONFIGURE_PYTHON="-Dwith-python=3"
+    echo "PYTHON ON"
+else
+    CONFIGURE_PYTHON="-Dwith-python=OFF"
+    echo "PYTHON OFF or not set"
+fi
+
 NEST_VPATH=$HOME/build
 NEST_RESULT=$HOME/result
 if [ "$(uname -s)" = 'Linux' ]; then
@@ -62,9 +71,9 @@ cd "$NEST_VPATH"
 # cp ../examples/sli/nestrc.sli ~/.nestrc
 # Explicitly allow MPI oversubscription. This is required by Open MPI versions > 3.0.
 # Not having this in place leads to a "not enough slots available" error.
-if [[ "$OSTYPE" == "darwin"* ]] ; then
-    sed -i -e 's/mpirun -np/mpirun --oversubscribe -np/g' ~/.nestrc
-fi
+# if [[ "$OSTYPE" == "darwin"* ]] ; then
+#     sed -i -e 's/mpirun -np/mpirun --oversubscribe -np/g' ~/.nestrc
+# fi
 
 echo
 echo "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +"
@@ -76,7 +85,7 @@ cmake -DCMAKE_INSTALL_PREFIX="${NEST_RESULT}" \
         -Dwith-optimize=ON \
         -Dwith-warning=ON \
         -Dwith-boost=ON \
-        -Dwith-python=3 \
+        ${CONFIGURE_PYTHON} \
         ${CONFIGURE_MPI} \
         /home/nest/data && \
 make  && \
