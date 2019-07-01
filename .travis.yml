@@ -52,9 +52,9 @@
 jobs:
   include:
     - stage: pull
-    - script: docker pull steffengraber/travis-nest:latest
-    - script: docker run -it --rm -d --user nest --name travis-test-nest-mpi -v $(pwd):/home/nest/data
-      steffengraber/travis-nest:latest
+    - script:
+      - docker pull steffengraber/travis-nest:latest
+      - docker run -it --rm -d --user nest --name travis-test-nest-mpi -v $(pwd):/home/nest/data steffengraber/travis-nest:latest
 
     - stage: test
       script:
