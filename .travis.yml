@@ -51,19 +51,19 @@
 
 jobs:
   include:
-    - stage: start docker image
-      script:
-      - docker pull steffengraber/travis-nest:latest
-      #- docker run -it --rm -d --user nest --name travis-test-nest -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest
-      - docker ps -a
+
     - stage: test
+      before_script:
+        - name: "Pull"
+        - docker pull steffengraber/travis-nest:latest
+        - docker run -it --rm -d --user nest --name travis-test-nest-mpi -v "$(pwd):/home/nest/data" steffengraber/travis-nest:latest
+        - docker ps -a
       script:
-        - docker run -it --rm -d --user nest --name travis-test-nest-mpi -v "$(pwd):/home/nest/data"
-        - steffengraber/travis-nest:latest
+        - name: "MPI Test"
         - docker container exec -it --env "xMPI=1" --env "xPYTHON=0" --user nest travis-test-nest-mpi sh /home/nest/data/extras/travis_tests.sh
         - docker ps -a
     - script:
-        - docker run -it --rm -d --user nest --name travis-test-nest-py -v "$(pwd):/home/nest/data"
+        - name: "Python Test"
         - docker container exec -it --env "xMPI=0" --env "xPYTHON=1" --user nest travis-test-nest-py sh /home/nest/data/extras/travis_tests.sh
         - docker ps -a
 
