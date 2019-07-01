@@ -60,10 +60,11 @@ before_install:
 - docker images
 - docker ps -a
 
-script:
-  - docker container exec -it --env "xMPI=1" --env "xPYTHON=0" --user nest travis-test-nest-mpi sh /home/nest/data/extras/travis_tests.sh
-  - docker container exec -it --env "xMPI=0" --env "xPYTHON=1" --user nest travis-test-nest-py sh  /home/nest/data/extras/travis_tests.sh
-  - docker ps -a
+install:
+- docker container exec -it --env "xMPI=1" --env "xPYTHON=0" --user nest travis-test-nest-mpi sh /home/nest/data/extras/travis_tests.sh
+- docker container exec -it --env "xMPI=0" --env "xPYTHON=1" --user nest travis-test-nest-py sh  /home/nest/data/extras/travis_tests.sh
+
+script: docker ps -a
 
 #language: python
 #
