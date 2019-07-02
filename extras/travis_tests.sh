@@ -32,7 +32,7 @@
 # Exit shell if any subcommand or pipline returns a non-zero status.
 set -e
 
-if [ "$TEST" == "1" ] ; then
+if [ "$TEST" = "1" ] ; then
 	echo $TEST
 fi
 
