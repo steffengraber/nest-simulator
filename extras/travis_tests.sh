@@ -32,35 +32,8 @@
 # Exit shell if any subcommand or pipline returns a non-zero status.
 set -e
 
-#mkdir -p $HOME/.matplotlib
-#cat > $HOME/.matplotlib/matplotlibrc <<EOF
-#    backend : svg
-#EOF
-
-if [[ "$xMPI" = "1" ]] ; then
-    CONFIGURE_MPI="-Dwith-mpi=ON"
-    echo "MPI ON"
-else
-    CONFIGURE_MPI="-Dwith-mpi=OFF"
-    echo "MPI OFF or not set"
-fi
-
-if [[ "$xPYTHON" = "1" ]] ; then
-    CONFIGURE_PYTHON="-Dwith-python=3"
-    echo "PYTHON ON"
-else
-    CONFIGURE_PYTHON="-Dwith-python=OFF"
-    echo "PYTHON OFF or not set"
-fi
-
 NEST_VPATH=$HOME/build
 NEST_RESULT=$HOME/result
-
-if [[ "$(uname -s)" = 'Linux' ]] ; then
-    NEST_RESULT=$(readlink -f $NEST_RESULT)
-else
-    NEST_RESULT=$(greadlink -f $NEST_RESULT)
-fi
 
 echo $NEST_VPATH
 mkdir -p "$NEST_VPATH" "$NEST_RESULT"
@@ -86,8 +59,8 @@ cmake -DCMAKE_INSTALL_PREFIX="${NEST_RESULT}" \
         -Dwith-optimize=ON \
         -Dwith-warning=ON \
         -Dwith-boost=ON \
-        ${CONFIGURE_PYTHON} \
-        ${CONFIGURE_MPI} \
+        -Dwith-python=3 \
+        -Dwith-mpi=ON \
         /home/nest/data && \
 make  && \
 make install && \
