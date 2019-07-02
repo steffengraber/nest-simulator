@@ -26,8 +26,8 @@ addons:
     packages:
       - docker-ce
 
+before_install:
+  - bash extras/docker_run.sh
 
 script:
-  bash extras/docker_run.sh
-
-
+  - docker images
