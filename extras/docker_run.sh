@@ -5,3 +5,4 @@ docker run -it --rm -d --user nest --name travis-test-nest -v $(pwd):/home/nest/
 
 docker ps -a
 docker container exec -it --env "TEST=1" --user nest travis-test-nest sh /home/nest/data/extras/travis_tests.sh
+docker container exec -it --env "TEST=0" --user nest travis-test-nest sh /home/nest/data/extras/travis_tests.sh
