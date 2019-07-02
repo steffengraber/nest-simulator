@@ -32,8 +32,10 @@
 # Exit shell if any subcommand or pipline returns a non-zero status.
 set -e
 
-if [ "$TEST" = "1" ] ; then
-	echo $TEST
+if [ "$TEST" -eq 1 ] ; then
+	echo "TEST SET"
+else
+	echo "TEST NOT SET"
 fi
 
 NEST_VPATH=$HOME/build
