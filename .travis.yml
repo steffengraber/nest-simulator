@@ -52,12 +52,12 @@ matrix:
     - name: "Without MPI"
       env: xMPI=0
 
-before_script: docker pull steffengraber/travis-nest:latest
 script:
   - docker images
   - echo $xMPI
-  - docker run -it --rm --user nest -e xMPI=$xMPI --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash /home/nest/data/extras/travis_tests.sh
+  - docker run -it --rm -d --user nest --name travis-test -v $(pwd):/home/nest/data steffengraber/travis-nest:latest
   - docker ps -a
+  - docker exec -e xMPI=$xMPI --user nest travis-test bash /home/nest/data/extras/travis_tests.sh
 
 
 #    - env:
