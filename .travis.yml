@@ -54,7 +54,7 @@ before_script: docker pull steffengraber/travis-nest:latest
 script: docker images
 
 
-    - #env:
+#    - env:
 #  - xMPI=1
 #  - xMPI=0
 #
@@ -70,10 +70,3 @@ script: docker images
     # - docker ps -a
     # - docker exec -e xMPI=$xMPI --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
 
-
-notifications:
-  email:
-    recipients:
-      - s.graber@fz-juelich.de
-    on_success: always
-    on_failure: always
