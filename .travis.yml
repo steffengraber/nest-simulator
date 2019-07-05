@@ -54,7 +54,8 @@ before_script: docker pull steffengraber/travis-nest:latest
 script:
   - docker images
   - echo $xMPI
-  - docker run -it -d --rm --user nest -e xMPI=$xMPI --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash /home/nest/data/extras/travis_tests.sh
+  - docker run -it --rm --user nest -e xMPI=$xMPI --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash /home/nest/data/extras/travis_tests.sh
+  - docker ps -a
 
 
 #    - env:
