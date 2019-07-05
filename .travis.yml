@@ -37,20 +37,20 @@ stages:
   - test
 
 env:
-  - TEST=1
-  - TEST=0
+  - xMPI=1
+  - xMPI=0
 
 jobs:
   include:
   - stage: pull image
-    env: TEST=null
+    env: xMPI=null
     script:
     - docker pull steffengraber/travis-nest:latest
   - stage: test
     script:
-    - docker run -it --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash
+    - docker run -it -d --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest
     - docker ps -a
-    - docker exec -d -e TEST=$TEST --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
+    - docker exec -e xMPI=$xMPI --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
 
 
 notifications:
