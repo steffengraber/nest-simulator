@@ -49,9 +49,9 @@ jobs:
   - stage: test
     before_script: docker pull steffengraber/travis-nest:latest
     script:
-    - docker run -it -d --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest
+    - docker run -it -d --rm --user nest --name -e xMPI=$xMPI travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash /home/nest/data/extras/travis_tests.sh
     - docker ps -a
-    - docker exec -e xMPI=$xMPI --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
+    # - docker exec -e xMPI=$xMPI --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
 
 
 notifications:
