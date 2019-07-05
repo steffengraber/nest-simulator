@@ -55,19 +55,19 @@ cd "$NEST_VPATH"
 #     sed -i -e 's/mpirun -np/mpirun --oversubscribe -np/g' ~/.nestrc
 # fi
 
-echo
-echo "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +"
-echo "+               C O N F I G U R E   N E S T   B U I L D                       +"
-echo "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +"
-
-
-cmake -DCMAKE_INSTALL_PREFIX="${NEST_RESULT}" \
-        -Dwith-optimize=ON \
-        -Dwith-warning=ON \
-        -Dwith-boost=ON \
-        -Dwith-python=3 \
-        -Dwith-mpi=ON \
-        /home/nest/data && \
-make  && \
-make install && \
-make installcheck
+#echo
+#echo "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +"
+#echo "+               C O N F I G U R E   N E S T   B U I L D                       +"
+#echo "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +"
+#
+#
+#cmake -DCMAKE_INSTALL_PREFIX="${NEST_RESULT}" \
+#        -Dwith-optimize=ON \
+#        -Dwith-warning=ON \
+#        -Dwith-boost=ON \
+#        -Dwith-python=3 \
+#        -Dwith-mpi=ON \
+#        /home/nest/data && \
+#make  && \
+#make install && \
+#make installcheck

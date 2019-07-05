@@ -18,16 +18,44 @@
 # You should have received a copy of the GNU General Public License
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
-services:
-  - docker
+#services:
+#  - docker
+#
+#addons:
+#  apt:
+#    packages:
+#      - docker-ce
+#
+#before_install:
+#  - bash extras/docker_run.sh
+#
+#script:
+#  - docker images
 
-addons:
-  apt:
-    packages:
-      - docker-ce
+stages:
+  - pull image
+  - test
 
-before_install:
-  - bash extras/docker_run.sh
+env:
+  - TEST=1
+  - TEST=0
 
-script:
-  - docker images
+jobs:
+  include:
+  - stage: pull image
+    env: TEST=null
+    script:
+    - docker pull steffengraber/travis-nest:latest
+  - stage: test
+    script:
+    - docker run -it --rm --user nest --name travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash
+    - docker ps -a
+    - docker exec -d -e TEST=$TEST --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
+
+
+notifications:
+  email:
+    recipients:
+      - s.graber@fz-juelich.de
+    on_success: always
+    on_failure: always
