@@ -32,6 +32,9 @@
 #script:
 #  - docker images
 
+services:
+  - docker
+
 stages:
   - pull image
   - test
