@@ -32,7 +32,12 @@
 #script:
 #  - docker images
 
-language: python
+
+# Choose a build environment
+dist: xenial
+
+# Do not choose a language; we provide our own build tools.
+language: generic
 
 services:
   - docker
