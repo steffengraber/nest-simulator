@@ -45,17 +45,30 @@ services:
 stages:
   - test
 
-env:
-  - xMPI=1
-  - xMPI=0
-
-jobs:
+matrix:
   include:
-  - stage: test
-    before_script: docker pull steffengraber/travis-nest:latest
-    script:
-    - docker run -it -d --rm --user nest --name -e xMPI=$xMPI travis-test-nest -v $(pwd):/home/nest/data steffengraber/travis-nest:latest bash /home/nest/data/extras/travis_tests.sh
-    - docker ps -a
+      - env: xMPI=1
+      - env: xMPI=0
+
+before_script: docker pull steffengraber/travis-nest:latest
+script:
+-docker images
+-echo $xMPI
+
+    - #env:
+#  - xMPI=1
+#  - xMPI=0
+#
+#jobs:
+#  include:
+#  - stage: test
+#    before_script: docker pull steffengraber/travis-nest:latest
+#    script:
+#    - docker images
+#    - echo $xMPI
+    # - docker run -it -d --rm --user nest --name -e xMPI=$xMPI travis-test-nest -v $(pwd):/home/nest/data
+    # steffengraber/travis-nest:latest bash /home/nest/data/extras/travis_tests.sh
+    # - docker ps -a
     # - docker exec -e xMPI=$xMPI --user nest travis-test-nest bash /home/nest/data/extras/travis_tests.sh
 
 
