@@ -47,8 +47,10 @@ stages:
 
 matrix:
   include:
-      - env: xMPI=1
-      - env: xMPI=0
+    - name: "With MPI"
+      env: xMPI=1
+    - name: "Without MPI"
+      env: xMPI=0
 
 before_script: docker pull steffengraber/travis-nest:latest
 script:
