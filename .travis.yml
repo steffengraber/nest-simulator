@@ -51,9 +51,8 @@ matrix:
       - env: xMPI=0
 
 before_script: docker pull steffengraber/travis-nest:latest
-script:
--docker images
--echo $xMPI
+script: docker images
+
 
     - #env:
 #  - xMPI=1
