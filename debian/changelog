@@ -1,5 +1,11 @@
 nest (2.16.0-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
 
+  * added to normal ppa
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Mon, 08 Jul 2019 12:53:18 +0200
+
+nest (2.16.0-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
+
   * delete depend language-pack-en
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:53:18 +0200
