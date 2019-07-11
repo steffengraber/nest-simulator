@@ -1,3 +1,9 @@
+nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
+
+  * NEST 2.16.0 and  NEST 2.18.0 for ppa.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Jul 2016 11:00:46 +0200
+
 nest (2.16.0-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
 
   * added to normal ppa
