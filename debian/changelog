@@ -1,35 +1,6 @@
-nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
+nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
 
   * NEST 2.16.0 for ppa nest-2.16.
 
- -- Steffen Graber <s.graber@fz-juelich.de>  Fri, 12 Jul 2019 06:00:46 +0200
+ -- Steffen Graber <s.graber@fz-juelich.de>  Fri, 12 Jul 2019 06:38:46 +0200
 
-nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
-
-  * NEST 2.16.0 and  NEST 2.18.0 for ppa.
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Jul 2019 11:00:46 +0200
-
-nest (2.16.0-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
-
-  * added to normal ppa
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Mon, 08 Jul 2019 12:53:18 +0200
-
-nest (2.16.0-0ubuntu1ppa1ubuntu1) UNRELEASED; urgency=medium
-
-  * delete depend language-pack-en
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 11 Oct 2018 10:53:18 +0200
-
-nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
-
-  * New version NEST 2.16.0 for ppa.
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2018 13:30:46 +0200
-
-nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
-
-  * First version NEST 2.16.0 for ppa.
-
- -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2018 11:30:46 +0200
