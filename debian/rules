@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+DPKG_EXPORT_BUILDFLAGS = 1
 BUILDDIR = build
 DESTDIR = debian/nest
 DISTRIBUTION = $(shell lsb_release -sc)
