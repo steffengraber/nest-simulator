@@ -1,5 +1,11 @@
 nest (2.18.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
+  * Daily merge
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Tue, 16 Jul 2019 06:40:16 +0000
+
+nest (2.18.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
   * New version numbering
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Mon, 15 Jul 2019 06:06:16 +0000
