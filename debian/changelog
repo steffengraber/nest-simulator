@@ -1,8 +1,14 @@
 nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
 
+  * Repair changelog.
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 17 Jul 2019 09:35:46 +0000
+
+nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
+
   * Add Buildflag 1.
 
- -- Steffen Graber <s.graber@fz-juelich.de>  Fri, 12 Jul 2019 10:1046 +0200
+ -- Steffen Graber <s.graber@fz-juelich.de>  Fri, 12 Jul 2019 10:10:46 +0200
 
 nest (2.16.0-0ubuntu1ppa1) unstable; urgency=low
 
