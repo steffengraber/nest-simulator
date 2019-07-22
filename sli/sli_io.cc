@@ -378,11 +378,9 @@ OsstreamFunction::execute( SLIInterpreter* i ) const
 // call: osstream -> osstream true
 //                -> false
 
-#ifdef HAVE_SSTREAM
-  std::ostringstream* out = new std::ostringstream();
-#else
+
   std::ostrtream* out = new std::ostrstream();
-#endif
+
 
   if ( out->good() )
   {
@@ -414,12 +412,9 @@ StrSStreamFunction::execute( SLIInterpreter* i ) const
     throw TypeMismatch( d.gettypename().toString(), t.datum()->gettypename().toString() );
   }
 
-#ifdef HAVE_SSTREAM
+
   std::ostrstream* out = dynamic_cast< std::ostrstream* >( ostreamdatum->get() );
-#else
-  std::ostringstream* out = dynamic_cast< std::ostringstream* >( ostreamdatum->get() );
-#endif
-  // Only to check
+
   assert( out != NULL );
   ostreamdatum->unlock();
 
