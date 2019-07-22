@@ -419,6 +419,7 @@ StrSStreamFunction::execute( SLIInterpreter* i ) const
 #else
   std::ostringstream* out = dynamic_cast< std::ostringstream* >( ostreamdatum->get() );
 #endif
+  // Only to check
   assert( out != NULL );
   ostreamdatum->unlock();
 
