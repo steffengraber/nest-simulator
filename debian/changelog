@@ -1,5 +1,11 @@
 nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
 
+  * Test to change nest_vars.sh
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Tri, 07 Aug 2019 09:20:46 +0000
+
+nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
+
   * Not delete files in /usr/bin.
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Tri, 07 Aug 2019 08:27:46 +0000
