@@ -1,5 +1,11 @@
 nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
 
+  * Source nest_vars.sh
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Tri, 07 Aug 2019 10:28:46 +0000
+
+nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
+
   * Test to change nest_vars.sh
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Tri, 07 Aug 2019 09:20:46 +0000
