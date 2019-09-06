@@ -1,5 +1,11 @@
 nest (2.18.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
+  * Without libneurosim
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2019 13:36:00 +0000
+
+nest (2.18.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
   * Update
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Thu, 06 Sep 2019 13:13:00 +0000

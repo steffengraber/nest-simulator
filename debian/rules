@@ -11,7 +11,7 @@ CMAKE_FLAGS += -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
 CMAKE_FLAGS += -Dwith-mpi:BOOL=On
 CMAKE_FLAGS += -Dwith-openmp:BOOL=On
 CMAKE_FLAGS += -Dwith-gsl:BOOL=On /usr/local/lib
-CMAKE_FLAGS += -Dwith-libneurosim:BOOL=On /usr/local/lib
+#CMAKE_FLAGS += -Dwith-libneurosim:BOOL=On /usr/local/lib
 CMAKE_FLAGS += -Dwith-music=On /usr/lib
 
 %:
