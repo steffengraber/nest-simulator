@@ -149,6 +149,10 @@ code.descclassname {
     background: #e0e0e0;
 }
 
+wy-nav-side {
+    bottom: inherit;
+}
+
 /* override table width restrictions */
 @media screen and (min-width: 767px) {
 
