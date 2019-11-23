@@ -28,6 +28,7 @@ p {
 	background: linear-gradient(90deg, #fff, #eee);
 	color: #888;
 	border-right: 1px solid #e1e4e5;
+	bottom: auto;
 }
 
 .wy-menu-vertical a,
@@ -147,10 +148,6 @@ code.descclassname {
 
 .rst-content .admonition {
     background: #e0e0e0;
-}
-
-wy-nav-side {
-    bottom: inherit;
 }
 
 /* override table width restrictions */
