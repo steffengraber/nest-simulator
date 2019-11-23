@@ -81,16 +81,19 @@ video {
 a:visited {
     color: #f63;
 }
+
 a {
     color: #f63;
     text-decoration: none;
     background-color: transparent;
     cursor: pointer;
 }
+
 a:hover {
     color: #f63;
     text-decoration: underline;
 }
+
 code.descclassname {
     display: none;
 }
@@ -98,6 +101,7 @@ code.descclassname {
 .rst-content dl:not(.docutils) dt  em[class^='property']{
      display:none;
 }
+
 .rst-content pre.literal-block, .rst-content div[class^='highlight'] pre, .rst-content .linenodiv pre {
     line-height: 1.3em;
 }
@@ -118,7 +122,6 @@ code.descclassname {
 
 .rst-content .admonition-title {
     background: #ffae18;
-
 }
 
 .wy-plain-list-disc, .rst-content .section ul, .rst-content .toctree-wrapper ul, article ul {
@@ -144,6 +147,7 @@ code.descclassname {
 
 .rst-content .admonition {
     background: #e0e0e0;
+}
 
 /* override table width restrictions */
 @media screen and (min-width: 767px) {
@@ -157,3 +161,4 @@ code.descclassname {
    .wy-table-responsive {
       overflow: visible !important;
    }
+}
