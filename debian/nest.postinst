@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 rm -f /etc/profile.d/nest-simulator.sh
 touch /etc/profile.d/nest-simulator.sh
 cat >>/etc/profile.d/nest-simulator.sh <<EOF
