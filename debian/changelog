@@ -1,5 +1,11 @@
 nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
 
+  * Fix postrm
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  tue, 26 Nov 2019 11:00:46 +0000
+
+nest (2.18.0-0ubuntu1ppa1) unstable; urgency=low
+
   * Introducing postrm
 
  -- Steffen Graber <s.graber@fz-juelich.de>  Mon, 25 Nov 2019 15:00:46 +0000
