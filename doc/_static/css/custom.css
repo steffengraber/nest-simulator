@@ -10,14 +10,18 @@ p {
     max-width: 950px;
 }
 
-.wy-side-nav-search>a, .wy-side-nav-search .wy-dropdown>a {
+
+.wy-side-nav-search>a::before {
    content: url(../../_static/img/nest_logo.png);
+}
+
+.wy-side-nav-search>a {
+	color: #f63;
 }
 
 .wy-side-nav-search {
 	background: linear-gradient(45deg, #fff, #eee);
-	color: #888;
-    border-bottom: 1px solid #e1e4e5;
+	border-bottom: 1px solid #e1e4e5;
 }
 
 .wy-side-nav-search input[type=text] {
