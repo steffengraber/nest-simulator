@@ -1,3 +1,10 @@
+
+nest (2.20.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
+
+  * Installed python build tools
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 15 Sep 2020 10:00:00 +0000
+
 nest (2.18.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * NEST daily builds of master in 'ppa:nest-simulator/nest-nightly'
