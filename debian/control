@@ -2,7 +2,7 @@ Source: nest
 Section: science
 Priority: optional
 Maintainer: Steffen Graber <s.graber@fz-juelich.de>
-Build-Depends: cmake, debhelper (>= 9), autotools-dev, dh-python
+Build-Depends: cmake, debhelper (>= 9), autotools-dev, dh-python,
 	software-properties-common, build-essential, autoconf, python3,
 	libltdl-dev, libreadline-dev, libncurses-dev, libgsl-dev, openmpi-bin,
 	python3-dev, libopenmpi-dev, libgomp1, libomp-dev, libibverbs-dev, libpcre3, libpcre3-dev, jq,
