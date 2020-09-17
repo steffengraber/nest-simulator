@@ -1,4 +1,10 @@
 
+nest (2.20.0-0ubuntu1ppa1) unstable; urgency=low
+
+  * Better versioning
+
+ -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 17 Sep 2020 11:58:00 +0000
+
 nest (2.20.0+1SNAPSHOT-0ubuntu1ppa1) unstable; urgency=low
 
   * Installed python build tools
