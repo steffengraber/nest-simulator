@@ -8,6 +8,8 @@ INSTALLDIR = \/$(BUILDDIR)\/$(PACKAGEVERSION)\/$(DESTDIR)
 
 CMAKE_FLAGS = -DCMAKE_INSTALL_PREFIX:PATH=$(DESTDIR)/usr -Dwith-python=ON -DCMAKE_INSTALL_LIBDIR:PATH=lib
 CMAKE_FLAGS += -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
+CMAKE_FLAGS += -Dwith-mpi=ON
+CMAKE_FLAGS += -Dwith-openmp=ON
 CMAKE_FLAGS += -Dwith-gsl=ON -Dwith-ltdl=ON -Dwith-readline=ON
 
 %:
@@ -34,4 +36,4 @@ override_dh_auto_install:
 	make install
 
 	# Now changing nest_vars.sh setting the correct paths
-	sed -i 's/\/build\/\(.*\)nest\(.*\)\/debian\/nest//g' $(DESTDIR)/usr/bin/nest_vars.sh
+	# sed -i 's/\/build\/\(.*\)nest\(.*\)\/debian\/nest//g' $(DESTDIR)/usr/bin/nest_vars.sh
