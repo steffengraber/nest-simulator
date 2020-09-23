@@ -29,11 +29,9 @@ override_dh_auto_build:
 override_dh_auto_install:
     # This is a little bit tricky but needed
     sed -i 's/site-packages/dist-packages/g' ./cmake/ProcessOptions.cmake
-	sed -i 's/NEST_INSTALL_PREFIX \"\/\"/\"\/usr\/"/g' ./sli/slistartup.cc
-
-	cmake $(CMAKE_FLAGS) .
-	make
-	make install
-
-	# Now changing nest_vars.sh setting the correct paths
-	sed -i 's/$(DESTDIR)//g' $(DESTDIR)/usr/bin/nest_vars.sh
+    sed -i 's/NEST_INSTALL_PREFIX \"\/\"/\"\/usr\/"/g' ./sli/slistartup.cc
+    cmake $(CMAKE_FLAGS) .
+    make
+    make install
+    # Now changing nest_vars.sh setting the correct paths
+    sed -i 's/$(DESTDIR)//g' $(DESTDIR)/usr/bin/nest_vars.sh
