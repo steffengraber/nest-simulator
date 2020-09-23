@@ -34,4 +34,4 @@ override_dh_auto_install:
 	make
 	make install
 	# Now changing nest_vars.sh setting the correct paths
-	sed -i 's/$(DESTDIR)//g' $(DESTDIR)/usr/bin/nest_vars.sh
+	sed -i 's/debian\/nest//g' $(DESTDIR)/usr/bin/nest_vars.sh
