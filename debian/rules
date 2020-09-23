@@ -28,8 +28,8 @@ override_dh_auto_configure:
 override_dh_auto_build:
 override_dh_auto_install:
 	# This is a little bit tricky but needed
-	sed -i 's/site-packages/dist-packages/g' ./cmake/ProcessOptions.cmake
-	sed -i 's/NEST_INSTALL_PREFIX \"\/\"/\"\/usr\/"/g' ./sli/slistartup.cc
+	# sed -i 's/site-packages/dist-packages/g' ./cmake/ProcessOptions.cmake
+	# sed -i 's/NEST_INSTALL_PREFIX \"\/\"/\"\/usr\/"/g' ./sli/slistartup.cc
 	cmake $(CMAKE_FLAGS) .
 	make
 	make install
