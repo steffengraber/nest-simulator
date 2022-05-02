@@ -135,10 +135,10 @@ SLIStartup::GetenvFunction::execute( SLIInterpreter* i ) const
 
 
 SLIStartup::SLIStartup( int argc, char** argv )
-  : sliprefix( NEST_INSTALL_PREFIX )
-  , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
-  , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
-  , startupfile( slilibdir + "/sli/sli-init.sli" )
+  : sliprefix( "/usr/" )
+  , slilibdir( "/usr/share/nest/")
+  , slidocdir( "/usr/share/doc/nest/"  )
+  , startupfile( slilibdir + "/usr/share/nest/sli/sli-init.sli" )
   , verbosity_( SLIInterpreter::M_INFO ) // default verbosity level
   , debug_( false )
   , argv_name( "argv" )
