@@ -138,7 +138,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   : sliprefix( "/usr/" )
   , slilibdir( "/usr/share/nest/")
   , slidocdir( "/usr/share/doc/nest/"  )
-  , startupfile( slilibdir + "/usr/share/nest/sli/sli-init.sli" )
+  , startupfile("/usr/share/nest/sli/sli-init.sli")
   , verbosity_( SLIInterpreter::M_INFO ) // default verbosity level
   , debug_( false )
   , argv_name( "argv" )
