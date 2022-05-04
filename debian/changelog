@@ -2,7 +2,7 @@ nest (3.3-0ubuntu1ppa1) unstable; urgency=low
 
   * v3.3
 
- -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 01 05 2022 08:00:00 +0000
+ -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 01 May 2022 08:00:00 +0000
 
 nest (3.2-0ubuntu1ppa1) unstable; urgency=low
 
@@ -10,7 +10,7 @@ nest (3.2-0ubuntu1ppa1) unstable; urgency=low
   * This release mainly contains smaller bug fixes and improvements. Most development work went into improving support
     for new language features in Python and C++ and updating the setups for Python packaging.
 
-  -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 08 02 2022 08:00:00 +0000
+  -- Steffen Graber <s.graber@fz-juelich.de>  Wed, 08 Feb 2022 08:00:00 +0000
 
 nest (3.1-0ubuntu1ppa1) unstable; urgency=low
 
