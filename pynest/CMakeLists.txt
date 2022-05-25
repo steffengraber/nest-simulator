@@ -20,7 +20,7 @@
 if ( HAVE_PYTHON )
 
   if ( CYTHON_FOUND )
-    include( UseCython )
+    include( ../cmake/UseCython.cmake )
     set_source_files_properties(
         pynestkernel.pyx
         PROPERTIES CYTHON_IS_CXX TRUE )

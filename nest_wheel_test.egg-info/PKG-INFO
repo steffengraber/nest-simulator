@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: nest-wheel-test
+Version: 0.1.1
+Summary: A test for nest
+Home-page: https://github.com/steffengraber/nest-simulator.git
+Author: steffengraber
+Author-email: s.graber@fz-juelich.de
+License: UNKNOWN
+Download-URL: https://github.com/steffengraber/nest-simulator/archive/refs/heads/nest-wheel.zip
+Platform: UNKNOWN
+Requires-Python: >=3.8
+License-File: LICENSE
+
+UNKNOWN
+

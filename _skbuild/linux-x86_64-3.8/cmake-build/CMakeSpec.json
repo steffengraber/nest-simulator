@@ -1,0 +1,1 @@
+{"args": ["/home/graber/miniconda3/bin/cmake", "-DCMAKE_BUILD_TYPE:STRING=Release"], "version": "3.14.0", "environment": {"PYTHONNOUSERSITE": null, "PYTHONPATH": null}}
