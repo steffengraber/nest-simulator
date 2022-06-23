@@ -20,7 +20,7 @@ jobs:
         # Install pip and pytest
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip setuptools wheel skbuild
+          python -m pip install --upgrade pip setuptools wheel scikit-build
       - name: Build wheels
         # uses: steffengraber/nest-simulator@nest-wheel
         run: |
