@@ -22,7 +22,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel skbuild
       - name: Build wheels
-        uses: steffengraber/nest-simulator@nest-wheel
+        # uses: steffengraber/nest-simulator@nest-wheel
         run: |
           python setup.py bdist_wheel
         env:
