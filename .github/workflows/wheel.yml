@@ -24,7 +24,7 @@ jobs:
       - name: Build wheels
         # uses: steffengraber/nest-simulator@nest-wheel
         run: |
-          python setup.py bdist_wheel
+          NEST_INSTALL_NODOC=1 python setup.py bdist_wheel
         env:
           NEST_INSTALL_NODOC: 1
       - name: Upload wheel
