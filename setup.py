@@ -1,4 +1,4 @@
-#from setuptools import setup
+# from setuptools import setup
 from skbuild import setup  # This line replaces 'from setuptools import setup'
 
 setup(
@@ -11,5 +11,5 @@ setup(
     download_url="https://github.com/steffengraber/nest-simulator/archive/refs/heads/nest-wheel.zip",
     packages=['nest'],
     python_requires=">=3.8",
-    cmake_install_dir='.',
-)
+    cmake_install_dir='.'
+    )
