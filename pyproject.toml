@@ -3,8 +3,11 @@ requires = [
   "setuptools>=42",
   "wheel",
   "scikit-build",
+  "Cython",
   "cmake",
   "pathlib",
-  "ninja; platform_system!='Windows'"
+  "ninja; platform_system!='Windows'",
+  "gsl",
+  "readline"
 ]
 build-backend = "setuptools.build_meta"
