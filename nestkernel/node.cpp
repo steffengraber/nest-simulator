@@ -43,7 +43,7 @@ Node::Node()
   , node_id_( 0 )
   , thread_lid_( invalid_index )
   , model_id_( -1 )
-  , thread_( 0 )
+  , thread_( invalid_thread )
   , vp_( invalid_thread )
   , frozen_( false )
   , initialized_( false )
@@ -336,7 +336,6 @@ port
 Node::handles_test_event( GapJunctionEvent&, rport )
 {
   throw IllegalConnection( "The target node or synapse model does not support gap junction input." );
-  return invalid_port;
 }
 
 void
@@ -355,7 +354,6 @@ port
 Node::handles_test_event( InstantaneousRateConnectionEvent&, rport )
 {
   throw IllegalConnection( "The target node or synapse model does not support instantaneous rate input." );
-  return invalid_port;
 }
 
 void
@@ -374,7 +372,6 @@ port
 Node::handles_test_event( DiffusionConnectionEvent&, rport )
 {
   throw IllegalConnection( "The target node or synapse model does not support diffusion input." );
-  return invalid_port;
 }
 
 void
@@ -393,7 +390,6 @@ port
 Node::handles_test_event( DelayedRateConnectionEvent&, rport )
 {
   throw IllegalConnection( "The target node or synapse model does not support delayed rate input." );
-  return invalid_port;
 }
 
 void
