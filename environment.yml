@@ -61,7 +61,7 @@ dependencies:
   - pycodestyle
   - pydocstyle
   - rstcheck
-  - mypy[version='>=0.8']
+  - mypy >= 0.8 
   - cppcheck
 
   # Working with NEST ------
@@ -71,7 +71,7 @@ dependencies:
   - jupyterlab
 
   # Building NEST documentation
-  - PyYAML>=4.2b1
+  - PyYAML >= 4.2b1
   - assimulo
   - breathe
   - csvkit
