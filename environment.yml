@@ -53,7 +53,6 @@ dependencies:
   - pytest-mypy
   - pytest-cov
   - numpy
-  - pandas
   - scipy
   - mpi4py
   - data-science-types
@@ -102,6 +101,7 @@ dependencies:
     # For testsuite
     - junitparser >= 2
     - clang-format == 13.0
+    - pandas
     # For documentation
     - example
     - Image
