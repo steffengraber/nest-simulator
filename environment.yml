@@ -37,10 +37,10 @@ dependencies:
 
   # Building NEST -----------
   - make  
-  - gcc_linux-64[subdir=linux-64]
-  - gxx_linux-64[subdir=linux-64]
-  - clang_osx-64[subdir=osx-64]
-  - clangxx_osx-64[subdir=osx-64]
+  - gcc_linux-64
+  - gxx_linux-64
+  - clang_osx-64
+  - clangxx_osx-64
   - cmake >= 3.12
   - cython
   - openmpi
