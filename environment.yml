@@ -116,3 +116,4 @@ dependencies:
     - sphinx_design
     - sphinx-material
     - sphinx-copybutton
+    - sphinx-notfound-page
