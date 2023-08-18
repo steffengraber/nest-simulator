@@ -85,6 +85,7 @@ dependencies:
   - mock
   - nbsphinx
   - numpydoc
+  - scipy
   - path.py
   - pydot
   - recommonmark
