@@ -1,0 +1,119 @@
+# Conda environment specification for NEST Simulator
+#
+# This file specifies a conda environment for those who would
+# like to compile NEST or build NEST documentation themselves.
+# If you just want to execute NEST, you should install NEST
+# directly as described in https://www.nest-simulator.org/installation.
+#
+#
+# The environment specification below is comprehensive: it includes
+# all packages required to build and run NEST with OpenMP and MPI
+# parallelisation, GSL-dependent models, NumPy and Pandas-dependent
+# features of PyNEST and examples requiring Matplotlib, and to run
+# the NEST testsuite. It also comprises all tools required to build
+# NEST documentation and to run NEST Server. The requirements for the
+# documentation and server are marked in separate sections below so
+# you can remove them if you would like a leaner environment.
+#
+# NOTE: Do NOT delete the PIP section at the end of the file. Environment files
+#       allow just a single PIP section. All dependencies not satisfied by
+#       conda-forge are placed there.
+#
+# NOTE: libneurosim, MUSIC and SIONLib are not included in this environment.
+#
+# To create an environment from this file, run
+#
+#     conda env create --name <my_env_name> --file environment.yml
+#
+# where <my_env_name> is a name of your choice.
+
+channels:
+  - conda-forge
+
+dependencies:
+  # Basics ------------------
+  - python=3.10.12
+  - pip=23.2.1
+
+  # Building NEST -----------
+  - make=4.3
+  - gcc_linux-64=13.1.0
+  - gxx_linux-64=13.1.0
+  - clang_osx-64=16.0.6
+  - clangxx_osx-64=16.0.6
+  - cmake=3.26.4
+  - cython=3.0.0
+  - openmpi=4.1.5
+  - boost=1.82.0
+  - gsl=2.7
+  - libtool=2.4.7
+  - readline=8.2
+  - hdf5=1.14.1
+
+  # Testing NEST ------------
+  - pytest=7.4.0
+  - pytest-timeout=2.1.0
+  - pytest-xdist=3.3.1
+  - pytest-pylint
+  - pytest-mypy=0.8.0
+  - pytest-cov=4.1.0
+  - numpy=1.25.2
+  - scipy=1.11.1
+  - mpi4py=3.1.4
+  - data-science-types=0.2.23
+  - h5py=3.9.0
+  - terminaltables=3.1.10
+  - pycodestyle=2.11.0
+  - pydocstyle=6.3.0
+  - rstcheck=6.1.2
+  - mypy=1.5.1
+  - cppcheck=2.10.3
+
+  # Working with NEST ------
+  - ipython=8.14.0
+  - matplotlib=3.7.2
+  - jupyter=1.0.0
+  - jupyterlab=4.0.5
+
+  # Building NEST documentation
+  - pyyaml=6.0
+  - assimulo=3.4.1
+  - breathe=4.35.0
+  - csvkit=1.1.1
+  - docutils=0.18.1
+  - doxygen=1.9.7
+  - mock=5.1.0
+  - nbsphinx=0.9.2
+  - numpydoc=1.5.0
+  - path.py=12.5.0
+  - pydot=1.4.2
+  - recommonmark=0.7.1
+  - sphinx=6.2.1
+  - sphinx_rtd_theme=1.2.2
+  - tqdm=4.66.1
+  - yamllint=1.32.0
+
+  # Running NEST Server ----
+  - flask=2.3.2
+  - flask_cors=3.0.10
+  - gunicorn=21.2.0
+  - requests=2.31.0
+  - restrictedpython=6.1
+  - werkzeug=2.3.7
+
+  # PIP dependencies -- do not delete
+  - pip:
+    # For testsuite
+      - junitparser==3.1.0
+      - clang-format==13.0.0
+      - pandas==2.0.3
+    # For documentation
+      - example==0.1.0
+      - image==1.5.33
+      - sphinx-autobuild==2021.3.14
+      - sphinx-gallery==0.13.0
+      - sphinx-tabs==3.4.1
+      - sphinx-design==0.5.0
+      - sphinx-material==0.0.35
+      - sphinx-copybutton==0.5.2
+      - sphinx-notfound-page==0.8.3
