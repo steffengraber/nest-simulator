@@ -80,6 +80,8 @@ if ci_full_doc == "ON":
         "examples_dirs": "../../pynest/examples",
         # path where to save gallery generated examples
         "gallery_dirs": "auto_examples",
+        "filename_pattern": "/.*\.py",
+        "ignore_pattern": r"__init__\.py",
         "plot_gallery": "true",
         "download_all_examples": False,
     }
