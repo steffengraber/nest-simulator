@@ -1,0 +1,3 @@
+Sphinx Gallery build directory
+------------------------------
+
