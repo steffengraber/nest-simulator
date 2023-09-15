@@ -365,6 +365,8 @@ jobs:
       - name: "Test-build documentation with NEST installed"
         shell: bash -l {0}
         if: "${{ contains(matrix.use, 'nest') }}"
+        env:
+          CI_FULL_DOC: true
         run: |
           mkdir -pv build
           cd build

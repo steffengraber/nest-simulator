@@ -72,14 +72,26 @@ panels_add_bootstrap_css = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["templates"]
 
-sphinx_gallery_conf = {
-    # path to your examples scripts
-    "examples_dirs": "../../pynest/examples",
-    # path where to save gallery generated examples
-    "gallery_dirs": "auto_examples",
-    "plot_gallery": "False",
-    "download_all_examples": False,
-}
+ci_full_doc = os.getenv("CI_FULL_DOC")
+if ci_full_doc is not None:
+    phinx_gallery_conf = {
+        # path to your examples scripts
+        "examples_dirs": "../../pynest/examples",
+        # path where to save gallery generated examples
+        "gallery_dirs": "auto_examples",
+        "plot_gallery": "true",
+        "download_all_examples": False,
+    }
+else:
+    sphinx_gallery_conf = {
+        # path to your examples scripts
+        "examples_dirs": "../../pynest/examples",
+        # path where to save gallery generated examples
+        "gallery_dirs": "auto_examples",
+        "plot_gallery": "False",
+        "download_all_examples": False,
+    }
+
 
 # General information about the project.
 project = "NEST Simulator user documentation"
