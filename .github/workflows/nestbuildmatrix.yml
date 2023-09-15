@@ -328,6 +328,12 @@ jobs:
     # as close as possible to the Readthedocs setup (system install cmake, pip install -r doc/requirements.txt)
     runs-on: "ubuntu-20.04"
     needs: [pydocstyle, rstcheck, vale]
+    strategy:
+      fail-fast: false
+      matrix:
+        use:
+          - "nonest"
+          - "nest"
     steps:
       - name: "Checkout repository content"
         uses: actions/checkout@v3
@@ -349,10 +355,24 @@ jobs:
           sudo apt install pandoc
 
       - name: "Test-build documentation"
+        if: "${{ contains(matrix.use, 'nonest') }}"
         run: |
           mkdir -pv build
           cd build
           cmake -Dwith-userdoc=ON -DCMAKE_INSTALL_PREFIX=../install ..
+          make docs |& tee sphinx-output.log
+
+      - name: "Test-build documentation with NEST installed"
+        shell: bash -l {0}
+        if: "${{ contains(matrix.use, 'nest') }}"
+        run: |
+          mkdir -pv build
+          cd build
+          cmake -Dwith-userdoc=ON -DCMAKE_INSTALL_PREFIX=../install ..
+          make VERBOSE=1
+          make install
+          . ../install/bin/nest_vars.sh
+          python -c "import nest; nest.help();"         
           make docs |& tee sphinx-output.log
 
       - name: Upload artifacts
@@ -367,13 +387,6 @@ jobs:
     # as close as possible to the suggested user docs build in the documentation
     runs-on: "ubuntu-20.04"
     if: false
-    needs: [pydocstyle, rstcheck, vale]
-    strategy:
-      fail-fast: false
-      matrix:
-        use:
-          - "nonest"
-          - "nest"
     steps:
       - name: "Checkout repository content"
         uses: actions/checkout@v3
@@ -394,7 +407,6 @@ jobs:
      
       - name: "Test-build documentation"
         shell: bash -l {0}
-        if: "${{ contains(matrix.use, 'nonest') }}"
         run: |
           conda activate conda/
           mkdir -pv build
@@ -402,21 +414,6 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=../install ..
           make html |& tee sphinx-output.log
 
-      - name: "Test-build documentation with NEST installed"
-        shell: bash -l {0}
-        if: "${{ contains(matrix.use, 'nest') }}"
-        run: |
-          conda activate conda/
-          mkdir -pv build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../install ..
-          make VERBOSE=1
-          make install
-          . ../install/bin/nest_vars.sh
-          python -c "import nest; nest.help();"          
-          make html |& tee sphinx-output.log
-
-          
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
