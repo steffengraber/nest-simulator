@@ -73,7 +73,8 @@ panels_add_bootstrap_css = False
 templates_path = ["templates"]
 
 ci_full_doc = os.getenv("CI_FULL_DOC")
-if ci_full_doc is not None:
+print(f"CI_FULL_DOC: {ci_full_doc}")
+if ci_full_doc == "ON":
     phinx_gallery_conf = {
         # path to your examples scripts
         "examples_dirs": "../../pynest/examples",

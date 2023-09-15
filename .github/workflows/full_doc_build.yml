@@ -11,6 +11,8 @@ jobs:
         # as close as possible to the Readthedocs setup (system install cmake, pip install -r doc/requirements.txt)
         runs-on: "ubuntu-22.04"
         needs: []
+        env:
+            CI_FULL_DOC: ON
         strategy:
           fail-fast: false
         steps:
@@ -35,8 +37,6 @@ jobs:
        
           - name: "Test-build documentation with NEST installed"
             shell: bash -l {0}
-            env:
-              CI_FULL_DOC: true
             run: |
               mkdir -pv build
               cd build
