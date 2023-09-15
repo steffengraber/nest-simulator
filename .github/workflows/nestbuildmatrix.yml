@@ -480,7 +480,7 @@ jobs:
           sudo apt-get install tcl8.6 tcl8.6-dev tk8.6-dev
           # Install MPI dependencies regardless of whether we compile NEST with or without MPI, so the installation of MPI4Py works 
           sudo apt-get install openmpi-bin libopenmpi-dev
-          sudo apt-get install libboost-filesystem-dev libboost-regex-dev libboost-wave-dev libboost-python-dev libboost-program-ocondaptions-dev libboost-test-dev
+          sudo apt-get install libboost-filesystem-dev libboost-regex-dev libboost-wave-dev libboost-python-dev libboost-program-options-dev libboost-test-dev
           sudo apt-get install pkg-config
           sudo ldconfig
 
