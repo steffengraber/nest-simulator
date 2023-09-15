@@ -383,7 +383,7 @@ jobs:
           name: "sphinx-rtd output"
           path: |
             build/sphinx-output.log
-            build/userdoc/html/
+            build/doc/_build/html/
 
   sphinx-conda:
     # as close as possible to the suggested user docs build in the documentation
