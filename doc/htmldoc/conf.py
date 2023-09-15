@@ -82,7 +82,7 @@ if ci_full_doc == "ON":
         "gallery_dirs": "auto_examples",
         "filename_pattern": "/.*\.py",
         "ignore_pattern": r"__init__\.py",
-        "plot_gallery": "true",
+        "plot_gallery": "True",
         "download_all_examples": False,
     }
 else:
