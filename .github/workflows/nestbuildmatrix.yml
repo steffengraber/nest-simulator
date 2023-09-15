@@ -327,7 +327,7 @@ jobs:
   sphinx-rtd:
     # as close as possible to the Readthedocs setup (system install cmake, pip install -r doc/requirements.txt)
     runs-on: "ubuntu-20.04"
-    needs: [pydocstyle, rstcheck, vale]
+    needs: [pydocstyle, rstcheck, vale, black, flake8]
     strategy:
       fail-fast: false
       matrix:
