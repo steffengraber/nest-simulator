@@ -7,7 +7,7 @@ name: "NEST full doc build"
 on: [push, pull_request]
 
 jobs:
-    sphinx-rtd:
+    sphinx_nest_full:
         # as close as possible to the Readthedocs setup (system install cmake, pip install -r doc/requirements.txt)
         runs-on: "ubuntu-22.04"
         needs: []
