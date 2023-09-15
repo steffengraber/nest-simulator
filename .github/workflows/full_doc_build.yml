@@ -1,0 +1,57 @@
+#
+# detailed syntax defined in
+# https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
+#
+name: "NEST full doc build"
+
+on: [push, pull_request]
+
+jobs:
+    sphinx-rtd:
+        # as close as possible to the Readthedocs setup (system install cmake, pip install -r doc/requirements.txt)
+        runs-on: "ubuntu-22.04"
+        needs: []
+        strategy:
+          fail-fast: false
+        steps:
+          - name: "Checkout repository content"
+            uses: actions/checkout@v3
+            with:
+              fetch-depth: 0
+    
+          - name: "Set up Python 3.x"
+            uses: actions/setup-python@v4
+            with:
+              # Using 3.8 because Read the docs does not work with higher versions.
+              # See also: https://github.com/nest/nest-simulator/pull/2744
+              python-version: 3.8
+    
+          - name: "Install dependencies"
+            run: |
+              sudo apt update
+              pip install -r doc/requirements.txt
+              # The pandoc executable, which is required, cannot be installed via pip see: https://stackoverflow.com/a/71585691
+              sudo apt install pandoc
+       
+          - name: "Test-build documentation with NEST installed"
+            shell: bash -l {0}
+            env:
+              CI_FULL_DOC: true
+            run: |
+              mkdir -pv build
+              cd build
+              cmake -Dwith-userdoc=ON -DCMAKE_INSTALL_PREFIX=../install ..
+              make VERBOSE=1
+              make install
+              . ../install/bin/nest_vars.sh
+              python -c "import nest; nest.help();"         
+              make docs |& tee sphinx-output.log
+    
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v3
+            with:
+              name: "Full doc output"
+              path: |
+                build/sphinx-output.log
+                build/doc/_build/html/
+    
