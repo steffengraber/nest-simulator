@@ -2,7 +2,7 @@
 # detailed syntax defined in
 # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
 #
-name: "NEST full doc build"
+name: "Full doc build"
 
 on: [push, pull_request]
 
