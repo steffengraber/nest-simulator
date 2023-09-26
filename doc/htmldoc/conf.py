@@ -74,11 +74,11 @@ ci_full_doc = os.getenv("CI_FULL_DOC")
 
 if ci_full_doc == "ON":
     print(f"FULL - CI_FULL_DOC: {ci_full_doc}")
-    phinx_gallery_conf = {
+    sphinx_gallery_conf = {
         # path to your examples scripts
         "examples_dirs": "../../pynest/examples",
         # path where to save gallery generated examples
-        "gallery_dirs": "auto_examples",
+        "gallery_dirs": "/",
         "filename_pattern": "/auto_examples/*.py",
         "ignore_pattern": r"__init__\.py",
         "plot_gallery": "True",
