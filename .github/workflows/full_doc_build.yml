@@ -37,6 +37,7 @@ jobs:
        
           - name: "Test-build documentation with NEST installed"
             shell: bash -l {0}
+            env:
             run: |
               mkdir -pv build
               cd build
