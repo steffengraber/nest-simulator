@@ -31,52 +31,16 @@ jobs:
           - name: "Install dependencies"
             run: |
               sudo apt update
-              sudo apt upgrade -y && \
-              sudo apt install -y --no-install-recommends \
-              build-essential libtool automake autotools-dev libreadline8 libreadline-dev freeglut3-dev \
-                cmake \
-                cython3 \
-                jq \
-                libboost-dev \
-                libgomp1 \
-                libgsl-dev \
-                libhdf5-dev \
-                libltdl7 \
-                libltdl-dev \
-                libmusic1v5 \
-                libncurses-dev \
-                libopenmpi-dev \
-                libomp-dev \
-                libpcre3 \
-                libpcre3-dev \
-                libpython3.10 \
-                libreadline-dev \
-                libzmq3-dev \
-                llvm-dev \
-                openmpi-bin \
-                pandoc \
-                pep8 \
-                python3-dev \
-                python3-h5py \
-                python3-ipython \
-                python3-jupyter-core \
-                python3-matplotlib \
-                python3-mpi4py \
-                python3-nose \
-                python3-numpy \
-                python3-pandas \
-                python3-path \
-                python3-pip \
-                python3-scipy \
-                python3-setuptools \
-                python3-sphinx \
-                python3-statsmodels \
-                python3-tk \
-                vera++ \
-                wget && \
-                update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && \
-                update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10 && \
-                python3 -m pip install --upgrade pip setuptools wheel mock pytest pytest-xdist pytest-timeout junitparser
+              sudo apt install python3-pip
+              python3 -m pip install --upgrade pip
+              python3 -m pip install -r doc/requirements.txt
+              # The pandoc executable, which is required, cannot be installed via pip see: https://stackoverflow.com/a/71585691
+              sudo apt install pandoc
+              
+          
+          - name: "Install h5py"
+            run: |
+              python3 -m pip install h5py
 
           - name: "Install MUSIC"
             run: |
