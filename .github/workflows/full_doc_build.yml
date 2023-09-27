@@ -55,5 +55,5 @@ jobs:
               name: "Full_doc_output_with images"
               path: |
                 doc/htmldoc/sphinx-output.log
-                doc/htmldoc/_build/html/
+                doc/_build/html/
     
