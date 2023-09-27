@@ -39,19 +39,21 @@ jobs:
             shell: bash -l {0}
             run: |
               mkdir -pv build
+              mkdir -pv install
               cd build
-              cmake -Dwith-userdoc=ON -DCMAKE_INSTALL_PREFIX=../install ..
+              cmake -DCMAKE_INSTALL_PREFIX=../install ..
               make VERBOSE=1
               make install
               . ../install/bin/nest_vars.sh
-              python -c "import nest; nest.help();"         
-              make docs |& tee sphinx-output.log
+              python -c "import nest; nest.help();" 
+              cd ../doc/htmldoc
+              sphinx-build . ../_build/html -b html |& tee sphinx-output.log
     
           - name: Upload artifacts
             uses: actions/upload-artifact@v3
             with:
               name: "Full_doc_output_with images"
               path: |
-                build/sphinx-output.log
-                build/doc/_build/html/
+                doc/htmldoc/sphinx-output.log
+                doc/htmldoc/_build/html/
     
