@@ -79,8 +79,7 @@ if ci_full_doc == "ON":
         "examples_dirs": "../../pynest/examples",
         # path where to save gallery generated examples
         "gallery_dirs": "auto_examples",
-        "filename_pattern": "/b",
-        "ignore_pattern": r"*\/sudoku\/*",
+        'filename_pattern': r'balancedneuron\.py',
         "plot_gallery": "True",
         "download_all_examples": False,
     }
