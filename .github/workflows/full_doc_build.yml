@@ -50,7 +50,7 @@ jobs:
           - name: Upload artifacts
             uses: actions/upload-artifact@v3
             with:
-              name: "Full_doc_output"
+              name: "Full_doc_output_with images"
               path: |
                 build/sphinx-output.log
                 build/doc/_build/html/
