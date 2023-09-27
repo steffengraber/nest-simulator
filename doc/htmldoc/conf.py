@@ -89,7 +89,10 @@ else:
         "examples_dirs": "../../pynest/examples",
         # path where to save gallery generated examples
         "gallery_dirs": "auto_examples",
-        "plot_gallery": "False",
+        'filename_pattern': r'.*\.py',
+        'ignore_pattern': r'aeif_cond_beta_multisynapse\.py',
+        'ignore_pattern': r'csa.*\.py',
+        "plot_gallery": "True",
         "download_all_examples": False,
     }
 

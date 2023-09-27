@@ -34,6 +34,30 @@ jobs:
               pip install -r doc/requirements.txt
               # The pandoc executable, which is required, cannot be installed via pip see: https://stackoverflow.com/a/71585691
               sudo apt install pandoc
+          
+          - name: "Install h5py"
+            run: |
+              python -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
+
+          - name: "Install LibNeurosim – WARNING WARNING NO PROPER PYTHON INSTALL!"
+            run: |
+              python -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
+
+          - name: "Install MUSIC"
+            run: |
+              chmod +x build_support/install_music.sh
+              ./build_support/install_music.sh
+
+          - name: "Install SIONlib"
+            run: |
+              chmod +x build_support/install_sionlib.sh
+              ./build_support/install_sionlib.sh
+
+          - name: "Install LibNeurosim – WARNING WARNING NO PROPER PYTHON INSTALL!"
+            run: |
+              chmod +x build_support/install_csa-libneurosim.sh
+              PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')"
+              ./build_support/install_csa-libneurosim.sh $PYLIB_DIR
 
           - name: "Build NEST"
             shell: bash -l {0}
