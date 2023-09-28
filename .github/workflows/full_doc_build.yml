@@ -195,6 +195,8 @@ jobs:
           - name: "USERDOC with images"
             if: "${{ contains(matrix.use, 'userdoc') }}"
             run: |
+              # Install sphinx stuff
+              python -m pip install --force-reinstall --upgrade sphinx==6.2.1 sphinx_autobuild==2021.3.14 sphinx-copybutton>=0.5.2 sphinx-notfound-page>=0.8.3 sphinx-design==0.4.1 sphinx-gallery==0.13.0 sphinx-material==0.0.35 sphinxcontrib-mermaid
               . install/bin/nest_vars.sh
               cd doc/htmldoc
               sphinx-build . ../_build/html -b html |& tee sphinx-output.log
