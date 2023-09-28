@@ -13,15 +13,15 @@ jobs:
           fail-fast: false
           matrix:
             os: ["ubuntu-20.04"]
-          cpp_compiler: ["gcc"]
-
-        # openmp, mpi, python, gsl, ltdl, boost, sionlib, libneurosim, optimize, warning, userdoc, music
-        use:
-          #- "boost, optimize, warning"
-          #- "openmp, python, gsl, ltdl, boost, optimize, warning"
-          #- "mpi, python, gsl, ltdl, boost, optimize, warning"
-          - "openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, optimize, warning, userdoc, music"
-        # available use flags (all default to "OFF"):
+            cpp_compiler: ["gcc"]
+    
+            # openmp, mpi, python, gsl, ltdl, boost, sionlib, libneurosim, optimize, warning, userdoc, music
+            use:
+              #- "boost, optimize, warning"
+              #- "openmp, python, gsl, ltdl, boost, optimize, warning"
+              #- "mpi, python, gsl, ltdl, boost, optimize, warning"
+              - "openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, optimize, warning, userdoc, music"
+            # available use flags (all default to "OFF"):
 
         steps:
           - name: "Checkout repository content"
