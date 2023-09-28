@@ -1,7 +1,3 @@
-#
-# detailed syntax defined in
-# https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-#
 name: "Full doc build"
 
 on: [push, pull_request]
@@ -14,74 +10,204 @@ jobs:
         env:
             CI_FULL_DOC: ON
         strategy:
-          fail-fast: false
-        steps:
-          - name: "Checkout repository content"
-            uses: actions/checkout@v3
-            with:
-              fetch-depth: 0
-    
-          - name: "Set up Python 3.x"
-            uses: actions/setup-python@v4
-            with:
-              # Using 3.8 because Read the docs does not work with higher versions.
-              # See also: https://github.com/nest/nest-simulator/pull/2744
-              python-version: 3.8
-    
-          - name: "Install dependencies"
-            run: |
-              sudo apt update
-              sudo apt install python3-pip
-              python3 -m pip install --upgrade pip
-              python3 -m pip install -r doc/requirements.txt
-              # The pandoc executable, which is required, cannot be installed via pip see: https://stackoverflow.com/a/71585691
-              sudo apt install pandoc
-              
-          
-          - name: "Install h5py"
-            run: |
-              python3 -m pip install h5py
+		  fail-fast: false
+		  matrix:
+			os: ["ubuntu-20.04"]
+			cpp_compiler: ["gcc"]
 
-          - name: "Install MUSIC"
-            run: |
-              chmod +x build_support/install_music.sh
-              ./build_support/install_music.sh
+			# available use flags (all default to "OFF"):
+			# openmp, mpi, python, gsl, ltdl, boost, sionlib, libneurosim, optimize, warning, userdoc, music
+			use:
+			  #- "boost, optimize, warning"
+			  #- "openmp, python, gsl, ltdl, boost, optimize, warning"
+			  #- "mpi, python, gsl, ltdl, boost, optimize, warning"
+			  - "openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, optimize, warning, userdoc, music"
 
-          - name: "Install SIONlib"
-            run: |
-              chmod +x build_support/install_sionlib.sh
-              ./build_support/install_sionlib.sh
+		steps:
+		  - name: "Checkout repository content"
+			uses: actions/checkout@v3
+			with:
+			  fetch-depth: 0
 
-          - name: "Install LibNeurosim – WARNING WARNING NO PROPER PYTHON INSTALL!"
-            run: |
-              chmod +x build_support/install_csa-libneurosim.sh
-              PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')"
-              ./build_support/install_csa-libneurosim.sh $PYLIB_DIR
+		  - name: "Set up Python 3.x"
+			uses: actions/setup-python@v4
+			with:
+			  python-version: 3.9
 
-          - name: "Build NEST"
-            shell: bash -l {0}
-            run: |
-              mkdir -pv build
-              mkdir -pv install
-              cd build
-              cmake -DCMAKE_INSTALL_PREFIX=../install ..
-              make VERBOSE=1
-              make install
-              . ../install/bin/nest_vars.sh
-              python -c "import nest; nest.help();"             
-       
-          - name: "Test-build documentation with NEST installed"
-            shell: bash -l {0}
-            run: |
-              . install/bin/nest_vars.sh
+		  - name: "Restore apt cache"
+			uses: actions/cache@v3
+			env:
+			  cache-name: "apt-cache"
+			with:
+			  path: |
+				!/var/cache/apt/archives/lock
+				!/var/cache/apt/archives/partial
+				/var/cache/apt
+			  key: ${{ runner.os }}-system-${{ env.cache-name }}-${{ hashFiles('**/environment.yml') }}
+			  restore-keys: |
+				${{ runner.os }}-system-${{ env.cache-name }}-
+				${{ runner.os }}-system-
+
+		  - name: "Install Linux system dependencies"
+			run: |
+			  sudo apt-get update
+			  # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
+			  sudo apt-get install ccache
+			  sudo apt-get install libltdl-dev libreadline6-dev libncurses5-dev libgsl0-dev python3-all-dev jq libpcre3 libpcre3-dev
+			  sudo apt-get install tcl8.6 tcl8.6-dev tk8.6-dev
+			  # Install MPI dependencies regardless of whether we compile NEST with or without MPI, so the installation of MPI4Py works 
+			  sudo apt-get install openmpi-bin libopenmpi-dev
+			  sudo apt-get install libboost-filesystem-dev libboost-regex-dev libboost-wave-dev libboost-python-dev libboost-program-options-dev libboost-test-dev
+			  sudo apt-get install pkg-config
+			  sudo ldconfig
+
+		  - name: "Install GSL system dependencies"
+			if: "${{ contains(matrix.use, 'gsl') }}"
+			run: |
+			  sudo apt-get install libgsl0-dev
+
+		  - name: "Install HDF5 system dependencies"
+			if: "${{ contains(matrix.use, 'hdf5') }}"
+			run: |
+			  sudo apt-get install libhdf5-dev
+
+		  - name: "Restore ccache"
+			# Using CCache to re-use compiled objects from prior runs that have the same
+			# source (hashed), compiler (mtime+size) and compile flags.
+			env:
+			  cache-name: "ccache"
+			uses: actions/cache@v3
+			with:
+			  path: |
+				$HOME/.ccache
+				.ccache
+				/home/runner/.ccache
+			  key: ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}-${{ matrix.NEST_BUILD_TYPE }}
+			  restore-keys: |
+				${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}-${{ matrix.NEST_BUILD_TYPE }}
+				${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}
+				${{ runner.os }}-${{ env.cache-name }}
+				${{ runner.os }}
+
+		  - name: "Restore pip cache"
+			env:
+			  cache-name: "pip-cache"
+			uses: actions/cache@v3
+			with:
+			  path: |
+				/opt/hostedtoolcache/Python/**/site-packages/*
+				$HOME/.cache/pip
+			  key: ${{ runner.os }}-python-${{ env.cache-name }}-${{ hashFiles('**/requirements.txt') }}
+			  restore-keys: |
+				${{ runner.os }}-python-${{ env.cache-name }}-
+				${{ runner.os }}-python-
+
+		  - name: "Install Python dependencies"
+			run: |
+			  python -m pip install --upgrade pip setuptools
+			  python -c "import setuptools; print('package location:', setuptools.__file__)"
+			  python -m pip install --force-reinstall --upgrade scipy 'junitparser>=2' numpy pytest pytest-timeout pytest-xdist cython matplotlib terminaltables pandoc pandas
+			  # Install mpi4py regardless of whether we compile NEST with or without MPI, so regressiontests/issue-1703.py will run in both cases
+			  python -m pip install --force-reinstall --upgrade mpi4py
+			  test \! -e "=2"   # assert junitparser is correctly quoted and '>' is not interpreted as shell redirect
+			  python -c "import pytest; print('package location:', pytest.__file__)"
+			  pip list
+
+		  - name: "Install h5py"
+			if: "${{ contains(matrix.use, 'hdf5') }}"
+			run: |
+			  python -m pip install --force-reinstall --upgrade --no-binary=h5py h5py
+
+		  - name: "Install MUSIC"
+			if: "${{ contains(matrix.use, 'music') }}"
+			run: |
+			  chmod +x build_support/install_music.sh
+			  ./build_support/install_music.sh
+
+		  - name: "Install SIONlib"
+			if: "${{ contains(matrix.use, 'sionlib') }}"
+			run: |
+			  chmod +x build_support/install_sionlib.sh
+			  ./build_support/install_sionlib.sh
+
+		  - name: "Install LibNeurosim – WARNING WARNING NO PROPER PYTHON INSTALL!"
+			if: "${{ contains(matrix.use, 'libneurosim') }}"
+			run: |
+			  chmod +x build_support/install_csa-libneurosim.sh
+			  PYLIB_DIR="$(python3 -c "import sysconfig; print(sysconfig.get_path('include'))" | sed 's/include/lib/')"
+			  ./build_support/install_csa-libneurosim.sh $PYLIB_DIR
+
+		  - name: "Configure NEST build"
+			env:
+			  CMAKE_C_COMPILER_LAUNCHER: ccache
+			  CMAKE_CXX_COMPILER_LAUNCHER: ccache
+			run: |
+			  mkdir -p "$NEST_VPATH/reports" build/ install/
+
+			  if [ "$xNEST_BUILD_COMPILER" = "CLANG" ]; then
+				  export CC=clang-11
+				  export CXX=clang++-11
+			  fi
+			  export CXX_FLAGS="-pedantic -Wextra -Wno-unknown-pragmas -D_GLIBCXX_ASSERTIONS"
+
+			  cd "build/"
+			  cmake \
+				  -DCMAKE_INSTALL_PREFIX="install/" \
+				  -DCMAKE_CXX_FLAGS="$CXX_FLAGS" \
+				  -Dwith-optimize=${{ contains(matrix.use, 'optimize') && 'ON' || 'OFF' }} \
+				  -Dwith-warning=${{ contains(matrix.use, 'warning') && 'ON' || 'OFF' }} \
+				  -Dwith-boost=${{ contains(matrix.use, 'boost') && 'ON' || 'OFF' }} \
+				  -Dwith-openmp=${{ contains(matrix.use, 'openmp') && 'ON' || 'OFF' }} \
+				  -Dwith-mpi=${{ contains(matrix.use, 'mpi') && 'ON' || 'OFF' }} \
+				  -Dwith-python=${{ contains(matrix.use, 'python') && 'ON' || 'OFF' }} \
+				  -Dwith-gsl=${{ contains(matrix.use, 'gsl') && 'ON' || 'OFF' }} \
+				  -Dwith-ltdl=${{ contains(matrix.use, 'ltdl') && 'ON' || 'OFF' }} \
+				  -Dwith-readline=${{ contains(matrix.use, 'readline') && 'ON' || 'OFF' }} \
+				  -Dwith-hdf5=${{ contains(matrix.use, 'hdf5') && 'ON' || 'OFF' }} \
+				  -Dwith-sionlib=${{ contains(matrix.use, 'sionlib') && '$HOME/.cache/sionlib.install' || 'OFF' }} \
+				  -Dwith-libneurosim=${{ contains(matrix.use, 'libneurosim') && '$HOME/.cache/libneurosim.install' || 'OFF' }} \
+				  ..
+
+		  - name: "Build NEST"
+			run: |
+			  cd build/
+			  env
+			  make VERBOSE=1
+
+		  - name: "Install NEST"
+			run: |
+			  cd build/
+			  make install
+
+		  - name: "Initialize Matplotlibrc"
+			run: |
+			  # initialize matplotlib backend
+			  mkdir -p $HOME/.matplotlib
+			  echo "backend : svg" > $HOME/.matplotlib/matplotlibrc
+
+		  - name: "Run NEST testsuite"
+			run: |
+			  pwd
+			  cd build/
+			  chmod -v u+x ${NEST_RESULT}/share/nest/testsuite/do_tests.sh
+			  make VERBOSE=1 installcheck
+		
+		  - name: "USERDOC with images"
+			if: "${{ contains(matrix.use, 'userdoc') }}"
+			run: |
+			  . install/bin/nest_vars.sh
               cd doc/htmldoc
               sphinx-build . ../_build/html -b html |& tee sphinx-output.log
-    
-          - name: Upload artifacts
-            uses: actions/upload-artifact@v3
-            with:
-              name: "Full_doc_output_with images"
-              path: |
-                doc/htmldoc/sphinx-output.log
-                doc/_build/html/
-    
+			  
+          
+          - name: "Upload install and test results"
+				uses: actions/upload-artifact@v3
+				if: always()
+				with:
+				  name: "build-logs-${{ matrix.os }}-${{ matrix.cpp_compiler }}-${{ matrix.use }}"
+				  path: |
+					install_manifest.txt
+					**.log
+					build/reports/**
+					doc/_build/html/
+					doc/htmldoc/sphinx-output.log
