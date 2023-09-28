@@ -40,13 +40,13 @@ jobs:
               cache-name: "apt-cache"
             with:
               path: |
-              !/var/cache/apt/archives/lock
-              !/var/cache/apt/archives/partial
-              /var/cache/apt
-              key: ${{ runner.os }}-system-${{ env.cache-name }}-${{ hashFiles('**/environment.yml') }}
-              restore-keys: |
-              ${{ runner.os }}-system-${{ env.cache-name }}-
-              ${{ runner.os }}-system-
+                !/var/cache/apt/archives/lock
+                !/var/cache/apt/archives/partial
+                /var/cache/apt
+                key: ${{ runner.os }}-system-${{ env.cache-name }}-${{ hashFiles('**/environment.yml') }}
+                restore-keys: |
+                ${{ runner.os }}-system-${{ env.cache-name }}-
+                ${{ runner.os }}-system-
 
           - name: "Install Linux system dependencies"
             run: |
@@ -79,15 +79,15 @@ jobs:
             uses: actions/cache@v3
             with:
               path: |
-              $HOME/.ccache
-              .ccache
-              /home/runner/.ccache
-              key: ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}-${{ matrix.NEST_BUILD_TYPE }}
-              restore-keys: |
-              ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}-${{ matrix.NEST_BUILD_TYPE }}
-              ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}
-              ${{ runner.os }}-${{ env.cache-name }}
-              ${{ runner.os }}
+                $HOME/.ccache
+                .ccache
+                /home/runner/.ccache
+                key: ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}-${{ matrix.NEST_BUILD_TYPE }}
+                restore-keys: |
+                ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}-${{ matrix.NEST_BUILD_TYPE }}
+                ${{ runner.os }}-${{ env.cache-name }}-${{ matrix.cpp_compiler }}
+                ${{ runner.os }}-${{ env.cache-name }}
+                ${{ runner.os }}
 
           - name: "Restore pip cache"
             env:
@@ -95,12 +95,12 @@ jobs:
             uses: actions/cache@v3
             with:
               path: |
-              /opt/hostedtoolcache/Python/**/site-packages/*
-              $HOME/.cache/pip
-              key: ${{ runner.os }}-python-${{ env.cache-name }}-${{ hashFiles('**/requirements.txt') }}
-              restore-keys: |
-              ${{ runner.os }}-python-${{ env.cache-name }}-
-              ${{ runner.os }}-python-
+                /opt/hostedtoolcache/Python/**/site-packages/*
+                $HOME/.cache/pip
+                key: ${{ runner.os }}-python-${{ env.cache-name }}-${{ hashFiles('**/requirements.txt') }}
+                restore-keys: |
+                ${{ runner.os }}-python-${{ env.cache-name }}-
+                ${{ runner.os }}-python-
 
           - name: "Install Python dependencies"
             run: |
@@ -196,8 +196,8 @@ jobs:
             if: "${{ contains(matrix.use, 'userdoc') }}"
             run: |
               . install/bin/nest_vars.sh
-                    cd doc/htmldoc
-                    sphinx-build . ../_build/html -b html |& tee sphinx-output.log
+              cd doc/htmldoc
+              sphinx-build . ../_build/html -b html |& tee sphinx-output.log
             
               
           - name: "Upload install and test results"
@@ -206,8 +206,8 @@ jobs:
             with:
               name: "build-logs-${{ matrix.os }}-${{ matrix.cpp_compiler }}-${{ matrix.use }}"
               path: |
-              install_manifest.txt
-              **.log
-              build/reports/**
-              doc/_build/html/
-              doc/htmldoc/sphinx-output.log
+                install_manifest.txt
+                **.log
+                build/reports/**
+                doc/_build/html/
+                doc/htmldoc/sphinx-output.log
