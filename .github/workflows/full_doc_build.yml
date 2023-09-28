@@ -202,9 +202,8 @@ jobs:
               
           - name: "Upload install and test results"
             uses: actions/upload-artifact@v3
-            if: always()
             with:
-              name: "build-logs-${{ matrix.os }}-${{ matrix.cpp_compiler }}-${{ matrix.use }}"
+              name: "build-artifacts-iamges"
               path: |
                 install_manifest.txt
                 **.log
