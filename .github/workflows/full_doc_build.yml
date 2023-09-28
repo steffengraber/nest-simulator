@@ -162,9 +162,10 @@ jobs:
                 -Dwith-python=${{ contains(matrix.use, 'python') && 'ON' || 'OFF' }} \
                 -Dwith-gsl=${{ contains(matrix.use, 'gsl') && 'ON' || 'OFF' }} \
                 -Dwith-ltdl=${{ contains(matrix.use, 'ltdl') && 'ON' || 'OFF' }} \
-                -Dwith-readline=${{ contains(matrix.use, 'readline') && 'ON' || 'OFF' }} \
+                -Dwith-readline=ON
                 -Dwith-hdf5=${{ contains(matrix.use, 'hdf5') && 'ON' || 'OFF' }} \
                 -Dwith-sionlib=${{ contains(matrix.use, 'sionlib') && '$HOME/.cache/sionlib.install' || 'OFF' }} \
+                -Dwith-music=${{ contains(matrix.use, 'music') && '$HOME/.cache/music.install' || 'OFF' }}
                 -Dwith-libneurosim=${{ contains(matrix.use, 'libneurosim') && '$HOME/.cache/libneurosim.install' || 'OFF' }} \
                 ..
 
