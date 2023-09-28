@@ -6,7 +6,6 @@ jobs:
     sphinx_nest_full:
         # as close as possible to the Readthedocs setup (system install cmake, pip install -r doc/requirements.txt)
         runs-on: "ubuntu-22.04"
-        needs: []
         env:
             CI_FULL_DOC: ON
         strategy:
