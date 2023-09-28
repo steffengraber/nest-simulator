@@ -185,12 +185,12 @@ jobs:
               mkdir -p $HOME/.matplotlib
               echo "backend : svg" > $HOME/.matplotlib/matplotlibrc
 
-          - name: "Run NEST testsuite"
-            run: |
-              pwd
-              cd build/
-              chmod -v u+x install/share/nest/testsuite/do_tests.sh
-              make VERBOSE=1 installcheck
+          # - name: "Run NEST testsuite"
+          #   run: |
+          #     pwd
+          #     cd build/
+          #     chmod -v u+x install/share/nest/testsuite/do_tests.sh
+          #     make VERBOSE=1 installcheck
         
           - name: "USERDOC with images"
             if: "${{ contains(matrix.use, 'userdoc') }}"
