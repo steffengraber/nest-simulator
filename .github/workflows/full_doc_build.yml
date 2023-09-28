@@ -124,7 +124,7 @@ jobs:
               chmod +x build_support/install_music.sh
               ./build_support/install_music.sh
 
-            - name: "Install SIONlib"
+          - name: "Install SIONlib"
             if: "${{ contains(matrix.use, 'sionlib') }}"
             run: |
               chmod +x build_support/install_sionlib.sh
