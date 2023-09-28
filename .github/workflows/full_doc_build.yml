@@ -12,7 +12,7 @@ jobs:
         strategy:
           fail-fast: false
           matrix:
-          os: ["ubuntu-20.04"]
+            os: ["ubuntu-20.04"]
           cpp_compiler: ["gcc"]
 
         # openmp, mpi, python, gsl, ltdl, boost, sionlib, libneurosim, optimize, warning, userdoc, music
