@@ -79,7 +79,7 @@ if ci_full_doc == "ON":
         "examples_dirs": "../../pynest/examples",
         # path where to save gallery generated examples
         "filename_pattern": r".*\.py",
-        "ignore_pattern": [r"aeif_cond_beta_multisynapse\.py", "csa.*\.py"],
+        "ignore_pattern": [r"aeif_cond_beta_multisynapse\.py", r"csa.*\.py"],
         "plot_gallery": "True",
         "download_all_examples": False,
     }
