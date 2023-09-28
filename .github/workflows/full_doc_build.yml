@@ -142,7 +142,7 @@ jobs:
               CMAKE_C_COMPILER_LAUNCHER: ccache
               CMAKE_CXX_COMPILER_LAUNCHER: ccache
             run: |
-              mkdir -p "$NEST_VPATH/reports" build/ install/
+              mkdir -p build/reports install/
 
               if [ "$xNEST_BUILD_COMPILER" = "CLANG" ]; then
                 export CC=clang-11
