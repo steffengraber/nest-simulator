@@ -581,6 +581,7 @@ jobs:
               -Dwith-readline=${{ contains(matrix.use, 'readline') && 'ON' || 'OFF' }} \
               -Dwith-hdf5=${{ contains(matrix.use, 'hdf5') && 'ON' || 'OFF' }} \
               -Dwith-sionlib=${{ contains(matrix.use, 'sionlib') && '$HOME/.cache/sionlib.install' || 'OFF' }} \
+              -Dwith-music=${{ contains(matrix.use, 'music') && '$HOME/.cache/music.install' || 'OFF' }} \
               -Dwith-libneurosim=${{ contains(matrix.use, 'libneurosim') && '$HOME/.cache/libneurosim.install' || 'OFF' }} \
               ..
 
