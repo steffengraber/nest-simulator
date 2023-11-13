@@ -437,7 +437,7 @@ jobs:
           - "boost, optimize, warning"
           - "openmp, python, gsl, ltdl, boost, optimize, warning"
           - "mpi, python, gsl, ltdl, boost, optimize, warning"
-          - "openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, optimize, warning"
+          - "openmp, mpi, python, gsl, ltdl, boost, hdf5, sionlib, libneurosim, music, optimize, warning"
 
     steps:
       - name: "Checkout repository content"
