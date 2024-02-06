@@ -1,6 +1,8 @@
 version: 2
 
-formats: htmlzip, epub
+formats:
+  - htmlzip
+  - epub
 
 build:
   os: ubuntu-22.04
