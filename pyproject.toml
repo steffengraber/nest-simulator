@@ -8,9 +8,6 @@ requires = [
   "Cython",
   "pathlib",
   "ninja; platform_system!='Windows'",
-  "gsl",
-  "readline",
-  "boost",
   "pkgconfig"
 ]
 build-backend = "setuptools.build_meta"
