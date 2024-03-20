@@ -1,4 +1,5 @@
 # from setuptools import setup
+import os
 import re
 from pathlib import Path
 
@@ -6,6 +7,11 @@ from skbuild import setup
 
 for i in (Path(__file__).resolve().parent / "_skbuild").rglob("CMakeCache.txt"):
     i.write_text(re.sub("^//.*$\n^[^#].*pip-build-env.*$", "", i.read_text(), flags=re.M))
+
+print("###### show all environment variables and their values. ######")
+print(os.environ)
+
+#  python -c 'import site; print(site.getsitepackages())'
 
 setup(
     name="nest_wheel",
@@ -18,6 +24,7 @@ setup(
     packages=["nest"],
     python_requires=">=3.8, <4",
     install_requires=[
+        "libtool",
         "boost",
         "numpy",
         "pandas",
