@@ -56,7 +56,7 @@ setup(
         "clang-format == 17.0.4",
         "attrs",
     ],
-    cmake_install_dir=".",
+    cmake_install_dir="./wheelhouse",
     cmake_args=[
         "-Dwith-python=ON",
         "-Dwith-boost=ON",
