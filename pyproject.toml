@@ -3,7 +3,7 @@
 requires = [
   "setuptools>=42",
   "scikit-build>=0.13",
-  "cmake>=3.19",
+  "cmake>=3.18",
   "wheel",
   "Cython",
   "pathlib",
