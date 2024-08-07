@@ -20,8 +20,8 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"
-version = "3.8.post0.dev0"
-description = "A great package."
+version = "3.8.post0.dev1"
+description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 readme = "README.md"
 license.file = "LICENSE"
 authors = [
@@ -32,10 +32,6 @@ maintainers = [
 ]
 requires-python = ">=3.8"
 
-dependencies = [
-  "matplotlib",
-]
-
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: BSD License",
@@ -45,15 +41,40 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
-  "Topic :: Scientific/Engineering :: Physics",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "pynest-api",
+  "numpy",
+  "pandas",
+  "scipy",
+  "matplotlib",
+  "mpi4py",
+  "h5py",
 ]
 
 [project.urls]
-Homepage = "https://github.com/organization/package"
-Documentation = "https://package.readthedocs.io/"
-"Bug Tracker" = "https://github.com/organization/package/issues"
-Discussions = "https://github.com/organization/package/discussions"
-Changelog = "https://package.readthedocs.io/en/latest/changelog.html"
+Homepage = "https://nest-simulator.org/"
+Documentation = "https://nest-simulator.readthedocs.io/en/stable/"
+"Bug Tracker" = "https://github.com/nest/nest-simulator/issues"
+Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.html"
+
+
+[tool.scikit-build]
+sdist.cmake = true
+sdist.exclude = [
+  ".github",
+  "doc",
+]
+
+
+[tool.scikit-build.cmake.define]
+with-python = "ON"
+with-boost = "ON"
+with-gsl = "ON"
+with-readline = "ON"
+with-ltdl = "ON"
+with-openmp = "ON"
 
 [tool.cibuildwheel]
 build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
@@ -76,18 +97,17 @@ before-all =  """
   popd
   if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
   then
-    apk add readline readline-dev gsl gsl-dev ncurses ncurses-dev wget bzip2
+    apk add readline readline-dev gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5
   else
-    yum install -y readline readline-devel gsl gsl-devel ncurses ncurses-devel wget bzip2
+    yum install -y readline readline-devel gsl gsl-devel ncurses ncurses-devel wget bzip2 hdf5
   fi
   pushd ..
   wget https://archives.boost.io/release/1.73.0/source/boost_1_73_0.tar.bz2
   tar --bzip2 -xf boost_1_73_0.tar.bz2
   cd boost_1_73_0
   ./bootstrap.sh
-  ./b2 install"""
-  # patch
-  popd
+  ./b2 install
+  popd"""
 
 before-build = ""
 repair-wheel-command = ""
