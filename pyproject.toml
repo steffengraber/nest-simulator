@@ -20,7 +20,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"
-version = "3.8.post0.dev1"
+version = "3.8.post0.dev0"
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 readme = "README.md"
 license.file = "LICENSE"
@@ -61,12 +61,12 @@ Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.htm
 
 
 [tool.scikit-build]
+wheel.packages = []
 sdist.cmake = true
 sdist.exclude = [
   ".github",
   "doc",
 ]
-
 
 [tool.scikit-build.cmake.define]
 with-python = "ON"
@@ -77,11 +77,11 @@ with-ltdl = "ON"
 with-openmp = "ON"
 
 [tool.cibuildwheel]
-build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
+# build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
+build = "cp312-*"
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 free-threaded-support = false
-
 archs = ["auto64"]
 build-frontend = "default"
 config-settings = {}
@@ -89,7 +89,6 @@ dependency-versions = "pinned"
 environment = {}
 environment-pass = []
 build-verbosity = 1
-
 before-all =  """
   NEST_SRC_DIR = ${PWD}
   pushd ..
@@ -108,17 +107,13 @@ before-all =  """
   ./bootstrap.sh
   ./b2 install
   popd"""
-
 before-build = ""
 repair-wheel-command = ""
-
 test-command = ""
 before-test = ""
 test-requires = []
 test-extras = []
-
 container-engine = "docker"
-
 manylinux-x86_64-image = "manylinux2014"
 manylinux-i686-image = "manylinux2014"
 manylinux-aarch64-image = "manylinux2014"
@@ -127,7 +122,6 @@ manylinux-s390x-image = "manylinux2014"
 manylinux-pypy_x86_64-image = "manylinux2014"
 manylinux-pypy_i686-image = "manylinux2014"
 manylinux-pypy_aarch64-image = "manylinux2014"
-
 musllinux-x86_64-image = "musllinux_1_2"
 musllinux-i686-image = "musllinux_1_2"
 musllinux-aarch64-image = "musllinux_1_2"
