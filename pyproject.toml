@@ -77,7 +77,6 @@ with-ltdl = "ON"
 with-openmp = "ON"
 
 [tool.cibuildwheel]
-# build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
 build = "cp312-*"
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
