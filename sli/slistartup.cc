@@ -42,6 +42,40 @@
 #include "iostreamdatum.h"
 #include "stringdatum.h"
 
+////////
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "whereami.h"
+
+
+#if defined( __GNUC__ ) && !defined( _WIN32 )
+__attribute__( ( constructor ) )
+#endif
+
+std::string executablePath;
+void
+getExecutablePath()
+{
+  int total_length = 0;
+  int dirname_length = 0;
+
+  total_length = wai_getExecutablePath( NULL, 0, &dirname_length );
+  if ( total_length > 0 )
+  {
+    char* buffer = static_cast< char* >( malloc( total_length + 1 ) );
+    wai_getExecutablePath( buffer, total_length, &dirname_length );
+    buffer[ total_length ] = '\0';
+
+    executablePath = std::string( buffer );
+    std::cout << "Executable path: " << executablePath << std::endl;
+
+    free( buffer );
+  }
+}
+
+////////
+
 // Access to environement variables.
 #ifdef __APPLE__
 #include <crt_externs.h>
@@ -133,10 +167,12 @@ SLIStartup::GetenvFunction::execute( SLIInterpreter* i ) const
 }
 
 SLIStartup::SLIStartup( int argc, char** argv )
-  // To avoid problems due to string substitution in NEST binaries during
-  // Conda installation, we need to convert the literal to string, cstr and back,
-  // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
-  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
+  // getExecutablePath();
+  //  To avoid problems due to string substitution in NEST binaries during
+  //  Conda installation, we need to convert the literal to string, cstr and back,
+  //  see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
+  //  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
+  : sliprefix( executablePath )
   , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
   , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
   , startupfile( slilibdir + "/sli/sli-init.sli" )
@@ -201,6 +237,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   , exitcode_unknownerror_name( "unknownerror" )
   , environment_name( "environment" )
 {
+  getExecutablePath();
   ArrayDatum args_array;
 
   // argv[0] is the name of the program that was given to the shell.
