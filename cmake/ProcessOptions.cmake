@@ -200,15 +200,23 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
           "@loader_path/../../../nest"
           PARENT_SCOPE )
     else ()
-      set( CMAKE_INSTALL_RPATH
-          # for binaries
-          "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/nest"
-          # for libraries (except pynestkernel)
-          "\$ORIGIN/../../${CMAKE_INSTALL_LIBDIR}/nest"
-          # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
-          # while libs are at the root of that at <prefix>/lib(64)/nest
-          "\$ORIGIN/../../../nest"
-          PARENT_SCOPE )
+      if(DEFINED ENV{NEST_WHEEL_BUILD})
+        message(STATUS "Wheel build")
+        set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE)
+      else()
+        message(WARNING "Build from source")
+        # set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}/${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE)
+
+        set( CMAKE_INSTALL_RPATH
+            # for binaries
+            "${CMAKE_INSTALL_PREFIX}/bin/nest"
+            # for libraries (except pynestkernel)
+            "${CMAKE_INSTALL_PREFIX}/lib/nest"
+            # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
+            # while libs are at the root of that at <prefix>/lib(64)/nest
+            "${CMAKE_INSTALL_PREFIX}/lib/${Python_VERSION_MINOR}/site-packages/nest"
+            PARENT_SCOPE )
+      endif()
     endif ()
 
     # add the automatically determined parts of the RPATH
@@ -374,20 +382,14 @@ function( NEST_PROCESS_WITH_PYTHON )
   endif ()
 endfunction()
 
-function( NEST_POST_PROCESS_WITH_PYTHON )# Check if environment variable exists
-
-  if ( Python_FOUND )
-    if(DEFINED ENV{VIRTUAL_ENV} OR DEFINED ENV{CONDA_PREFIX} OR DEFINED ENV{VENV})
-      # Environment variable exists
-      message(STATUS "Environment variable exists.")
-      message(STATUS "Value of VIRTUAL_ENV: ${ENV{VIRTUAL_ENV}}")
-      message(STATUS "Value of CONDA_PREFIX: ${ENV{CONDA_PREFIX}}")
-      message(STATUS "Value of VENV: ${ENV{VENV}}")
-      set( PYEXECDIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE )
-      else()
-      # Environment variable does not exist
-      message(WARNING "Virtual environment does not exist.")
-      set( PYEXECDIR "$${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE )
+function(NEST_POST_PROCESS_WITH_PYTHON)
+  if(Python_FOUND)
+    if(DEFINED ENV{NEST_WHEEL_BUILD})
+      message(STATUS "Wheel build")
+      set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE)
+    else()
+      message(WARNING "Build from source")
+      set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}/${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE)
     endif()
   endif()
 endfunction()

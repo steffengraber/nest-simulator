@@ -98,6 +98,7 @@ before-all =  """
   cd boost_1_73_0
   ./bootstrap.sh
   ./b2 install
+  export NEST_WHEEL_BUILD=1
   """
 before-build = ""
 repair-wheel-command = ""
