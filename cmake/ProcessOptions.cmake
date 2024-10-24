@@ -214,7 +214,7 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
             "${CMAKE_INSTALL_PREFIX}/lib/nest"
             # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
             # while libs are at the root of that at <prefix>/lib(64)/nest
-            "${CMAKE_INSTALL_PREFIX}/lib/${Python_VERSION_MINOR}/site-packages/nest"
+            "${CMAKE_INSTALL_PREFIX}/lib/nest"
             PARENT_SCOPE )
       endif()
     endif ()
