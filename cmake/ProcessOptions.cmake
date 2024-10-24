@@ -374,11 +374,24 @@ function( NEST_PROCESS_WITH_PYTHON )
   endif ()
 endfunction()
 
-function( NEST_POST_PROCESS_WITH_PYTHON )
+function( NEST_POST_PROCESS_WITH_PYTHON )# Check if environment variable exists
+
   if ( Python_FOUND )
-    set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE )
+    if(DEFINED ENV{VIRTUAL_ENV} OR DEFINED ENV{CONDA_PREFIX} OR DEFINED ENV{VENV})
+      # Environment variable exists
+      message(STATUS "Environment variable exists.")
+      message(STATUS "Value of VIRTUAL_ENV: ${ENV{VIRTUAL_ENV}}")
+      message(STATUS "Value of CONDA_PREFIX: ${ENV{CONDA_PREFIX}}")
+      message(STATUS "Value of VENV: ${ENV{VENV}}")
+      set( PYEXECDIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE )
+      else()
+      # Environment variable does not exist
+      message(WARNING "Virtual environment does not exist.")
+      set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE )
+    endif()
   endif()
 endfunction()
+
 
 function( NEST_PROCESS_WITH_OPENMP )
   # Find OPENMP

@@ -87,6 +87,8 @@ extern "C"
 }
 #endif
 
+extern const std::string executablePath;
+
 // definition of static variables and functions declared in processes.h:
 pid_t Processes::children_group = 0;
 

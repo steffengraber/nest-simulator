@@ -86,12 +86,6 @@ environment-pass = []
 build-verbosity = 2
 before-all =  """
   NEST_SRC_DIR=${PWD}
-    # Apply patches
-  # git apply -v ./build_support/nest_vars.sh.in.patch
-  # git apply -v ./build_support/slistartup.cc.patch
-  # git apply -v ./build_support/nest-config.in.patch
-  # git apply -v ./build_support/module_manager.cpp.patch
-  # Install packages
   if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
   then
     apk add git readline readline-dev libc6-compat gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5
@@ -104,6 +98,8 @@ before-all =  """
   cd boost_1_73_0
   ./bootstrap.sh
   ./b2 install
+  python3 -m venv build
+  source ./build/bin/activate
   """
 before-build = ""
 repair-wheel-command = ""
@@ -137,11 +133,11 @@ repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest
 
 [tool.pytest.ini_options]
 markers = [
-    "skipif_missing_gsl: skip test if NEST was built without GSL support",
-    "skipif_missing_hdf5: skip test if NEST was built without HDF5 support",
-    "skipif_missing_mpi: skip test if NEST was built without MPI support",
-    "skipif_missing_threads: skip test if NEST was built without multithreading support",
-    "simulation: the simulation class to use. Always pass a 2nd dummy argument"
+  "skipif_missing_gsl: skip test if NEST was built without GSL support",
+  "skipif_missing_hdf5: skip test if NEST was built without HDF5 support",
+  "skipif_missing_mpi: skip test if NEST was built without MPI support",
+  "skipif_missing_threads: skip test if NEST was built without multithreading support",
+  "simulation: the simulation class to use. Always pass a 2nd dummy argument"
 ]
 
 [tool.isort]

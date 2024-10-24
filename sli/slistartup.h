@@ -162,4 +162,12 @@ public:
   }
 };
 
+// std::string getExecutablePath();
+// External variable declaration
+extern std::string getEnvironmentBasePath();
+extern std::string executable_path;
+extern std::string bin_path;
+extern std::string base_path;
+
+
 #endif
