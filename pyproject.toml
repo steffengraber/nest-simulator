@@ -86,6 +86,7 @@ environment-pass = []
 build-verbosity = 2
 before-all =  """
   NEST_SRC_DIR=${PWD}
+  env
   if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
   then
     apk add git readline readline-dev libc6-compat gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5
@@ -98,7 +99,6 @@ before-all =  """
   cd boost_1_73_0
   ./bootstrap.sh
   ./b2 install
-  export NEST_WHEEL_BUILD=1
   """
 before-build = ""
 repair-wheel-command = ""
