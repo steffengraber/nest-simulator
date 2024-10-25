@@ -193,9 +193,9 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
     if ( APPLE )
       set( CMAKE_INSTALL_RPATH
           # for binaries
-          "@loader_path/../${CMAKE_INSTALL_LIBDIR}/nest"
+          "${CMAKE_INSTALL_PREFIX}/bin"
           # for libraries (except pynestkernel)
-          "@loader_path/../../${CMAKE_INSTALL_LIBDIR}/nest"
+          "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PREFIX}/lib"
           # for pynestkernel: origin at <prefix>/lib/python3.x/site-packages/nest
           "@loader_path/../../../nest"
           PARENT_SCOPE )
@@ -376,7 +376,7 @@ endfunction()
 
 function( NEST_POST_PROCESS_WITH_PYTHON )
   if ( Python_FOUND )
-    set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE )
+    set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}" PARENT_SCOPE )
   endif()
 endfunction()
 
