@@ -43,17 +43,6 @@
 #include "stringdatum.h"
 
 ////////
-#include <filesystem> // For std::filesystem
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "whereami.h"
-
-
-#if defined( __GNUC__ ) && !defined( _WIN32 )
-__attribute__( ( constructor ) )
-#endif
 
 
 std::string executable_path;
@@ -68,11 +57,7 @@ getEnvironmentBasePath()
   total_length = wai_getExecutablePath( NULL, 0, &dirname_length );
   if ( total_length > 0 )
   {
-    char* buffer = static_cast< char* >( malloc( total_length + 1 ) );
-    wai_getExecutablePath( buffer, total_length, &dirname_length );
-    buffer[ total_length ] = '\0';
-    std::cout << "Executable path (function): " << std::string( buffer ) << std::endl;
-    executable_path = std::string( buffer );
+
 
     std::filesystem::path p( executable_path );
     bin_path = p.parent_path().string();
