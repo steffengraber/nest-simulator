@@ -202,9 +202,9 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
     else ()
       set( CMAKE_INSTALL_RPATH
           # for binaries
-          "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/nest"
+          "${CMAKE_INSTALL_PREFIX}/bin"
           # for libraries (except pynestkernel)
-          "\$ORIGIN/../../${CMAKE_INSTALL_LIBDIR}/nest"
+          "\${CMAKE_INSTALL_PREFIX}/lib"
           # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
           # while libs are at the root of that at <prefix>/lib(64)/nest
           "\$ORIGIN/../../../nest"
