@@ -193,9 +193,9 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
     if ( APPLE )
       set( CMAKE_INSTALL_RPATH
           # for binaries
-          "${CMAKE_INSTALL_PREFIX}/bin"
+          "@loader_path/../${CMAKE_INSTALL_LIBDIR}/nest"
           # for libraries (except pynestkernel)
-          "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_PREFIX}/lib"
+          "@loader_path/../../${CMAKE_INSTALL_LIBDIR}/nest"
           # for pynestkernel: origin at <prefix>/lib/python3.x/site-packages/nest
           "@loader_path/../../../nest"
           PARENT_SCOPE )
@@ -215,12 +215,12 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
         message(STATUS "Build from source.")
         set( CMAKE_INSTALL_RPATH
           # for binaries
-          "\$ORIGIN/../../../${CMAKE_INSTALL_LIBDIR}/nest"
+          "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/nest"
           # for libraries (except pynestkernel)
-          "\$ORIGIN/../../../../${CMAKE_INSTALL_LIBDIR}/nest"
+          "\$ORIGIN/../../${CMAKE_INSTALL_LIBDIR}/nest"
           # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
           # while libs are at the root of that at <prefix>/lib(64)/nest
-          "\$ORIGIN/../../../../../nest"
+          "\$ORIGIN/../../../nest"
           PARENT_SCOPE )
       # endif()
     endif ()
