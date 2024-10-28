@@ -342,7 +342,7 @@ function( NEST_PROCESS_WITH_PYTHON )
         endif()
 
         # Setting CMAKE_INSTALL_PREFIX effects the inclusion of GNUInstallDirs defining CMAKE_INSTALL_<dir> and CMAKE_INSTALL_FULL_<dir>
-        get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../../../../.." ABSOLUTE)
+        get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../../.." ABSOLUTE)
         set ( CMAKE_INSTALL_PREFIX "${Python_EnvRoot}" CACHE PATH "Default install prefix for the active Python interpreter" FORCE )
       endif ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
 
