@@ -48,87 +48,37 @@
 std::string executable_path;
 std::string bin_path;
 std::string base_path;
+
+/* until now install only in virtual environments */
 std::string
 getEnvironmentBasePath()
 {
-  int total_length = 0;
-  int dirname_length = 0;
+  std::filesystem::path p( executable_path );
+  bin_path = p.parent_path().string();
+  std::cout << "Bin path: " << bin_path << std::endl;
 
-  total_length = wai_getExecutablePath( NULL, 0, &dirname_length );
-  if ( total_length > 0 )
+
+  // Check for conda environment first
+  const char* conda_prefix = getenv( "CONDA_PREFIX" );
+  if ( conda_prefix != nullptr )
   {
-
-
-    std::filesystem::path p( executable_path );
-    bin_path = p.parent_path().string();
-    std::cout << "Bin path: " << bin_path << std::endl;
-
-
-    // Check for conda environment first
-    const char* conda_prefix = getenv( "CONDA_PREFIX" );
-    if ( conda_prefix != nullptr )
-    {
-      return std::filesystem::path( conda_prefix ).string();
-    }
-
-    // Check for venv environment
-    const char* virtual_env = getenv( "VIRTUAL_ENV" );
-    if ( virtual_env != nullptr )
-    {
-      return std::filesystem::path( virtual_env ).string();
-    }
-
-    // Check for virtualenv environment (older versions might not set VIRTUAL_ENV)
-    const char* venv_path = getenv( "VENV" ); // Check for older versions of virtualenv
-    if ( venv_path != nullptr )
-    {
-      return std::filesystem::path( venv_path ).string();
-    }
-
-
-    // std::filesystem::path b(bin_path);
-    // base_path = b.parent_path().string();
-    // std::cout << "Base path: " << base_path << std::endl;
-
-
-    free( buffer );
+    return std::filesystem::path( conda_prefix ).string();
   }
-  else
+
+  // Check for venv environment
+  const char* virtual_env = getenv( "VIRTUAL_ENV" );
+  if ( virtual_env != nullptr )
   {
-    std::cerr << "Error getting virtual environment base path." << std::endl;
-    return 0;
+    return std::filesystem::path( virtual_env ).string();
+  }
+
+  // Check for virtualenv environment (older versions might not set VIRTUAL_ENV)
+  const char* venv_path = getenv( "VENV" ); // Check for older versions of virtualenv
+  if ( venv_path != nullptr )
+  {
+    return std::filesystem::path( venv_path ).string();
   }
 }
-
-// void useExecutablePath() {
-//     if (g_executablePath.empty()) {
-//         std::cerr << "Executable path not initialized!" << std::endl;
-//         return;
-//     }
-
-//     std::cout << "Using executable path: " << g_executablePath << std::endl;
-
-//     // Example: Extract directory
-//     size_t lastSlash = g_executablePath.find_last_of('/');
-//     if (lastSlash != std::string::npos) {
-//         std::string directory = g_executablePath.substr(0, lastSlash);
-//         std::cout << "Executable directory: " << directory << std::endl;
-//         // ... Do something with the directory ...
-//     }
-// }
-
-// int main() {
-//     g_executablePath = getExecutablePath(); // Initialize the global path
-
-//     if (g_executablePath.empty()){
-//         std::cerr << "Could not get the executable path." << std::endl;
-//         return 1;
-//     }
-
-//     useExecutablePath();
-
-//     return 0;
-// }
 
 ////////
 

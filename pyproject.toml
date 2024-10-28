@@ -100,7 +100,10 @@ before-all =  """
   ./bootstrap.sh
   ./b2 install
   """
-before-build = ""
+before-build = """
+  python3 -m venv myvenv
+  . ./myvenv/bin/activate
+"""
 repair-wheel-command = ""
 test-command = ""
 before-test = ""
