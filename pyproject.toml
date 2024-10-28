@@ -101,8 +101,15 @@ before-all =  """
   ./b2 install
   """
 before-build = """
-  python3 -m venv myvenv
-  . ./myvenv/bin/activate
+  python3 -m venv buildenv
+  . ./buildenv/bin/activate
+  if [ -z "$VIRTUAL_ENV" ]; then
+    echo "Keine aktive virtuelle Umgebung gefunden."
+  else
+    echo "Aktive virtuelle Umgebung: $VIRTUAL_ENV"
+  fi
+  echo "HIER IST DAS ENVIRONMENT: "
+  env
 """
 repair-wheel-command = ""
 test-command = ""
