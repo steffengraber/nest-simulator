@@ -200,7 +200,20 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
           "@loader_path/../../../nest"
           PARENT_SCOPE )
     else ()
-      set( CMAKE_INSTALL_RPATH
+      # if(DEFINED ENV{CIBUILDWHEEL})
+      #   message(STATUS "Wheel build.")
+      #   set( CMAKE_INSTALL_RPATH
+      #       # for binaries
+      #       "${CMAKE_INSTALL_PREFIX}/bin/nest"
+      #       # for libraries (except pynestkernel)
+      #       "${CMAKE_INSTALL_PREFIX}/lib/nest"
+      #       # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
+      #       # while libs are at the root of that at <prefix>/lib(64)/nest
+      #       "\$ORIGIN/../../../nest"
+      #       PARENT_SCOPE )
+      # else()
+        message(STATUS "Build from source.")
+        set( CMAKE_INSTALL_RPATH
           # for binaries
           "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/nest"
           # for libraries (except pynestkernel)
@@ -209,6 +222,7 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
           # while libs are at the root of that at <prefix>/lib(64)/nest
           "\$ORIGIN/../../../nest"
           PARENT_SCOPE )
+      # endif()
     endif ()
 
     # add the automatically determined parts of the RPATH
@@ -331,6 +345,7 @@ function( NEST_PROCESS_WITH_PYTHON )
     endif()
 
     if ( Python_FOUND )
+      message(STATUS "PYTHON IST DA")
       if ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
         execute_process( COMMAND "${Python_EXECUTABLE}" "-c"
           "import sys, os; print(int(bool(os.environ.get('CONDA_DEFAULT_ENV', False)) or (sys.prefix != sys.base_prefix)))"
@@ -342,10 +357,26 @@ function( NEST_PROCESS_WITH_PYTHON )
         endif()
 
         # Setting CMAKE_INSTALL_PREFIX effects the inclusion of GNUInstallDirs defining CMAKE_INSTALL_<dir> and CMAKE_INSTALL_FULL_<dir>
+        # get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../.." ABSOLUTE)
+        if(DEFINED ENV{CIBUILDWHEEL})
+          message(STATUS "Wheel BUILD 2 - Set CMAKE_INSTALL_PREFIX")
+
+          # set(Python_FIND_VIRTUALENV "FIRST")
+          # find_package(Python3 COMPONENTS Interpreter)
+          # if(Python3_FOUND)
+          #   set(PYTHON_3 ${Python3_EXECUTABLE} CACHE PATH "")
+          #   message(STATUS "EIN VIRTUAL ENV")
+          #   message(STATUS "##################################### Python3: " ${PYTHON_3})
+          #   #set(PYTHON_ROOT_DIR "${Python3_ROOT_DIR}" CACHE PATH "")
+
+          # endif()
+
+          get_filename_component( Python_EnvRoot "${Python3_ROOT_DIR}" ABSOLUTE)
+          set ( CMAKE_INSTALL_PREFIX "${Python_EnvRoot}" CACHE PATH "Default install prefix for the active Python interpreter" FORCE )
+          message(PROJECT_ROOT_DIR="${Python_EnvRoot}")
+        endif()
         get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../.." ABSOLUTE)
         set ( CMAKE_INSTALL_PREFIX "${Python_EnvRoot}" CACHE PATH "Default install prefix for the active Python interpreter" FORCE )
-        message(Python_EnvRoot="${Python_EnvRoot}")
-        message(Python_SITELIB="${Python_SITELIB}")
       endif ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
 
       # export found variables to parent scope
@@ -358,10 +389,6 @@ function( NEST_PROCESS_WITH_PYTHON )
       set( Python_VERSION_MINOR ${Python_VERSION_MINOR} PARENT_SCOPE )
       set( Python_INCLUDE_DIRS "${Python_INCLUDE_DIRS}" PARENT_SCOPE )
       set( Python_LIBRARIES "${Python_LIBRARIES}" PARENT_SCOPE )
-
-      message(Python_LIBRARIES="${Python_LIBRARIES}")
-      message(PYTHON="${PYTHON}")
-
 
       if ( cythonize-pynest )
         # Need updated Cython because of a change in the C api in Python 3.7
@@ -380,12 +407,21 @@ function( NEST_PROCESS_WITH_PYTHON )
   endif ()
 endfunction()
 
-function( NEST_POST_PROCESS_WITH_PYTHON )
-  if ( Python_FOUND )
-    set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}/.." PARENT_SCOPE )
-    message(PYEXECDIR="${PYEXECDIR}")
+function(NEST_POST_PROCESS_WITH_PYTHON)
+  if(Python_FOUND)
+    if(DEFINED ENV{CIBUILDWHEEL})
+      set(PYTHON_ROOT_DIR "${Python_ROOT_DIR}" PARENT_SCOPE)
+      message(STATUS "${Python_ROOT_DIR}")
+
+      message(STATUS "Wheel build")
+      set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE)
+    else()
+      message(WARNING "Build from source")
+      set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}/${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE)
+    endif()
   endif()
 endfunction()
+
 
 function( NEST_PROCESS_WITH_OPENMP )
   # Find OPENMP
