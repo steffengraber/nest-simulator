@@ -46,7 +46,7 @@ dependencies = [
 ]
 
 [project.scripts]
-nest_init = "build_support.modify_activate"
+nest_init = "build_support.modify_activate:main"
 
 [project.urls]
 Homepage = "https://nest-simulator.org/"
