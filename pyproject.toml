@@ -1,6 +1,9 @@
 [build-system]
-requires = ["scikit-build-core", "cython"]
-build-backend = "scikit_build_core.build"
+requires = ["scikit-build-core", "setuptools"]
+build-backend = "scikit_build_core.setuptools.build_meta"
+
+#requires = ["scikit-build-core", "cython"]
+#build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"

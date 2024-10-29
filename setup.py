@@ -1,6 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
+    cmake_source_dir=".",
     name="nest-simulator",
     # version='0.1.0',
     # ... other setup.py details ...
@@ -9,7 +10,7 @@ setup(
     # Define an entry point to automatically run `modify_activate` after installation
     entry_points={
         "console_scripts": [
-            "post-install-activate = scripts.modify_activate:main",
+            "post-install-activate = build_support.modify_activate:main",
         ],
     },
 )
