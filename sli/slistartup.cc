@@ -181,7 +181,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   //  see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
   //  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
   : sliprefix(
-    std::string( getEnvironmentBasePath() + "/" + PYTHON + PYTHON_VERSION_MINOR + "/site-packages" ).c_str() )
+    std::string( getEnvironmentBasePath() + "/lib/" + "python" + PYTHON_VERSION_MINOR + "/site-packages" ).c_str() )
   , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
   , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
   , startupfile( slilibdir + "/sli/sli-init.sli" )
