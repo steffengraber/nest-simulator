@@ -26,7 +26,7 @@ def modify_activate(activate_path, env_type):
     if env_type == "venv":
         with open(activate_path, "a") as f:
             f.write('\nexport PATH="${VIRTUAL_ENV}/lib/site-packages/bin:$PATH"\n')
-            f.write('export ANOTHER_VAR="another_value"\n')
+
     elif env_type == "virtualenv":
         with open(activate_path, "a") as f:
             f.write('\nMY_VAR="my_value"\n')
