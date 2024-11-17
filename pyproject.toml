@@ -55,7 +55,7 @@ Documentation = "https://nest-simulator.readthedocs.io/en/stable/"
 Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.html"
 
 [tool.scikit-build]
-sdist.include = ["./"]
+sdist.include = ["./", "build_suppot/modify_activate.py"]
 sdist.exclude = [".github"]
 build-dir = "build/{wheel_tag}"
 

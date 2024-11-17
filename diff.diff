@@ -1,0 +1,864 @@
+diff --git a/.github/workflows/build_nest_wheel.yml b/.github/workflows/build_nest_wheel.yml
+deleted file mode 100644
+index cc9ab8bd7..000000000
+--- a/.github/workflows/build_nest_wheel.yml
++++ /dev/null
+@@ -1,69 +0,0 @@
+-name: Build NEST simulator wheels
+-
+-on: [push, pull_request]
+-
+-jobs:
+-  build_wheels:
+-    name: Build wheels on ${{ matrix.os }}
+-    runs-on: ${{ matrix.os }}
+-    strategy:
+-      matrix:
+-        # macos-13 is an intel runner, macos-14 is apple silicon
+-        # ubuntu-24.04, macos-13, macos-14
+-        os: [ubuntu-24.04]
+-
+-    steps:
+-      - uses: actions/checkout@v4
+-
+-      - name: Build wheels
+-        uses: pypa/cibuildwheel@v2.20.0
+-        # env:
+-        #   CIBW_SOME_OPTION: value
+-        #    ...
+-        with:
+-          package-dir: .
+-          output-dir: wheelhouse
+-          config-file: "{package}/pyproject.toml"
+-
+-      - uses: actions/upload-artifact@v4
+-        with:
+-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+-          path: ./wheelhouse/*.whl
+-
+-  build_sdist:
+-    name: Build source distribution
+-    runs-on: ubuntu-latest
+-    steps:
+-      - uses: actions/checkout@v4
+-
+-      - name: Build sdist
+-        run: pipx run build --sdist
+-
+-      - uses: actions/upload-artifact@v4
+-        with:
+-          name: cibw-sdist
+-          path: dist/*.tar.gz
+-
+-  upload_pypi:
+-    name: Upload wheels to pypi
+-    needs: [build_wheels, build_sdist]
+-    runs-on: ubuntu-latest
+-    environment: testpypi
+-    permissions:
+-      id-token: write
+-    # if: github.event_name == 'release' && github.event.action == 'published'
+-    # or, alternatively, upload to PyPI on every tag starting with 'v' (remove on: release above to use this)
+-    # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+-    steps:
+-      - uses: actions/download-artifact@v4
+-        with:
+-          # unpacks all CIBW artifacts into dist/
+-          pattern: cibw-*
+-          path: dist
+-          merge-multiple: true
+-
+-      - uses: pypa/gh-action-pypi-publish@release/v1
+-        with:
+-          # only for test pypi
+-          repository-url: https://test.pypi.org/legacy/
+-          password: ${{ secrets.PYPI_TOKEN }}
+diff --git a/build_support/README.md b/build_support/README.md
+new file mode 100644
+index 000000000..ad2da8418
+--- /dev/null
++++ b/build_support/README.md
+@@ -0,0 +1,4 @@
++# CI and build support files
++
++This directory contains helper scripts for the CI build process, for checking
++the code style of NEST.
+diff --git a/build_support/modify_activate.py b/build_support/modify_activate.py
+deleted file mode 100755
+index bcb9dc155..000000000
+--- a/build_support/modify_activate.py
++++ /dev/null
+@@ -1,55 +0,0 @@
+-#!/usr/bin/env python
+-import os
+-import subprocess
+-import sys
+-
+-
+-def get_virtual_env_type(activate_path):
+-    """Detects the virtual environment type (venv, virtualenv, conda)."""
+-    # Check for venv, virtualenv, and conda by looking for common files
+-    venv_marker = os.path.join(os.path.dirname(activate_path), "pyvenv.cfg")
+-    virtualenv_marker = os.path.join(os.path.dirname(activate_path), "bin", "activate_this.py")
+-    conda_marker = os.path.join(os.path.dirname(activate_path), "conda-meta")
+-
+-    if os.path.exists(venv_marker):
+-        return "venv"
+-    elif os.path.exists(virtualenv_marker):
+-        return "virtualenv"
+-    elif os.path.exists(conda_marker):
+-        return "conda"
+-    else:
+-        return None
+-
+-
+-def modify_activate(activate_path, env_type):
+-    """Modifies the activate script to set environment variables."""
+-    if env_type == "venv":
+-        with open(activate_path, "a") as f:
+-            f.write('\nexport PATH="${VIRTUAL_ENV}/lib/site-packages/bin:$PATH"\n')
+-            f.write('export ANOTHER_VAR="another_value"\n')
+-    elif env_type == "virtualenv":
+-        with open(activate_path, "a") as f:
+-            f.write('\nMY_VAR="my_value"\n')
+-            f.write('ANOTHER_VAR="another_value"\n')
+-    elif env_type == "conda":
+-        with open(activate_path, "a") as f:
+-            f.write("\nMY_VAR='my_value'\n")
+-            f.write("ANOTHER_VAR='another_value'\n")
+-    else:
+-        print(f"Error: Could not determine virtual environment type. Aborting.")
+-        sys.exit(1)
+-
+-
+-if __name__ == "__main__":
+-    # Get the path to the activate script
+-    activate_path = os.path.join(os.environ["VIRTUAL_ENV"], "bin", "activate")
+-
+-    # Detect virtual environment type
+-    env_type = get_virtual_env_type(activate_path)
+-
+-    # Modify the activate script if the environment type is found
+-    if env_type:
+-        modify_activate(activate_path, env_type)
+-    else:
+-        print(f"Error: Could not determine virtual environment type. Aborting.")
+-        sys.exit(1)
+diff --git a/build_support/module_manager.cpp.patch b/build_support/module_manager.cpp.patch
+deleted file mode 100644
+index 1927c377e..000000000
+--- a/build_support/module_manager.cpp.patch
++++ /dev/null
+@@ -1,13 +0,0 @@
+-diff --git a/nestkernel/module_manager.cpp b/nestkernel/module_manager.cpp
+-index 57c668da9..82ddf5fc4 100644
+---- a/nestkernel/module_manager.cpp
+-+++ b/nestkernel/module_manager.cpp
+-@@ -50,7 +50,7 @@ ModuleManager::ModuleManager()
+-   // To avoid problems due to string substitution in NEST binaries during
+-   // Conda installation, we need to convert the literal to string, cstr and back,
+-   // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
+--  const std::string module_dir = std::string( NEST_INSTALL_PREFIX ).c_str() + std::string( "/" NEST_INSTALL_LIBDIR );
+-+  const std::string module_dir = std::string( NEST_INSTALL_LIBDIR );
+-   if ( lt_dladdsearchdir( module_dir.c_str() ) )
+-   {
+-     LOG( M_ERROR,
+diff --git a/build_support/nest-config.in.patch b/build_support/nest-config.in.patch
+deleted file mode 100644
+index fffff535b..000000000
+--- a/build_support/nest-config.in.patch
++++ /dev/null
+@@ -1,12 +0,0 @@
+-diff --git a/bin/nest-config.in b/bin/nest-config.in
+-index a54ae0352..16a27fb6a 100755
+---- a/bin/nest-config.in
+-+++ b/bin/nest-config.in
+-@@ -1,6 +1,6 @@
+- #! /bin/sh
+-
+--prefix="@CMAKE_INSTALL_PREFIX@"
+-+prefix="$( python3 -c 'import site; print(site.USER_SITE)' )"
+- exec_prefix=${prefix}
+-
+- usage()
+diff --git a/cmake/ProcessOptions.cmake b/cmake/ProcessOptions.cmake
+index f51e12f73..09498146d 100644
+--- a/cmake/ProcessOptions.cmake
++++ b/cmake/ProcessOptions.cmake
+@@ -200,20 +200,7 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
+           "@loader_path/../../../nest"
+           PARENT_SCOPE )
+     else ()
+-      # if(DEFINED ENV{CIBUILDWHEEL})
+-      #   message(STATUS "Wheel build.")
+-      #   set( CMAKE_INSTALL_RPATH
+-      #       # for binaries
+-      #       "${CMAKE_INSTALL_PREFIX}/bin/nest"
+-      #       # for libraries (except pynestkernel)
+-      #       "${CMAKE_INSTALL_PREFIX}/lib/nest"
+-      #       # for pynestkernel: origin at <prefix>/lib(64)/python3.x/site-packages/nest
+-      #       # while libs are at the root of that at <prefix>/lib(64)/nest
+-      #       "\$ORIGIN/../../../nest"
+-      #       PARENT_SCOPE )
+-      # else()
+-        message(STATUS "Build from source.")
+-        set( CMAKE_INSTALL_RPATH
++      set( CMAKE_INSTALL_RPATH
+           # for binaries
+           "\$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/nest"
+           # for libraries (except pynestkernel)
+@@ -222,7 +209,6 @@ function( NEST_PROCESS_STATIC_LIBRARIES )
+           # while libs are at the root of that at <prefix>/lib(64)/nest
+           "\$ORIGIN/../../../nest"
+           PARENT_SCOPE )
+-      # endif()
+     endif ()
+
+     # add the automatically determined parts of the RPATH
+@@ -345,7 +331,6 @@ function( NEST_PROCESS_WITH_PYTHON )
+     endif()
+
+     if ( Python_FOUND )
+-      message(STATUS "PYTHON IST DA")
+       if ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
+         execute_process( COMMAND "${Python_EXECUTABLE}" "-c"
+           "import sys, os; print(int(bool(os.environ.get('CONDA_DEFAULT_ENV', False)) or (sys.prefix != sys.base_prefix)))"
+@@ -357,24 +342,6 @@ function( NEST_PROCESS_WITH_PYTHON )
+         endif()
+
+         # Setting CMAKE_INSTALL_PREFIX effects the inclusion of GNUInstallDirs defining CMAKE_INSTALL_<dir> and CMAKE_INSTALL_FULL_<dir>
+-        # get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../.." ABSOLUTE)
+-        if(DEFINED ENV{CIBUILDWHEEL})
+-          message(STATUS "Wheel BUILD 2 - Set CMAKE_INSTALL_PREFIX")
+-
+-          # set(Python_FIND_VIRTUALENV "FIRST")
+-          # find_package(Python3 COMPONENTS Interpreter)
+-          # if(Python3_FOUND)
+-          #   set(PYTHON_3 ${Python3_EXECUTABLE} CACHE PATH "")
+-          #   message(STATUS "EIN VIRTUAL ENV")
+-          #   message(STATUS "##################################### Python3: " ${PYTHON_3})
+-          #   #set(PYTHON_ROOT_DIR "${Python3_ROOT_DIR}" CACHE PATH "")
+-
+-          # endif()
+-
+-          get_filename_component( Python_EnvRoot "${Python3_ROOT_DIR}" ABSOLUTE)
+-          set ( CMAKE_INSTALL_PREFIX "${Python_EnvRoot}" CACHE PATH "Default install prefix for the active Python interpreter" FORCE )
+-          message(PROJECT_ROOT_DIR="${Python_EnvRoot}")
+-        endif()
+         get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../.." ABSOLUTE)
+         set ( CMAKE_INSTALL_PREFIX "${Python_EnvRoot}" CACHE PATH "Default install prefix for the active Python interpreter" FORCE )
+       endif ( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
+@@ -407,22 +374,12 @@ function( NEST_PROCESS_WITH_PYTHON )
+   endif ()
+ endfunction()
+
+-function(NEST_POST_PROCESS_WITH_PYTHON)
+-  if(Python_FOUND)
+-    if(DEFINED ENV{CIBUILDWHEEL})
+-      set(PYTHON_ROOT_DIR "${Python_ROOT_DIR}" PARENT_SCOPE)
+-      message(STATUS "${Python_ROOT_DIR}")
+-
+-      message(STATUS "Wheel build")
+-      set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE)
+-    else()
+-      message(WARNING "Build from source")
+-      set(PY_EXEC_DIR "${CMAKE_INSTALL_PREFIX}/${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE)
+-    endif()
++function( NEST_POST_PROCESS_WITH_PYTHON )
++  if ( Python_FOUND )
++    set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE )
+   endif()
+ endfunction()
+
+-
+ function( NEST_PROCESS_WITH_OPENMP )
+   # Find OPENMP
+   if ( with-openmp )
+diff --git a/libnestutil/config.h.in b/libnestutil/config.h.in
+index 08b6493db..08b425156 100644
+--- a/libnestutil/config.h.in
++++ b/libnestutil/config.h.in
+@@ -54,11 +54,6 @@
+ #define NEST_EXITCODE_ABORT @NEST_EXITCODE_ABORT@
+ #define NEST_EXITCODE_SEGFAULT @NEST_EXITCODE_SEGFAULT@
+
+-#define PYTHON "@PYTHON@"
+-#define PYTHON_EXECUTABLE "@PYTHON_EXECUTABLE@"
+-#define PYTHON_VERSION "@PYTHON_VERSION@"
+-#define PYTHON_VERSION_MINOR "@PYTHON_VERSION_MINOR@"
+-
+ /* Name of package */
+ #define PACKAGE @PROJECT_NAME@
+
+diff --git a/models/aeif_cond_alpha.h b/models/aeif_cond_alpha.h
+index 43ff066e9..4cdc4ddf6 100644
+--- a/models/aeif_cond_alpha.h
++++ b/models/aeif_cond_alpha.h
+@@ -103,7 +103,14 @@ and
+ For the reference implementation of this model, see
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
+-See also [1]_.
++
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
+
+ Parameters
+ ++++++++++
+diff --git a/models/aeif_cond_alpha_astro.h b/models/aeif_cond_alpha_astro.h
+index afc1e08f8..09a15141e 100644
+--- a/models/aeif_cond_alpha_astro.h
++++ b/models/aeif_cond_alpha_astro.h
+@@ -110,7 +110,14 @@ For implementation details of the adaptive exponential integrate-and-fire neuron
+ model, see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
+-See also [1]_.
++
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
+
+ Parameters
+ ++++++++++
+diff --git a/models/aeif_cond_alpha_multisynapse.h b/models/aeif_cond_alpha_multisynapse.h
+index a85fca700..2366f81b9 100644
+--- a/models/aeif_cond_alpha_multisynapse.h
++++ b/models/aeif_cond_alpha_multisynapse.h
+@@ -96,6 +96,14 @@ When the neuron fires a spike, the adaptation current :math:`w <- w + b`.
+ For implementation details see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
++
+ Parameters
+ ++++++++++
+
+@@ -155,6 +163,14 @@ Receives
+
+ SpikeEvent, CurrentEvent, DataLoggingRequest
+
++References
++++++++++++
++
++.. [1] Brette R and Gerstner W (2005). Adaptive exponential
++       integrate-and-fire model as an effective description of neuronal
++       activity. Journal of Neurophysiology. 943637-3642
++       DOI: https://doi.org/10.1152/jn.00686.2005
++
+ See also
+ ++++++++
+
+diff --git a/models/aeif_cond_beta_multisynapse.h b/models/aeif_cond_beta_multisynapse.h
+index faa5523cd..34eec8f0d 100644
+--- a/models/aeif_cond_beta_multisynapse.h
++++ b/models/aeif_cond_beta_multisynapse.h
+@@ -113,6 +113,14 @@ When the neuron fires a spike, the adaptation current `w <- w + b`.
+ For implementation details see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
++
+ Parameters
+ ++++++++++
+
+@@ -172,6 +180,14 @@ Receives
+
+ SpikeEvent, CurrentEvent, DataLoggingRequest
+
++References
++++++++++++
++
++.. [1] Brette R and Gerstner W (2005). Adaptive exponential
++       integrate-and-fire model as an effective description of neuronal
++       activity. Journal of Neurophysiology. 943637-3642
++       DOI: https://doi.org/10.1152/jn.00686.2005
++
+ See also
+ ++++++++
+
+diff --git a/models/aeif_cond_exp.h b/models/aeif_cond_exp.h
+index 43036f7c5..dc314629b 100644
+--- a/models/aeif_cond_exp.h
++++ b/models/aeif_cond_exp.h
+@@ -105,7 +105,14 @@ setting V_peak too high.
+ For implementation details see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
+-See also [1]_.
++
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
+
+
+ Parameters:
+diff --git a/models/aeif_psc_alpha.h b/models/aeif_psc_alpha.h
+index 44dce7c86..36c8e43b5 100644
+--- a/models/aeif_psc_alpha.h
++++ b/models/aeif_psc_alpha.h
+@@ -95,7 +95,13 @@ Here :math:`H(t)` is the Heaviside step function and `k` indexes incoming spikes
+ For implementation details see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
+-See also [1]_.
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
+
+ Parameters
+ ++++++++++
+diff --git a/models/aeif_psc_delta.h b/models/aeif_psc_delta.h
+index 5ce8cda93..26f937ea9 100644
+--- a/models/aeif_psc_delta.h
++++ b/models/aeif_psc_delta.h
+@@ -97,7 +97,13 @@ the value of `J` after a spike.
+ For implementation details see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
+-See also [1]_.
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
+
+ Parameters
+ ++++++++++
+diff --git a/models/aeif_psc_delta_clopath.h b/models/aeif_psc_delta_clopath.h
+index 6a3ece45e..111fae830 100644
+--- a/models/aeif_psc_delta_clopath.h
++++ b/models/aeif_psc_delta_clopath.h
+@@ -93,6 +93,14 @@ For implementation details see the
+
+ See also [2]_.
+
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [4]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
++
+ Parameters
+ ++++++++++
+
+@@ -190,6 +198,11 @@ References
+ .. [3] Voltage-based STDP synapse (Clopath et al. 2010) on ModelDB
+        https://modeldb.science/144566?tab=1
+
++.. [4] Brette R and Gerstner W (2005). Adaptive exponential
++       integrate-and-fire model as an effective description of neuronal
++       activity. Journal of Neurophysiology. 943637-3642
++       DOI: https://doi.org/10.1152/jn.00686.2005
++
+ See also
+ ++++++++
+
+diff --git a/models/aeif_psc_exp.h b/models/aeif_psc_exp.h
+index 35ee0ed50..80beca144 100644
+--- a/models/aeif_psc_exp.h
++++ b/models/aeif_psc_exp.h
+@@ -95,7 +95,13 @@ Here :math:`H(t)` is the Heaviside step function and `k` indexes incoming spikes
+ For implementation details see the
+ `aeif_models_implementation <../model_details/aeif_models_implementation.ipynb>`_ notebook.
+
+-See also [1]_.
++.. note::
++
++    The default refractory period for ``aeif`` models is zero, consistent with the model definition in
++    Brette & Gerstner [1]_.  Thus, an ``aeif`` neuron with default parameters can fire multiple spikes in a single
++    time step, which can lead to exploding spike numbers and extreme slow-down of simulations.
++
++    To avoid such unphysiological behavior, you should set a refractory time ``t_ref > 0``.
+
+ Parameters
+ ++++++++++
+diff --git a/nestkernel/module_manager.cpp b/nestkernel/module_manager.cpp
+index e8e142bf5..57c668da9 100644
+--- a/nestkernel/module_manager.cpp
++++ b/nestkernel/module_manager.cpp
+@@ -39,11 +39,7 @@
+
+
+ namespace nest
+-
+-
+ {
+-std::string base_path;
+-
+
+ ModuleManager::ModuleManager()
+   : modules_()
+@@ -54,7 +50,7 @@ ModuleManager::ModuleManager()
+   // To avoid problems due to string substitution in NEST binaries during
+   // Conda installation, we need to convert the literal to string, cstr and back,
+   // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
+-  const std::string module_dir = std::string( base_path ).c_str() + std::string( "/" NEST_INSTALL_LIBDIR );
++  const std::string module_dir = std::string( NEST_INSTALL_PREFIX ).c_str() + std::string( "/" NEST_INSTALL_LIBDIR );
+   if ( lt_dladdsearchdir( module_dir.c_str() ) )
+   {
+     LOG( M_ERROR,
+diff --git a/pyproject.toml b/pyproject.toml
+index cc01f29b9..9f7cc6f13 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,156 +1,10 @@
+-[build-system]
+-requires = ["scikit-build-core", "cython"]
+-build-backend = "scikit_build_core.build"
+-
+-[project]
+-name = "nest-simulator"
+-version = "3.8.post0.dev9"
+-description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
+-readme = "README.md"
+-license.file = "LICENSE"
+-authors = [
+-  { name = "Steffen Graber", email = "s.graber@fz-juelich.de" },
+-]
+-maintainers = [
+-  { name = "Steffen Graber", email = "s.graber@fz-juelich.de" },
+-]
+-requires-python = ">=3.8"
+-classifiers = [
+-  "Development Status :: 1 - Planning",
+-  "Intended Audience :: Science/Research",
+-  "Intended Audience :: Developers",
+-  "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+-  "Operating System :: POSIX :: Linux",
+-  "Operating System :: MacOS",
+-  "Programming Language :: Python",
+-  "Programming Language :: Python :: 3",
+-  "Programming Language :: Python :: 3 :: Only",
+-  "Programming Language :: Python :: 3.8",
+-  "Programming Language :: Python :: 3.9",
+-  "Programming Language :: Python :: 3.10",
+-  "Programming Language :: Python :: 3.11",
+-  "Programming Language :: Python :: 3.12",
+-  "Programming Language :: Python :: 3.13",
+-  "Topic :: Scientific/Engineering",
+-  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+-  "Typing :: Typed",
+-]
+-
+-dependencies = [
+-  "pynest-api",
+-  "numpy",
+-  "pandas",
+-  "scipy",
+-  "matplotlib",
+-  "h5py",
+-]
+-
+-[project.scripts]
+-nest_init = "build_support.modify_activate:main"
+-
+-[project.urls]
+-Homepage = "https://nest-simulator.org/"
+-Documentation = "https://nest-simulator.readthedocs.io/en/stable/"
+-"Bug Tracker" = "https://github.com/nest/nest-simulator/issues"
+-Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.html"
+-
+-[tool.scikit-build]
+-sdist.include = ["./"]
+-sdist.exclude = [".github"]
+-build-dir = "build/{wheel_tag}"
+-
+-[tool.scikit-build.cmake.define]
+-with-optimize ="-O2"
+-with-warning = "ON"
+-with-python = "ON"
+-with-boost = "ON"
+-#with-gsl = "ON"
+-with-readline = "ON"
+-with-ltdl = "ON"
+-#with-openmp = "ON"
+-with-userdoc ="OFF"
+-with-mpi = "OFF"
+-with-libneurosim = "OFF"
+-with-sionlib = "OFF"
+-with-music = "OFF"
+-with-hdf5 = "OFF"
+-
+-[tool.cibuildwheel]
+-build-frontend = "default"
+-# build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+-build = ["cp312-*"]
+-skip = "*-win* *-manylinux_i686" # Skip
+-test-skip = ""
+-free-threaded-support = false
+-archs = ["auto64"]
+-config-settings = {}
+-dependency-versions = "pinned"
+-environment = {}
+-environment-pass = []
+-build-verbosity = 2
+-before-all =  """
+-  NEST_SRC_DIR=${PWD}
+-  env
+-  if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
+-  then
+-    apk add git readline readline-dev libc6-compat gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5
+-  else
+-    yum install -y git glibc glibc-devel readline readline-devel gsl gsl-devel ncurses ncurses-devel wget bzip2 hdf5
+-  fi
+-  # Install boost
+-  wget https://archives.boost.io/release/1.73.0/source/boost_1_73_0.tar.bz2
+-  tar --bzip2 -xf boost_1_73_0.tar.bz2
+-  cd boost_1_73_0
+-  ./bootstrap.sh
+-  ./b2 install
+-  """
+-before-build = """
+-  python3 -m venv buildenv
+-  . ./buildenv/bin/activate
+-  if [ -z "$VIRTUAL_ENV" ]; then
+-    echo "Keine aktive virtuelle Umgebung gefunden."
+-  else
+-    echo "Aktive virtuelle Umgebung: $VIRTUAL_ENV"
+-  fi
+-  echo "HIER IST DAS ENVIRONMENT: "
+-  env
+-"""
+-repair-wheel-command = ""
+-test-command = ""
+-before-test = ""
+-test-requires = []
+-test-extras = []
+-container-engine = "docker"
+-manylinux-x86_64-image = "manylinux2014"
+-manylinux-i686-image = "manylinux2014"
+-manylinux-aarch64-image = "manylinux2014"
+-manylinux-ppc64le-image = "manylinux2014"
+-manylinux-pypy_x86_64-image = "manylinux2014"
+-manylinux-pypy_i686-image = "manylinux2014"
+-manylinux-pypy_aarch64-image = "manylinux2014"
+-musllinux-x86_64-image = "musllinux_1_2"
+-musllinux-i686-image = "musllinux_1_2"
+-musllinux-aarch64-image = "musllinux_1_2"
+-musllinux-ppc64le-image = "musllinux_1_2"
+-musllinux-s390x-image = "musllinux_1_2"
+-
+-[tool.cibuildwheel.linux]
+-repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+-
+-[tool.cibuildwheel.macos]
+-repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
+-
+-[tool.cibuildwheel.windows]
+-
+-[tool.cibuildwheel.pyodide]
+-
+ [tool.pytest.ini_options]
+ markers = [
+-  "skipif_missing_gsl: skip test if NEST was built without GSL support",
+-  "skipif_missing_hdf5: skip test if NEST was built without HDF5 support",
+-  "skipif_missing_mpi: skip test if NEST was built without MPI support",
+-  "skipif_missing_threads: skip test if NEST was built without multithreading support",
+-  "simulation: the simulation class to use. Always pass a 2nd dummy argument"
++    "skipif_missing_gsl: skip test if NEST was built without GSL support",
++    "skipif_missing_hdf5: skip test if NEST was built without HDF5 support",
++    "skipif_missing_mpi: skip test if NEST was built without MPI support",
++    "skipif_missing_threads: skip test if NEST was built without multithreading support",
++    "simulation: the simulation class to use. Always pass a 2nd dummy argument"
+ ]
+
+ [tool.isort]
+diff --git a/sli/CMakeLists.txt b/sli/CMakeLists.txt
+index a2b09c84a..38391d062 100644
+--- a/sli/CMakeLists.txt
++++ b/sli/CMakeLists.txt
+@@ -83,10 +83,17 @@ set( sli_sources
+     )
+
+
+-# Prevent problems with Conda path substitution (see #2348)
++# Prevent problems with Conda path substitution (see #2348)
+ set_source_files_properties( slistartup.cc PROPERTIES COMPILE_OPTIONS "-O0" )
+
+ add_library( sli_lib ${sli_sources} )
++
++set_target_properties( sli_lib
++    PROPERTIES
++    VERSION ${NEST_VERSION}
++    SOVERSION 3
++    )
++
+ target_link_libraries( sli_lib nestutil OpenMP::OpenMP_CXX )
+
+ # Make a separate target for linking against readline, so that
+@@ -95,6 +102,13 @@ target_link_libraries( sli_lib nestutil OpenMP::OpenMP_CXX )
+ # pull request for more information:
+ # https://github.com/nest/nest-simulator/pull/323
+ add_library( sli_readline gnureadline.cc gnureadline.h )
++
++set_target_properties( sli_readline
++    PROPERTIES
++    VERSION ${NEST_VERSION}
++    SOVERSION 3
++    )
++
+ target_link_libraries( sli_readline sli_lib nestutil ${READLINE_LIBRARIES} OpenMP::OpenMP_CXX )
+
+ # add the executable
+diff --git a/sli/processes.cc b/sli/processes.cc
+index a5c4760f9..1a9f8f5c6 100644
+--- a/sli/processes.cc
++++ b/sli/processes.cc
+@@ -87,8 +87,6 @@ extern "C"
+ }
+ #endif
+
+-extern const std::string executablePath;
+-
+ // definition of static variables and functions declared in processes.h:
+ pid_t Processes::children_group = 0;
+
+diff --git a/sli/slistartup.cc b/sli/slistartup.cc
+index 987be8cdd..a090c701f 100644
+--- a/sli/slistartup.cc
++++ b/sli/slistartup.cc
+@@ -42,48 +42,6 @@
+ #include "iostreamdatum.h"
+ #include "stringdatum.h"
+
+-////////
+-#include <filesystem>
+-#include <iostream>
+-
+-
+-std::string executable_path;
+-std::string bin_path;
+-std::string base_path;
+-
+-/* until now install only in virtual environments */
+-std::string
+-getEnvironmentBasePath()
+-{
+-  std::filesystem::path p( executable_path );
+-  bin_path = p.parent_path().string();
+-  std::cout << "Bin path: " << bin_path << std::endl;
+-
+-
+-  // Check for conda environment first
+-  const char* conda_prefix = getenv( "CONDA_PREFIX" );
+-  if ( conda_prefix != nullptr )
+-  {
+-    return std::filesystem::path( conda_prefix ).string();
+-  }
+-
+-  // Check for venv environment
+-  const char* virtual_env = getenv( "VIRTUAL_ENV" );
+-  if ( virtual_env != nullptr )
+-  {
+-    return std::filesystem::path( virtual_env ).string();
+-  }
+-
+-  // Check for virtualenv environment (older versions might not set VIRTUAL_ENV)
+-  const char* venv_path = getenv( "VENV" ); // Check for older versions of virtualenv
+-  if ( venv_path != nullptr )
+-  {
+-    return std::filesystem::path( venv_path ).string();
+-  }
+-}
+-
+-////////
+-
+ // Access to environement variables.
+ #ifdef __APPLE__
+ #include <crt_externs.h>
+@@ -175,14 +133,10 @@ SLIStartup::GetenvFunction::execute( SLIInterpreter* i ) const
+ }
+
+ SLIStartup::SLIStartup( int argc, char** argv )
+-  // getExecutablePath();
+-  //  To avoid problems due to string substitution in NEST binaries during
+-  //  Conda installation, we need to convert the literal to string, cstr and back,
+-  //  see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
+-  //  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
+-  : sliprefix(
+-    std::string( getEnvironmentBasePath() + "/lib/" + PYTHON_EXECUTABLE + PYTHON_VERSION_MINOR + "/site-packages" )
+-      .c_str() )
++  // To avoid problems due to string substitution in NEST binaries during
++  // Conda installation, we need to convert the literal to string, cstr and back,
++  // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
++  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
+   , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
+   , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
+   , startupfile( slilibdir + "/sli/sli-init.sli" )
+@@ -247,25 +201,6 @@ SLIStartup::SLIStartup( int argc, char** argv )
+   , exitcode_unknownerror_name( "unknownerror" )
+   , environment_name( "environment" )
+ {
+-  std::string base_path = getEnvironmentBasePath();
+-  if ( base_path.empty() )
+-  {
+-    std::cout << "No Python environment (conda or virtualenv) detected." << std::endl;
+-  }
+-  else
+-  {
+-    std::cout << "Python environment base path: " << base_path << std::endl;
+-    std::cout << "NEST_INSTALL_DATADIR " << NEST_INSTALL_DATADIR << std::endl;
+-    std::cout << "NEST_INSTALL_DOCDIR: " << NEST_INSTALL_DOCDIR << std::endl;
+-  }
+-
+-  // if (getExecutablePath().empty()) {
+-  //   std::cerr << "Error: Could not determine executable path." << std::endl;
+-  // } else {
+-  //   // Use the executable path in other functions
+-  //   std::cout << "Executable path from another function: " << getExecutablePath() << std::endl;
+-  // }
+-
+   ArrayDatum args_array;
+
+   // argv[0] is the name of the program that was given to the shell.
+diff --git a/sli/slistartup.h b/sli/slistartup.h
+index f606abd7d..a9edb1431 100644
+--- a/sli/slistartup.h
++++ b/sli/slistartup.h
+@@ -162,12 +162,4 @@ public:
+   }
+ };
+
+-// std::string getExecutablePath();
+-// External variable declaration
+-extern std::string getEnvironmentBasePath();
+-extern std::string executable_path;
+-extern std::string bin_path;
+-extern std::string base_path;
+-
+-
+ #endif

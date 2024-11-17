@@ -180,7 +180,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   //  Conda installation, we need to convert the literal to string, cstr and back,
   //  see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
   //  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
-  : sliprefix( std::string( getEnvironmentBasePath() + "/lib/" + PYTHON_VERSION_MINO + "/site-packages" ).c_str() )
+  : sliprefix( std::string( getEnvironmentBasePath() + "/lib" + PYTHON_VERSION_MINOR + "/site-packages" ).c_str() )
   , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
   , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
   , startupfile( slilibdir + "/sli/sli-init.sli" )
