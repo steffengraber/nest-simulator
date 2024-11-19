@@ -51,6 +51,12 @@ extern char** environ;
 #endif
 
 ////////
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+// Add wherami https://github.com/gpakosz/whereami/tree/master
+#include "whereami.h"
+
 #include <filesystem>
 #include <iostream>
 
@@ -63,17 +69,30 @@ std::string base_path;
 std::string
 getEnvironmentBasePath()
 {
+  char* path = NULL;
+  int length, dirname_length;
+  int i;
 
-  // std::filesystem::path p( executable_path );
-
-  std::filesystem::path executable_path = std::filesystem::current_path std::cout
-    << "Executable path: " << executable_path << std::endl;
+  length = wai_getExecutablePath( NULL, 0, &dirname_length );
+  if ( length > 0 )
+  {
+    path = ( char* ) malloc( length + 1 );
+    if ( !path )
+    {
+      abort();
+    }
+    wai_getExecutablePath( path, length, &dirname_length );
+    path[ length ] = '\0';
+    executable_path = path;
+    std::cout << "Executable path: " << executable_path << std::endl;
+    free( path );
+  }
 
   std::filesystem::path base_path = executable_path.parent_path();
-  std::cout
+  std::cout << "Base path: " << base_path << std::endl;
 
-    // Check for conda environment first
-    const char* conda_prefix = getenv( "CONDA_PREFIX" );
+  // Check for conda environment first
+  const char* conda_prefix = getenv( "CONDA_PREFIX" );
   if ( conda_prefix != nullptr )
   {
     return std::filesystem::path( conda_prefix ).string();
