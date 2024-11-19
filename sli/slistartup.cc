@@ -50,6 +50,55 @@
 extern char** environ;
 #endif
 
+////////
+#include <filesystem>
+#include <iostream>
+
+
+std::string executable_path;
+// std::string bin_path;
+std::string base_path;
+
+/* until now install only in virtual environments */
+std::string
+getEnvironmentBasePath()
+{
+
+  // std::filesystem::path p( executable_path );
+
+  std::filesystem::path executable_path = std::filesystem::current_path std::cout
+    << "Executable path: " << executable_path << std::endl;
+
+  std::filesystem::path base_path = executable_path.parent_path();
+  std::cout
+
+    // Check for conda environment first
+    const char* conda_prefix = getenv( "CONDA_PREFIX" );
+  if ( conda_prefix != nullptr )
+  {
+    return std::filesystem::path( conda_prefix ).string();
+    std::cout << "Conda prefix: " << conda_prefix << std::endl;
+  }
+
+  // Check for venv environment
+  const char* virtual_env = getenv( "VIRTUAL_ENV" );
+  if ( virtual_env != nullptr )
+  {
+    return std::filesystem::path( virtual_env ).string();
+    std::cout << "Virtual env: " << virtual_env << std::endl;
+  }
+
+  // Check for virtualenv environment (older versions might not set VIRTUAL_ENV)
+  const char* venv_path = getenv( "VENV" ); // Check for older versions of virtualenv
+  if ( venv_path != nullptr )
+  {
+    return std::filesystem::path( venv_path ).string();
+    std::cout << "Venv path: " << venv_path << std::endl;
+  }
+}
+
+////////
+
 /*
 1.  Propagate commandline to the sli level.
     Commandline options will be handled by the startup file.
@@ -136,7 +185,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   // To avoid problems due to string substitution in NEST binaries during
   // Conda installation, we need to convert the literal to string, cstr and back,
   // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
-  : sliprefix( std::string( NEST_INSTALL_PREFIX ).c_str() )
+  : sliprefix( std::string( base_path ).c_str() )
   , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
   , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
   , startupfile( slilibdir + "/sli/sli-init.sli" )
@@ -201,6 +250,8 @@ SLIStartup::SLIStartup( int argc, char** argv )
   , exitcode_unknownerror_name( "unknownerror" )
   , environment_name( "environment" )
 {
+  getEnvironmentBasePath();
+
   ArrayDatum args_array;
 
   // argv[0] is the name of the program that was given to the shell.
