@@ -62,7 +62,7 @@ extern char** environ;
 
 
 std::string executable_path;
-// std::string bin_path;
+std::string bin_path;
 std::string base_path;
 
 /* until now install only in virtual environments */
@@ -71,24 +71,19 @@ getEnvironmentBasePath()
 {
   char* path = NULL;
   int length, dirname_length;
-  int i;
 
   length = wai_getExecutablePath( NULL, 0, &dirname_length );
-  if ( length > 0 )
-  {
-    path = ( char* ) malloc( length + 1 );
-    if ( !path )
-    {
-      abort();
-    }
-    wai_getExecutablePath( path, length, &dirname_length );
-    path[ length ] = '\0';
-    executable_path = path;
-    std::cout << "Executable path: " << executable_path << std::endl;
-    free( path );
-  }
+  path = ( char* ) malloc( length + 1 );
+  wai_getExecutablePath( path, length, &dirname_length );
+  path[ length ] = '\0';
+  std::string executable_path( path );
+  std::cout << "Executable path: " << executable_path << std::endl;
 
-  std::filesystem::path base_path = executable_path.parent_path();
+  free( path );
+
+
+  std::filesystem::path bin_path = executable_path;
+  base_path = bin_path.parent_path();
   std::cout << "Base path: " << base_path << std::endl;
 
   // Check for conda environment first
