@@ -264,8 +264,9 @@ SLIStartup::SLIStartup( int argc, char** argv )
   , exitcode_unknownerror_name( "unknownerror" )
   , environment_name( "environment" )
 {
-  startupfile = std::to_string( getEnvironmentBasePath() ) + "/sli/sli-init.sli";
-  std::cout << "Base path IN FUNCTION: " << getEnvironmentBasePath() << std::endl;
+  std::string base_path = getEnvironmentBasePath();
+  startupfile = std::to_string( base_path ) + "/sli/sli-init.sli";
+  std::cout << "Base path IN FUNCTION: " << base_path << std::endl;
 
   ArrayDatum args_array;
 
