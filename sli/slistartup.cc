@@ -267,7 +267,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   std::string base_path = getEnvironmentBasePath();
   const char* cstr = "/sli/sli-init.sli";
   std::string s = cstr;
-  startupfile = base_path + cstr std::cout << "Base path IN FUNCTION: " << base_path << std::endl;
+  startupfile = base_path + cstr << "Base path IN FUNCTION: " << base_path << std::endl;
 
   ArrayDatum args_array;
 
