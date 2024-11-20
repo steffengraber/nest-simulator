@@ -108,7 +108,7 @@ getEnvironmentBasePath()
     // return std::filesystem::path( venv_path ).string();
     std::cout << "Venv path: " << venv_path << std::endl;
   }
-  return base_path;
+  return std::string( base_path );
 }
 
 ////////
