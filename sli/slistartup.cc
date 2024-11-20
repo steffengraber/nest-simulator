@@ -81,16 +81,15 @@ getEnvironmentBasePath()
 
   free( path );
 
-
   std::filesystem::path bin_path = executable_path;
-  base_path = bin_path.parent_path();
+  base_path = ( ( bin_path.parent_path() ).parent_path() ).parent_path().string();
   std::cout << "Base path: " << base_path << std::endl;
 
   // Check for conda environment first
   const char* conda_prefix = getenv( "CONDA_PREFIX" );
   if ( conda_prefix != nullptr )
   {
-    return std::filesystem::path( conda_prefix ).string();
+    // return std::filesystem::path( conda_prefix ).string();
     std::cout << "Conda prefix: " << conda_prefix << std::endl;
   }
 
@@ -98,7 +97,7 @@ getEnvironmentBasePath()
   const char* virtual_env = getenv( "VIRTUAL_ENV" );
   if ( virtual_env != nullptr )
   {
-    return std::filesystem::path( virtual_env ).string();
+    // return std::filesystem::path( virtual_env ).string();
     std::cout << "Virtual env: " << virtual_env << std::endl;
   }
 
@@ -106,9 +105,10 @@ getEnvironmentBasePath()
   const char* venv_path = getenv( "VENV" ); // Check for older versions of virtualenv
   if ( venv_path != nullptr )
   {
-    return std::filesystem::path( venv_path ).string();
+    // return std::filesystem::path( venv_path ).string();
     std::cout << "Venv path: " << venv_path << std::endl;
   }
+  return base_path;
 }
 
 ////////
@@ -199,7 +199,7 @@ SLIStartup::SLIStartup( int argc, char** argv )
   // To avoid problems due to string substitution in NEST binaries during
   // Conda installation, we need to convert the literal to string, cstr and back,
   // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
-  : sliprefix( std::string( base_path ).c_str() )
+  : sliprefix( std::string( getEnvironmentBasePath() ).c_str() )
   , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR )
   , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
   , startupfile( slilibdir + "/sli/sli-init.sli" )
@@ -264,7 +264,8 @@ SLIStartup::SLIStartup( int argc, char** argv )
   , exitcode_unknownerror_name( "unknownerror" )
   , environment_name( "environment" )
 {
-  getEnvironmentBasePath();
+  startupfile = getEnvironmentBasePath() + "/sli/sli-init.sli";
+  std::cout << "Base path IN FUNCTION: " << getEnvironmentBasePath() << std::endl;
 
   ArrayDatum args_array;
 
