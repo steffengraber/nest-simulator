@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"
-version = "3.8.post0.dev9"
+version = "3.8.post0.dev10"
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 readme = "README.md"
 license.file = "LICENSE"
@@ -44,6 +44,9 @@ dependencies = [
   "h5py",
 ]
 
+[project.scripts]
+nest_init = "build_support.modify_activate:main"
+
 [project.urls]
 Homepage = "https://nest-simulator.org/"
 Documentation = "https://nest-simulator.readthedocs.io/en/stable/"
@@ -51,7 +54,7 @@ Documentation = "https://nest-simulator.readthedocs.io/en/stable/"
 Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.html"
 
 [tool.scikit-build]
-sdist.include = ["./"]
+sdist.include =  ["./", "build_suppot/modify_activate.py"]
 sdist.exclude = [".github"]
 build-dir = "build/{wheel_tag}"
 
@@ -73,8 +76,8 @@ with-hdf5 = "OFF"
 
 [tool.cibuildwheel]
 build-frontend = "default"
-# build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
-build = ["cp312-*"]
+build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+# build = ["cp312-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 free-threaded-support = false
