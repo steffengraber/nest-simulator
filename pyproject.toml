@@ -103,6 +103,7 @@ before-all =  """
     echo "Build OS"
     echo $OSTYPE
     brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
+
     brew reinstall readline 
     brew link --force readline ncurses    
     echo "arch: $(arch)"
@@ -149,7 +150,6 @@ inherit.environment = "append"
 environment = { MACOSX_DEPLOYMENT_TARGET=14.0 }
 # config-settings."cmake.define.READLINE_LIBRARY" = "/usr/local/opt/readline/lib"
 # config-settings."cmake.define.NCURSES_LIBRARY" = "/usr/local/opt/ncurses/lib"
-
 
 [tool.cibuildwheel.linux]
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
