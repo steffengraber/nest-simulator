@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"
-version = "3.8.post0.dev10"
+version = "3.8.post0.dev14"
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
 readme = "README.md"
@@ -15,7 +15,7 @@ authors = [
 maintainers = [
   { name = "Steffen Graber", email = "s.graber@fz-juelich.de" },
 ]
-requires-python = ">=3.8, <4.0"
+requires-python = ">=3.9, <4.0"
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
@@ -25,7 +25,6 @@ classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -44,6 +43,14 @@ dependencies = [
   "h5py",
 ]
 
+[project.optional-dependencies]
+nestml = [
+  "nestml"
+]
+mpi = [
+  "mpi4py"
+]
+
 [project.urls]
 Homepage = "https://nest-simulator.org/"
 Documentation = "https://nest-simulator.readthedocs.io/en/stable/"
@@ -59,10 +66,8 @@ build-dir = "build/{wheel_tag}"
 with-optimize ="-O2"
 with-warning = "ON"
 with-python = "ON"
-# with-boost = "ON"
-# with-gsl = "ON"
-# with-readline = "ON"
-# with-ltdl = "ON"
+with-boost = "ON"
+with-gsl = "ON"
 with-openmp = "OFF"
 with-userdoc ="OFF"
 with-mpi = "OFF"
@@ -71,10 +76,11 @@ with-sionlib = "OFF"
 with-music = "OFF"
 with-hdf5 = "OFF"
 
+#pip install . --config-settings=cmake.define.SOME_DEFINE=ON
+
 [tool.cibuildwheel]
 build-frontend = "default"
-build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*"]
-# build = ["cp312-*"]
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 free-threaded-support = false
@@ -96,8 +102,19 @@ before-all =  """
   then
     echo "Build OS"
     echo $OSTYPE
-    brew install llvm libomp gcc boost gsl cmake libtool readline open-mpi graphviz ncurses
+    brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
 
+    brew reinstall readline 
+    brew link --force readline ncurses    
+    echo "arch: $(arch)"
+    if [[ $(arch) == 'arm64' ]]; then
+      LDFLAGS="-L/opt/homebrew/lib"
+      CPPFLAGS="-I/opt/homebrew/include"
+    else
+      LDFLAGS="-L/usr/local/lib"
+      CPPFLAGS="-I/usr/local/include"
+    fi
+    hash -r
   else
     wget https://archives.boost.io/release/1.73.0/source/boost_1_73_0.tar.bz2
     tar --bzip2 -xf boost_1_73_0.tar.bz2
@@ -130,9 +147,9 @@ musllinux-s390x-image = "musllinux_1_2"
 [[tool.cibuildwheel.overrides]]
 select = "*-macos*"
 inherit.environment = "append"
-# environment = { MACOSX_DEPLOYMENT_TARGET = "10.14" }
-# config-settings."cmake.define.READLINE_LIBRARY" = "/opt/homebrew/lib/libreadline.dylib"
-# config-settings."cmake.define.NCURSES_LIBRARY" = "/opt/homebrew/lib/libncurses.dylib"
+environment = { MACOSX_DEPLOYMENT_TARGET=14.0 }
+# config-settings."cmake.define.READLINE_LIBRARY" = "/usr/local/opt/readline/lib"
+# config-settings."cmake.define.NCURSES_LIBRARY" = "/usr/local/opt/ncurses/lib"
 
 [tool.cibuildwheel.linux]
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
