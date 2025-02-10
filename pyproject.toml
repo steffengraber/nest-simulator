@@ -25,7 +25,6 @@ classifiers = [
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -61,7 +60,7 @@ with-warning = "ON"
 with-python = "ON"
 # with-boost = "ON"
 # with-gsl = "ON"
-# with-readline = "ON"
+#with-readline = "/usr/local/opt/readline/lib/libreadline.dylib"
 # with-ltdl = "ON"
 with-openmp = "OFF"
 with-userdoc ="OFF"
@@ -97,6 +96,30 @@ before-all =  """
     echo "Build OS"
     echo $OSTYPE
     brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
+    brew reinstall gcc cmake readline 
+    brew unlink gcc cmake 
+    brew link --force gcc cmake readline ncurses
+    echo "SHOW GCC INFO"
+    ls -al /opt/homebrew
+    ls -al /opt/homebrew/bin
+    ls -al /opt/homebrew/lib  
+    echo "arch: $(arch)"
+    if [[ $(arch) == 'arm64' ]]; then
+      # Apple Silicon
+      ln -sf /opt/homebrew/bin/gcc-14 /opt/homebrew/bin/gcc
+      export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+      LDFLAGS="-L/opt/homebrew/lib"
+      CPPFLAGS="-I/opt/homebrew/include"
+    else
+      # Intel
+      ln -sf /usr/local/bin/gcc-14 /usr/local/bin/gcc
+      export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+      LDFLAGS="-L/usr/local/lib"
+      CPPFLAGS="-I/usr/local/include"
+    fi
+    hash -r
+    echo "gcc: $(which gcc)"
+    echo "$(gcc --version)"   
 
   else
     wget https://archives.boost.io/release/1.73.0/source/boost_1_73_0.tar.bz2
@@ -130,9 +153,9 @@ musllinux-s390x-image = "musllinux_1_2"
 [[tool.cibuildwheel.overrides]]
 select = "*-macos*"
 inherit.environment = "append"
-environment = { MACOSX_DEPLOYMENT_TARGET = "15.0" }
-# config-settings."cmake.define.READLINE_LIBRARY" = "/opt/homebrew/lib/libreadline.dylib"
-# config-settings."cmake.define.NCURSES_LIBRARY" = "/opt/homebrew/lib/libncurses.dylib"
+environment = { MACOSX_DEPLOYMENT_TARGET=14.0 }
+# config-settings."cmake.define.READLINE_LIBRARY" = "/usr/local/opt/readline/lib"
+# config-settings."cmake.define.NCURSES_LIBRARY" = "/usr/local/opt/ncurses/lib"
 
 [tool.cibuildwheel.linux]
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
