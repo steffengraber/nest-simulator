@@ -68,7 +68,7 @@ with-warning = "ON"
 with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
-with-openmp = "OFF"
+with-openmp = "ON"
 with-userdoc ="OFF"
 with-mpi = "OFF"
 with-libneurosim = "OFF"
@@ -105,7 +105,7 @@ before-all =  """
     brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
 
     brew reinstall readline 
-    brew link --force readline ncurses    
+    brew link --force readline ncurses libomp 
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
       LDFLAGS="-L/opt/homebrew/lib"
