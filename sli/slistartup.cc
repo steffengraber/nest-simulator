@@ -158,10 +158,10 @@ SLIStartup::SLIStartup( int argc, char** argv )
   // To avoid problems due to string substitution in NEST binaries during
   // Conda installation, we need to convert the literal to string, cstr and back,
   // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
-  : sliprefix( std::string( "" ).c_str() )
-  , slilibdir( NEST_INSTALL_DATADIR )
-  , slidocdir( NEST_INSTALL_DOCDIR )
-  , startupfile( "/sli/sli-init.sli" )
+  : sliprefix( std::string( ".." ).c_str() )
+  , slilibdir( sliprefix + "/" + NEST_INSTALL_DATADIR)
+  , slidocdir( sliprefix + "/" + NEST_INSTALL_DOCDIR )
+  , startupfile( slilibdir + "/sli/sli-init.sli" )
   , verbosity_( SLIInterpreter::M_INFO ) // default verbosity level
   , debug_( false )
   , argv_name( "argv" )
