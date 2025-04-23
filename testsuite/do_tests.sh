@@ -190,6 +190,8 @@ else
     echo "  Running MPI tests .. no (compiled without MPI support)"
 fi
 echo "  TEST_BASEDIR ....... $TEST_BASEDIR"
+ls -la "${TEST_BASEDIR}"
+echo "  TEST_LOGFILE ....... $TEST_LOGFILE"
 echo "  REPORTDIR .......... $REPORTDIR"
 echo "  PATH ............... `print_paths ${PATH}`"
 echo
