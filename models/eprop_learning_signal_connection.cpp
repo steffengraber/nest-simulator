@@ -1,5 +1,5 @@
 /*
- *  issue-659.sli
+ *  eprop_learning_signal_connection.cpp
  *
  *  This file is part of NEST.
  *
@@ -20,45 +20,13 @@
  *
  */
 
-/** @BeginDocumentation
+#include "eprop_learning_signal_connection.h"
 
-Name: testsuite::issue-659 Check that we get an error if trying to call Run or Cleanup without calling Prepare first.
+// nestkernel
+#include "nest_impl.h"
 
-Synopsis: (issue-659) run -> NEST exits if test fails
-
-Author: Håkon Mørk, 2018-03-07
- */
-
-(unittest) run
-/unittest using
-
-M_ERROR setverbosity
-
+void
+nest::register_eprop_learning_signal_connection( const std::string& name )
 {
-  % Run without prepare.
-  ResetKernel
-  10 Run
-} fail_or_die
-
-{
-  % Cleanup without prepare.
-  ResetKernel
-  Cleanup
-} fail_or_die
-
-{
-  % Prepare twice.
-  ResetKernel
-  Prepare
-  Prepare
-} fail_or_die
-
-{
-  % Run after cleanup, without prepare.
-  ResetKernel
-  Prepare
-  10 Run
-  Cleanup
-  10 Run
-} fail_or_die
-
+  register_connection_model< eprop_learning_signal_connection >( name );
+}
