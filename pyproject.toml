@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit-build-core", "cython"]
+requires = ["scikit-build-core", "cython<=3.0.12"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -35,8 +35,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "pynest-api",
   "numpy",
+  "pynest-api",
   "pandas",
   "scipy",
   "matplotlib",
@@ -61,6 +61,7 @@ Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.htm
 [tool.scikit-build]
 sdist.include = ["./"]
 sdist.exclude = [".github"]
+sdist.cmake = true
 build-dir = "build/{wheel_tag}"
 
 [tool.scikit-build.cmake.define]

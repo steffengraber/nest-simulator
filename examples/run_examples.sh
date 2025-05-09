@@ -20,6 +20,7 @@
 # along with NEST.  If not, see <http://www.gnu.org/licenses/>.
 
 NEST_CMD="$(which nest)"
+EXAMPLES_PATH="$(python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())')/share/doc/nest"
 if [ $? != 0 ] ; then
     echo "ERROR: command 'nest' not found. Please make sure PATH is set correctly"
     echo "       by sourcing the script nest_vars.sh from your NEST installation."
@@ -44,11 +45,12 @@ if [ "${#}" -eq 0 ]; then
     # The examples can be found in subdirectory nest and in the 
     # examples installation path.
     if [ -d "nest/" ] ; then
-        EXAMPLES="$(grep -rl --include=\*\.sli 'autorun=true' nest/)"
+        EXAMPLES="$(grep -rl --include=\*\.sli 'autorun=true' ${EXAMPLES_PATH}/)"
     else
-        EXAMPLES="$(grep -rl --include=\*\.sli 'autorun=true' examples/)"
+        EXAMPLES="$(grep -rl --include=\*\.sli 'autorun=true' ${EXAMPLES_PATH}/examples/)"
     fi
-    EXAMPLES+=" $(find ../pynest/examples -name '*.py')"
+    EXAMPLES+=" $(find ${EXAMPLES_PATH}/examples/pynest -name '*.py')"
+    #EXAMPLES+=" $(find ../pynest/examples -name '*.py')"
 else
     EXAMPLES+=${@}
 fi
