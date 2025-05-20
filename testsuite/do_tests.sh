@@ -134,7 +134,7 @@ echo "TEST_RUNFILE=${TEST_RUNFILE}"
 echo "${TEST_BASEDIR}"
 ls -la "${TEST_BASEDIR}"
 
-NEST="nest_serial"
+NEST="nest"
 HAVE_MPI="$(sli -c 'statusdict/have_mpi :: =only')"
 HAVE_OPENMP="$(sli -c 'is_threaded =only')"
 
