@@ -1,10 +1,10 @@
 [build-system]
-requires = ["scikit-build-core", "cython"]
+requires = ["scikit-build-core", "cython<=3.0.12"]
 build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"
-version = "3.8.post0.dev23"
+version = "3.8.post0.dev30"
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
 readme = "README.md"
@@ -35,12 +35,13 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "pynest-api",
   "numpy",
+  "pynest-api",
   "pandas",
   "scipy",
   "matplotlib",
   "h5py",
+  "setuptools",
 ]
 
 [project.optional-dependencies]
@@ -60,27 +61,29 @@ Changelog = "https://nest-simulator.readthedocs.io/en/stable/whats_new/index.htm
 [tool.scikit-build]
 sdist.include = ["./"]
 sdist.exclude = [".github"]
+sdist.cmake = true
 build-dir = "build/{wheel_tag}"
 
 [tool.scikit-build.cmake.define]
 with-optimize ="-O2"
-with-warning = "ON"
-with-python = "ON"
+# with-warning = "ON"
+# with-python = "ON"
 with-boost = "ON"
-with-gsl = "ON"
-with-openmp = "ON"
-with-userdoc ="OFF"
-with-mpi = "OFF"
-with-libneurosim = "OFF"
-with-sionlib = "OFF"
-with-music = "OFF"
-with-hdf5 = "OFF"
+# with-gsl = "ON"
+# with-openmp = "ON"
+# with-userdoc ="OFF"
+# with-mpi = "OFF"
+# with-libneurosim = "OFF"
+# with-sionlib = "OFF"
+# with-music = "OFF"
+# with-hdf5 = "OFF"
 
 #pip install . --config-settings=cmake.define.SOME_DEFINE=ON
 
 [tool.cibuildwheel]
 build-frontend = "default"
-build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
+# build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
+build = ["cp312-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 free-threaded-support = false
@@ -116,9 +119,9 @@ before-all =  """
     fi
     hash -r
   else
-    wget https://archives.boost.io/release/1.73.0/source/boost_1_73_0.tar.bz2
-    tar --bzip2 -xf boost_1_73_0.tar.bz2
-    cd boost_1_73_0
+    wget https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
+    tar --bzip2 -xf boost_1_88_0.tar.bz2
+    cd boost_1_88_0
     ./bootstrap.sh
     ./b2 install
   fi
@@ -167,8 +170,7 @@ markers = [
     "skipif_missing_hdf5: skip test if NEST was built without HDF5 support",
     "skipif_missing_mpi: skip test if NEST was built without MPI support",
     "skipif_missing_threads: skip test if NEST was built without multithreading support",
-    "skipif_incompatible_mpi: skip if NEST with built with MPI that does not work with subprocess",
-    "simulation: the simulation class to use. Always pass a 2nd dummy argument"
+    "simulation: the simulgiation class to use. Always pass a 2nd dummy argument"
 ]
 
 [tool.isort]

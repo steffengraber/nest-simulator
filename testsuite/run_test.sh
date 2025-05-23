@@ -54,7 +54,6 @@
 #
 #   The function runs the NEST binary with the SLI script script_name.
 #   The exit code is then transformed into a human readable string
-#   (if possible) using the global variables CODES_SUCCESS, CODES_SKIPPED, and
 #   CODES_FAILURE which contain a comma separated list of exit codes
 #   and strings describing the exit code.
 #
