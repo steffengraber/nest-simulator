@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "nest-simulator"
-version = "3.8.post0.dev31"
+version = "3.8.post0.dev32"
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
 readme = "README.md"
@@ -66,11 +66,10 @@ build-dir = "build/{wheel_tag}"
 
 [tool.scikit-build.cmake.define]
 with-optimize ="-O2"
-# with-warning = "ON"
-# with-python = "ON"
+with-warning = "ON# with-python = "ON"
 with-boost = "ON"
-# with-gsl = "ON"
-# with-openmp = "ON"
+with-gsl = "ON"
+with-openmp = "ON"
 # with-userdoc ="OFF"
 # with-mpi = "OFF"
 # with-libneurosim = "OFF"
@@ -82,8 +81,7 @@ with-boost = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
-# build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
-build = ["cp312-*"]
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 free-threaded-support = false
@@ -106,7 +104,6 @@ before-all =  """
     echo "Build OS"
     echo $OSTYPE
     brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses
-
     brew reinstall readline 
     brew link --force readline ncurses libomp 
     echo "arch: $(arch)"
