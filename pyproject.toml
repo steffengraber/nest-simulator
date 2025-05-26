@@ -66,7 +66,8 @@ build-dir = "build/{wheel_tag}"
 
 [tool.scikit-build.cmake.define]
 with-optimize ="-O2"
-with-warning = "ON# with-python = "ON"
+with-warning = "ON"
+with-python = "ON"
 with-boost = "ON"
 with-gsl = "ON"
 with-openmp = "ON"
