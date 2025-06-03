@@ -59,11 +59,9 @@ jobs:
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          attestations: false
           verbose: true
           # only for test pypi
           repository-url: https://test.pypi.org/legacy/
-          password: ${{ secrets.PYPI_TOKEN }}
 
   test_uploaded_package:
     name: Test uploaded package in virtualenv
