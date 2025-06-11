@@ -222,15 +222,15 @@ SLIStartup::SLIStartup( int argc, char** argv )
 {
   std::string current_path = getCurrentPath();
   if (is_in_site_packages(current_path)) {
-    sliprefix = std::string(current_path).c_str();slilibdir = sliprefix + "/../../" + NEST_INSTALL_DATADIR;
+    sliprefix = current_path;
     slilibdir = sliprefix + "/" + NEST_INSTALL_DATADIR;
     slidocdir = sliprefix + "/../../" + NEST_INSTALL_DOCDIR;
     startupfile = slilibdir + "/sli/sli-init.sli";
   } else {
-    sliprefix = std::string( NEST_INSTALL_PREFIX ).c_str();
+    sliprefix = std::string(NEST_INSTALL_PREFIX);
     slilibdir = sliprefix + "/" + NEST_INSTALL_DATADIR;
-    slidocdir =sliprefix + "/" + NEST_INSTALL_DOCDIR;
-    startupfile = slilibdir + "/sli/sli-init.sli";     
+    slidocdir = sliprefix + "/" + NEST_INSTALL_DOCDIR;
+    startupfile = slilibdir + "/sli/sli-init.sli";
   }
   
   ArrayDatum args_array;
