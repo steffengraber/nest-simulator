@@ -139,6 +139,10 @@ SLIStartup::GetenvFunction::execute( SLIInterpreter* i ) const
   i->EStack.pop();
 }
 
+bool is_in_site_packages(const std::string& path) {
+    return path.find("site-packages") != std::string::npos;
+}
+
 const char*
 getCurrentPath()
 {
@@ -155,14 +159,7 @@ getCurrentPath()
 
 
 SLIStartup::SLIStartup( int argc, char** argv )
-  // To avoid problems due to string substitution in NEST binaries during
-  // Conda installation, we need to convert the literal to string, cstr and back,
-  // see #2237 and https://github.com/conda/conda-build/issues/1674#issuecomment-280378336
-  : sliprefix( std::string( getCurrentPath() ).c_str() )
-  , slilibdir( sliprefix + "/../../" + NEST_INSTALL_DATADIR )
-  , slidocdir( sliprefix + "/../../" + NEST_INSTALL_DOCDIR )
-  , startupfile( slilibdir + "/sli/sli-init.sli" )
-  , verbosity_( SLIInterpreter::M_INFO ) // default verbosity level
+  : verbosity_( SLIInterpreter::M_INFO )
   , debug_( false )
   , argv_name( "argv" )
   , version_name( "version" )
@@ -223,6 +220,19 @@ SLIStartup::SLIStartup( int argc, char** argv )
   , exitcode_unknownerror_name( "unknownerror" )
   , environment_name( "environment" )
 {
+  std::string current_path = getCurrentPath();
+  if (is_in_site_packages(current_path)) {
+    sliprefix = std::string(current_path).c_str();slilibdir = sliprefix + "/../../" + NEST_INSTALL_DATADIR;
+    slilibdir = sliprefix + "/" + NEST_INSTALL_DATADIR;
+    slidocdir = sliprefix + "/../../" + NEST_INSTALL_DOCDIR;
+    startupfile = slilibdir + "/sli/sli-init.sli";
+  } else {
+    sliprefix = std::string( NEST_INSTALL_PREFIX ).c_str();
+    slilibdir = sliprefix + "/" + NEST_INSTALL_DATADIR;
+    slidocdir =sliprefix + "/" + NEST_INSTALL_DOCDIR;
+    startupfile = slilibdir + "/sli/sli-init.sli";     
+  }
+  
   ArrayDatum args_array;
 
   // argv[0] is the name of the program that was given to the shell.
