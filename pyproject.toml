@@ -15,7 +15,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pynest-ng"
-version = "3.8.post0.dev1"
+version = "3.8.post0.dev2"
 description = "NEST is a simulator for spiking neural network models that focuses on the dynamics, size and structure of neural systems rather than on the exact morphology of individual neurons."
 keywords = ["nest", "simulator", "neuroscience", "neural", "neuron", "network", "ai", "spike", "spiking"]
 readme = "README.md"
@@ -99,8 +99,8 @@ with-openmp = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
-# build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
-build = ["cp312-*"]
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+# build = ["cp312-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 archs = ["auto64"]
