@@ -64,14 +64,23 @@ if ( HAVE_PYTHON )
     -D_IS_PYNEST
   )
   # TODO PYNEST NG: Do changes only for the new pip installation
-  install( DIRECTORY nest/ ${PROJECT_BINARY_DIR}/pynest/nest/
-    DESTINATION ./nest
-    PATTERN "versionchecker.py.in" EXCLUDE
-  )
-
-  install( DIRECTORY examples/
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/pynest
-  )
-
-   install( TARGETS nestkernel_api DESTINATION ./nest )
+  if(NOT "${SKBUILD}" STREQUAL "")    
+    install( DIRECTORY nest/ ${PROJECT_BINARY_DIR}/pynest/nest/
+      DESTINATION ./nest
+      PATTERN "versionchecker.py.in" EXCLUDE
+    )
+    install( DIRECTORY examples/
+      DESTINATION ./nest/doc/examples/pynest
+    )
+    install( TARGETS nestkernel_api DESTINATION ./nest )
+  else()
+    install( DIRECTORY nest/ ${PROJECT_BINARY_DIR}/pynest/nest/
+      DESTINATION ${CMAKE_INSTALL_PREFIX}/${PYEXECDIR}/nest
+      PATTERN "versionchecker.py.in" EXCLUDE
+    )
+    install( DIRECTORY examples/
+      DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/pynest
+    )
+    install( TARGETS nestkernel_api DESTINATION ${PYEXECDIR}/nest/ )
+  endif()
 endif ()
