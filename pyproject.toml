@@ -55,6 +55,7 @@ dependencies = [
   "matplotlib",
   "h5py",
   "setuptools",
+  "pytest"
 ]
 
 [tool.hatch.build.targets.wheel.hooks.scikit-build]
