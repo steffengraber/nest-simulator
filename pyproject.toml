@@ -113,17 +113,16 @@ before-all =  """
   NEST_SRC_DIR=${PWD}
   if [ $AUDITWHEEL_POLICY == "musllinux_1_2" ]
   then
-    apk add git readline readline-dev libc6-compat gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5 cmake
+    apk add git libc6-compat gsl gsl-dev ncurses ncurses-dev wget bzip2 hdf5 cmake
   else
-    yum install -y git glibc glibc-devel readline readline-devel gsl gsl-devel ncurses ncurses-devel wget bzip2 hdf5 cmake
+    yum install -y git glibc glibc-devel gsl gsl-devel ncurses ncurses-devel wget bzip2 hdf5 cmake
   fi
   # Install boost
   if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Build OS"
     echo $OSTYPE
     brew install llvm libomp boost gsl libtool open-mpi graphviz ncurses cmake
-    brew reinstall readline 
-    brew link --force readline ncurses libomp 
+    brew link --force ncurses libomp 
     echo "arch: $(arch)"
     if [[ $(arch) == 'arm64' ]]; then
       LDFLAGS="-L/opt/homebrew/lib"
@@ -166,8 +165,7 @@ musllinux-s390x-image = "musllinux_1_2"
 select = "*-macos*"
 inherit.environment = "append"
 environment = { MACOSX_DEPLOYMENT_TARGET = "14.0" }
-# config-settings."cmake.define.READLINE_LIBRARY" = "/usr/local/opt/readline/lib"
-# config-settings."cmake.define.NCURSES_LIBRARY" = "/usr/local/opt/ncurses/lib"
+
 
 [tool.cibuildwheel.linux]
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
