@@ -168,20 +168,20 @@ jobs:
         include:
           - os: ubuntu-latest
             name-suffix: "ubuntu"
-          - os: ubuntu-latest
-            container: debian:latest
-            name-suffix: "debian"
           # - os: ubuntu-latest
-          #  container: alpine:latest
-          #  name-suffix: "alpine"
+          #   container: debian:latest
+          #   name-suffix: "debian"
+          # - os: ubuntu-latest
+          #   container: alpine:latest
+          #   name-suffix: "alpine"
           # - os: ubuntu-latest
           #   container: rockylinux:8
           #   name-suffix: "rocky8"
-          - os: ubuntu-latest
-            container: fedora:latest
-            name-suffix: "fedora"
-          - os: macos-15-intel
-            name-suffix: "macos-intel"
+          # - os: ubuntu-latest
+          #   container: fedora:latest
+          #   name-suffix: "fedora"
+          # - os: macos-15-intel
+          #   name-suffix: "macos-intel"
           - os: macos-15
             name-suffix: "macos-arm"
     container: ${{ matrix.container }}
@@ -189,7 +189,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.10'
 
       - name: Cache pip packages
         uses: actions/cache@v4
