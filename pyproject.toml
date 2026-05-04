@@ -134,16 +134,8 @@ wheel.exclude = [
 [tool.scikit-build.metadata.version]
 provider = "scikit_build_core.metadata.regex"
 input = "VERSION"
-regex = '''
-^
-(?P<major>\d+)\.(?P<minor>\d+)
-(?:
-  -(?P<prerelease>[a-z]+)(?P<prenum>\d+)
-|
-  dev(?P<dev>\d+)
-)
-'''
-result = "{major}.{minor}{prerelease}{prenum}dev{dev}"
+regex = "^(?P<major>\\d+)\\.(?P<minor>\\d+)(?:-(?P<prerelease>[a-z]+)(?P<prenum>\\d+)|dev(?P<dev>\\d+))$"
+result = "{major}.{minor}.0{prerelease}{prenum}"
 
 [tool.scikit-build.cmake.define]
 with-optimize = "-O2"
@@ -155,7 +147,7 @@ with-openmp = "ON"
 
 [tool.cibuildwheel]
 build-frontend = "default"
-build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+build = ["cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 skip = "*-win* *-manylinux_i686" # Skip
 test-skip = ""
 test-requires = [
