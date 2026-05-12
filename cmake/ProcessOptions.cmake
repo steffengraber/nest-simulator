@@ -308,6 +308,13 @@ function( NEST_PROCESS_WITH_PYTHON )
             "Please either build and install NEST in a virtual Python environment or specify CMake option -DCMAKE_INSTALL_PREFIX=<nest_install_dir>.")
         endif()
 
+        # Ensure Python_SITELIB is set
+        if(NOT Python_SITELIB)
+          execute_process(COMMAND "${Python_EXECUTABLE}" -c "import site; print(site.getsitepackages()[0] if site.getsitepackages() else site.getusersitepackages()[0])"
+            OUTPUT_VARIABLE Python_SITELIB
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        endif()
+
         # Setting CMAKE_INSTALL_PREFIX effects the inclusion of GNUInstallDirs defining CMAKE_INSTALL_<dir> and CMAKE_INSTALL_FULL_<dir>
         get_filename_component( Python_EnvRoot "${Python_SITELIB}/../../.." ABSOLUTE)
         set ( CMAKE_INSTALL_PREFIX "${Python_EnvRoot}" CACHE PATH "Default install prefix for the active Python interpreter" FORCE )
@@ -343,7 +350,15 @@ endfunction()
 
 function( NEST_POST_PROCESS_WITH_PYTHON )
   if ( Python_FOUND )
-    set( PYEXECDIR "${CMAKE_INSTALL_LIBDIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages" PARENT_SCOPE )
+    # Use Python_SITELIB to get the correct path (site-packages or dist-packages)
+    # and compute the relative path from CMAKE_INSTALL_PREFIX
+    if(NOT Python_SITELIB)
+      execute_process(COMMAND "${Python_EXECUTABLE}" -c "import site; print(site.getsitepackages()[0] if site.getsitepackages() else site.getusersitepackages()[0])"
+        OUTPUT_VARIABLE Python_SITELIB
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif()
+    file(RELATIVE_PATH PYEXECDIR "${CMAKE_INSTALL_PREFIX}" "${Python_SITELIB}")
+    set( PYEXECDIR "${PYEXECDIR}" PARENT_SCOPE )
   endif()
 endfunction()
 
