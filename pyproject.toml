@@ -63,7 +63,7 @@ test = [
   "black",
   "isort",
   "mypy",
-  "scipy != 1.18.0",
+  "scipy!=1.18.0",
   "pandas"
 ]
 docs = [
@@ -289,7 +289,7 @@ test-requires = [
   "pytest",
   "pytest-cov",
   "pytest-xdist",
-  "scipy != 1.18.0",
+  "scipy!=1.18.0",
 ]
 
 [tool.pytest.ini_options]
